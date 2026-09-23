@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compre por Atividade - HADI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- (Insira aqui o <header> do código anterior) -->
+
+    <main class="container catalog-page">
+        <!-- Breadcrumbs e Título -->
+        <div class="catalog-header">
+            <div class="breadcrumbs">
+                <a href="index.html">HOME</a> &gt; <a href="catalogo.html">COMPRE POR ATIVIDADE</a> &gt; <span>TREKKING HOMENS ROUPAS</span>
+            </div>
+            <div class="catalog-actions">
+                <button id="btn-mobile-filter" class="btn-underline">FILTRAR</button>
+                <a href="#" class="btn-underline">LIMPAR TODOS OS FILTROS</a>
+                <div class="sort-by">
+                    <label for="sort">ORDENAR POR</label>
+                    <select id="sort">
+                        <option>MAIS RECENTES</option>
+                        <option>MENOR PREÇO</option>
+                        <option>MAIOR PREÇO</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="catalog-layout">
+            <!-- Barra Lateral de Filtros -->
+            <aside class="sidebar-filters" id="sidebar-filters">
+                <div class="filter-group">
+                    <h4>PREÇO</h4>
+                    <div class="price-range">
+                        <span id="price-min">R$ 0</span>
+                        <input type="range" min="0" max="7000" value="7000" id="price-slider">
+                        <span id="price-max">R$ 7.000</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4>CATEGORIAS</h4>
+                    <label class="checkbox-label"><input type="checkbox"> JAQUETAS</label>
+                    <label class="checkbox-label"><input type="checkbox"> CAMISETAS</label>
+                    <label class="checkbox-label"><input type="checkbox"> CALÇAS</label>
+                    <label class="checkbox-label"><input type="checkbox"> SHORTS E BERMUDAS</label>
+                    <label class="checkbox-label"><input type="checkbox"> MOCHILAS E BOLSAS</label>
+                    <label class="checkbox-label"><input type="checkbox"> TÊNIS</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>GÊNERO</h4>
+                    <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
+                    <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
+                    <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>TAMANHOS</h4>
+                    <div class="size-grid">
+                        <button class="size-btn">PP</button>
+                        <button class="size-btn">P</button>
+                        <button class="size-btn">M</button>
+                        <button class="size-btn">G</button>
+                        <button class="size-btn">GG</button>
+                        <button class="size-btn">34</button>
+                        <button class="size-btn">36</button>
+                        <button class="size-btn">38</button>
+                        <button class="size-btn">40</button>
+                        <button class="size-btn">42</button>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-full">APLICAR FILTROS</button>
+                    <button class="btn-outline">LIMPAR FILTROS</button>
+                </div>
+            </aside>
+
+            <!-- Grelha de Produtos -->
+            <section class="products-area">
+                <div class="grid-3-cols">
+                    <!-- Produto Exemplo -->
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/jacket-red.png" alt="Jaqueta The North Face">
+                        </div>
+                        <div class="product-info">
+                            <h3>THE NORTH FACE</h3>
+                            <p class="product-name">CALÇA DE TRILHA GORE-TEX</p>
+                            <div class="prices">
+                                <span class="price-old">R$ 1.299,90</span>
+                                <span class="price-new">R$ 899,90 <span class="discount">-30%</span></span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx">
+                        </div>
+                        <div class="product-info">
+                            <h3>ARC'TERYX</h3>
+                            <p class="product-name">JAQUETA BETA AR GORE-TEX</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 3.499,90</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/fleece.png" alt="Fleece Columbia">
+                        </div>
+                        <div class="product-info">
+                            <h3>COLUMBIA</h3>
+                            <p class="product-name">COLUMBIA MOUNTAIN FULL ZIP 2.0 FLEECE</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 399,90</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Paginação -->
+                <div class="pagination">
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">&gt;</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- (Insira aqui o <footer> do código anterior) -->
+</body>
+</html>

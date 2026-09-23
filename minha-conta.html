@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - HADI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- (Insira aqui o <header>) -->
+
+    <main class="container account-page">
+        <div class="breadcrumbs">
+            <a href="index.html">HOME</a> &gt; <span>MINHA CONTA</span>
+        </div>
+
+        <div class="account-layout">
+            <!-- Menu Lateral da Conta -->
+            <aside class="account-sidebar">
+                <h2 class="user-greeting"></h2>
+                <nav class="account-nav">
+                    <ul>
+                        <li><a href="#" class="active">DADOS PESSOAIS</a></li>
+                        <li><a href="#">MEUS PEDIDOS</a></li>
+                        <li><a href="#">CONFIGURAR</a></li>
+                        <li><a href="#" class="logout-link">SAIR &rarr;</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Conteúdo da Conta (Dados Pessoais) -->
+            <section class="account-content">
+                <div class="form-section">
+                    <h3>DADOS PESSOAIS</h3>
+                    <div class="form-grid-2">
+                        <div class="input-group">
+                            <label>NOME COMPLETO</label>
+                            <input type="text" value="GUSTAVO CHEFER>
+                        </div>
+                        <div class="input-group">
+                            <label>E-MAIL</label>
+                            <input type="email" value="GUST***C***@GMAIL.COM">
+                        </div>
+                        <div class="input-group">
+                            <label>TELEFONE</label>
+                            <input type="tel" value="11 91234 5678">
+                        </div>
+                        <div class="input-group">
+                            <label>DATA DE NASCIMENTO</label>
+                            <input type="text" value="10/07/2006">
+                        </div>
+                        <div class="input-group">
+                            <label>GÊNERO</label>
+                            <input type="text" value="M">
+                        </div>
+                        <div class="input-group">
+                            <label>SENHA</label>
+                            <div class="pwd-wrapper">
+                                <input type="password" value="********">
+                                <a href="#" class="btn-underline">ESQUECI A SENHA</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ENDEREÇO</h3>
+                    <div class="form-grid-2">
+                        <div class="input-group full-width">
+                            <label>CEP</label>
+                            <input type="text" placeholder="00000-000">
+                            <a href="#" class="help-text">NÃO SABE O SEU CEP? CLIQUE AQUI.</a>
+                        </div>
+                        <div class="input-group full-width">
+                            <label>ENDEREÇO</label>
+                            <input type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>NÚMERO</label>
+                            <input type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>COMPLEMENTO (OPCIONAL)</label>
+                            <input type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>CIDADE</label>
+                            <input type="text">
+                        </div>
+                        <div class="input-group">
+                            <label>ESTADO</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="checkbox-group mt-20">
+                        <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE ENTREGA PREFERIDO.</label>
+                        <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE COBRANÇA PREFERIDO.</label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>GERENCIAR MÉTODOS DE PAGAMENTO</h3>
+                    <div class="saved-card">
+                        <div class="card-info">
+                            <i class="fa-brands fa-cc-mastercard"></i>
+                            <div>
+                                <p><strong>MASTERCARD ****1642</strong></p>
+                                <p>NOME: MARIANA ******</p>
+                                <p>EXPIRA EM: **/**</p>
+                            </div>
+                        </div>
+                        <button class="btn-underline">EXCLUIR MÉTODO DE PAGAMENTO</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- (Insira aqui o <footer>) -->
+</body>
+</html>

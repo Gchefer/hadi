@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - HADI</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="checkout-body">
+
+    <!-- Cabeçalho Simplificado para Checkout (Sem menus para evitar distrações) -->
+    <header class="header checkout-header">
+        <div class="container header-inner" style="justify-content: center;">
+            <a href="index.html" class="logo">HADI</a>
+        </div>
+    </header>
+
+    <main class="container checkout-page">
+        <!-- Indicador de Passos -->
+        <div class="checkout-steps">
+            <div class="step active" id="step-nav-1">IDENTIFICAÇÃO</div>
+            <div class="step" id="step-nav-2">PAGAMENTO</div>
+            <div class="step" id="step-nav-3">CONFIRMAÇÃO</div>
+        </div>
+
+        <div class="checkout-layout">
+            <!-- COLUNA ESQUERDA: Formulários (Muda com JS) -->
+            <div class="checkout-forms">
+                
+                <!-- PASSO 1: IDENTIFICAÇÃO -->
+                <section id="step-1" class="checkout-step-content active">
+                    <div class="form-section">
+                        <h3>DADOS PESSOAIS</h3>
+                        <div class="form-grid-2">
+                            <div class="input-group full-width">
+                                <label>E-MAIL</label>
+                                <input type="email" value="GUSTAVO*******@ICLOUD.COM">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>NOME COMPLETO</label>
+                                <input type="text" value="Gustavo Chefer>
+                            </div>
+                            <div class="input-group">
+                                <label>CPF</label>
+                                <input type="text" value="*** *** *** 25">
+                            </div>
+                            <div class="input-group">
+                                <label>TELEFONE</label>
+                                <input type="tel" value="11 91234-5678">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title-flex">
+                            <h3>ENDEREÇO DE ENTREGA</h3>
+                            <a href="#" class="btn-underline">EDITAR</a>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="input-group full-width">
+                                <label>CEP</label>
+                                <input type="text" value="00000-000">
+                                <a href="#" class="help-text">NÃO SEI O MEU CEP</a>
+                            </div>
+                            <div class="input-group full-width">
+                                <label>ENDEREÇO</label>
+                                <input type="text" value="RUA J*** ******, 12">
+                            </div>
+                        </div>
+                        <div class="checkbox-group mt-20">
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> UTILIZAR O MESMO ENDEREÇO PARA COBRANÇA
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-full mt-20" onclick="nextStep(2)">IR PARA PAGAMENTO</button>
+                </section>
+
+                <!-- PASSO 2: PAGAMENTO -->
+                <section id="step-2" class="checkout-step-content">
+                    <div class="form-section">
+                        <h3>OPÇÕES DE ENTREGA</h3>
+                        <div class="options-grid">
+                            <label class="radio-card">
+                                <input type="radio" name="entrega" value="sedex">
+                                <div class="card-content">
+                                    <div class="radio-header">
+                                        <span class="title">SEDEX</span>
+                                        <span class="price">R$ 13,40</span>
+                                    </div>
+                                    <p class="desc">7 DIAS ÚTEIS</p>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="entrega" value="pac" checked>
+                                <div class="card-content">
+                                    <div class="radio-header">
+                                        <span class="title">PAC</span>
+                                        <span class="price">R$ 16,40</span>
+                                    </div>
+                                    <p class="desc">4 DIAS ÚTEIS</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>FORMA DE PAGAMENTO</h3>
+                        <div class="options-grid payment-methods">
+                            <label class="checkbox-label"><input type="radio" name="pagamento"> PIX</label>
+                            <label class="checkbox-label"><input type="radio" name="pagamento"> PIX PARCELADO</label>
+                            <label class="checkbox-label"><input type="radio" name="pagamento" checked> CARTÃO DE CRÉDITO</label>
+                        </div>
+                        
+                        <!-- Cartão Guardado -->
+                        <div class="saved-card mt-20">
+                            <div class="card-info">
+                                <i class="fa-brands fa-cc-mastercard"></i>
+                                <div>
+                                    <p><strong>MASTERCARD ****1642</strong></p>
+                                    <p>NOME COMPLETO: Gustavo ******</p>
+                                    <p>EXPIRA EM: **/**</p>
+                                    <p>CPF: *** *** *** 30</p>
+                                </div>
+                            </div>
+                            <div class="card-actions-col">
+                                <button class="btn-underline">EDITAR</button>
+                                <button class="btn-underline text-red mt-10">EXCLUIR MÉTODO DE PAGAMENTO</button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-20">
+                            <h4>MEIOS DE PAGAMENTO</h4>
+                            <div class="payment-icons mt-10">
+                                <i class="fa-brands fa-cc-visa"></i>
+                                <i class="fa-brands fa-cc-mastercard"></i>
+                                <i class="fa-brands fa-cc-amex"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PASSO 3: CONFIRMAÇÃO (Sucesso) -->
+                <section id="step-3" class="checkout-step-content text-center">
+                    <div class="success-icon">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </div>
+                    <h2 class="success-title">PEDIDO EFETUADO COM SUCESSO!</h2>
+                    
+                    <div class="order-details-card mt-20 text-left">
+                        <div class="order-product">
+                            <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" style="width: 80px; mix-blend-mode: multiply;">
+                            <div>
+                                <h4>ARC'TERYX</h4>
+                                <p>JAQUETA BETA AR GORE-TEX</p>
+                                <p>TAMANHO G</p>
+                            </div>
+                        </div>
+                        <ul class="order-summary-list mt-20">
+                            <li><span>VALOR TOTAL</span> <span>R$ 3.499,90</span></li>
+                            <li><span>FRETE</span> <span>R$ 00,00</span></li>
+                            <li><span>FORMA DE PAGAMENTO</span> <span>CARTÃO DE CRÉDITO</span></li>
+                            <li><span>ENDEREÇO</span> <span>RUA J*** ******, 12</span></li>
+                            <li><span>PREVISÃO DE ENTREGA</span> <span>4 DIAS ÚTEIS</span></li>
+                        </ul>
+                    </div>
+                    <p class="mt-20 help-text">VOCÊ RECEBERÁ TAMBÉM ATUALIZAÇÕES DO PEDIDO VIA E-MAIL.</p>
+                    
+                    <div class="success-actions mt-20">
+                        <button class="btn-full" onclick="window.location.href='minha-conta.html'">MEUS PEDIDOS</button>
+                        <button class="btn-outline mt-10" onclick="window.location.href='index.html'" style="width: 100%;">CONTINUAR COMPRANDO</button>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- COLUNA DIREITA: Resumo da Compra (Visível nos passos 1 e 2) -->
+            <aside class="checkout-summary" id="checkout-sidebar">
+                <h3>RESUMO DA COMPRA</h3>
+                
+                <div class="summary-product">
+                    <img src="img/jacket-blue.png" alt="Jaqueta" class="summary-img">
+                    <div class="summary-prod-info">
+                        <p class="summary-prod-name">JAQUETA BETA AR GORE-TEX</p>
+                        <p class="summary-prod-price">R$ 3.499,90</p>
+                    </div>
+                </div>
+
+                <ul class="order-summary-list">
+                    <li><span>SUBTOTAL</span> <span>R$ 3.499,90</span></li>
+                    <li><span>FRETE</span> <span>R$ 00,00</span></li>
+                    <li><span>DESCONTO</span> <span>R$ 00,00</span></li>
+                    <li class="total-row"><span>VALOR A PAGAR</span> <span>R$ 3.499,90</span></li>
+                </ul>
+
+                <p class="items-count mt-10">ITENS NO CARRINHO: 1</p>
+                <a href="#" class="btn-underline mt-10 d-block">VOLTAR AO CARRINHO</a>
+
+                <button id="btn-finalizar" class="btn-full mt-20" style="display: none;" onclick="nextStep(3)">FINALIZAR COMPRA</button>
+            </aside>
+        </div>
+    </main>
+
+    <!-- (Insira aqui o <footer>) -->
+    
+    <script src="checkout.js"></script>
+</body>
+</html>

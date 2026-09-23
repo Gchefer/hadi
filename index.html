@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HADI Active Wear</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO COM MEGA MENUS -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="#" class="logo">HADI</a>
+            
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li class="has-dropdown">
+                        <a href="#">NEW IN</a>
+                        <!-- Mega Menu Exemplo -->
+                        <div class="mega-menu">
+                            <div class="mega-menu-grid">
+                                <div>
+                                    <h4>DESCUBRA</h4>
+                                    <ul>
+                                        <li><a href="#">NEW IN: HOMENS</a></li>
+                                        <li><a href="#">NEW IN: MULHERES</a></li>
+                                        <li><a href="#">NEW IN: ACESSÓRIOS</a></li>
+                                        <li><a href="#">SALE</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4>COMPRE POR ATIVIDADE</h4>
+                                    <ul>
+                                        <li><a href="#">TREKKING</a></li>
+                                        <li><a href="#">TRAIL RUNNING</a></li>
+                                        <li><a href="#">SKI E NEVE</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">HOMENS</a></li>
+                    <li><a href="#">MULHERES</a></li>
+                    <li><a href="#">ACESSÓRIOS</a></li>
+                    <li><a href="#" class="sale-link">SALE</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-icons">
+                <button id="btn-search" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button id="btn-user" aria-label="Utilizador"><i class="fa-regular fa-user"></i></button>
+                <button id="btn-cart" aria-label="Carrinho"><i class="fa-solid fa-bag-shopping"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (Exemplo resumido da Home para poupar espaço) -->
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">NEW IN</h1>
+                <div class="hero-text-bottom">
+                    <a href="#" class="btn-underline">COMPRE AGORA</a>
+                    <h2 class="hero-subtitle">FIELD COLLECTION</h2>
+                </div>
+            </div>
+        </section>
+        <div style="height: 100vh; background: var(--bg-main);"></div> <!-- Espaçador para simular a página -->
+    </main>
+
+    <!-- ==========================================
+         MODAIS (POP-UPS) INTERATIVOS
+    =========================================== -->
+
+    <!-- 1. MODAL DE PESQUISA -->
+    <div id="modal-search" class="modal-overlay">
+        <div class="modal-search-content">
+            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="search-bar">
+                <h2>BUSCAR</h2>
+                <input type="text" placeholder="Digite o que procura...">
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL DO CARRINHO (Lateral) -->
+    <div id="modal-cart" class="modal-overlay">
+        <div class="sidebar-cart">
+            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2>CARRINHO</h2>
+            <div class="cart-items">
+                <!-- Exemplo de item no carrinho -->
+                <div class="cart-item">
+                    <img src="img/jacket.jpg" alt="Jaqueta">
+                    <div class="item-details">
+                        <h4>ARC'TERYX</h4>
+                        <p>JAQUETA BETA AR GORE-TEX</p>
+                        <p>R$ 3.499,90</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-footer">
+                <button class="btn-full">FINALIZAR COMPRA</button>
+                <a href="#" class="btn-underline">CONTINUAR COMPRANDO</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL DE LOGIN / REGISTO -->
+    <div id="modal-auth" class="modal-overlay">
+        <div class="modal-center">
+            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2>BEM VINDO(A)</h2>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-target="form-login">LOGIN</button>
+                <button class="tab-btn" data-target="form-register">PRIMEIRO ACESSO</button>
+            </div>
+
+            <!-- Formulário Login -->
+            <form id="form-login" class="auth-form active">
+                <input type="email" placeholder="E-MAIL" required>
+                <input type="password" placeholder="SENHA" required>
+                <a href="#" class="forgot-pwd">ESQUECEU A SENHA?</a>
+                <button type="submit" class="btn-full">ENTRAR</button>
+            </form>
+
+            <!-- Formulário Registo -->
+            <form id="form-register" class="auth-form">
+                <input type="text" placeholder="NOME COMPLETO" required>
+                <input type="email" placeholder="E-MAIL" required>
+                <input type="password" placeholder="SENHA" required>
+                <input type="password" placeholder="CONFIRMAR SENHA" required>
+                <button type="submit" class="btn-full">CRIAR CONTA</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. MENU DE UTILIZADOR (Logado) -->
+    <div id="modal-user-menu" class="user-dropdown">
+        <ul>
+            <li><strong>Chefer</strong></li>
+            <li><a href="conta-dados.html">DADOS PESSOAIS</a></li>
+            <li><a href="#">MEUS PEDIDOS</a></li>
+            <li><a href="conta-config.html">CONFIGURAR</a></li>
+            <li><a href="#" id="btn-logout">SAIR &rarr;</a></li>
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

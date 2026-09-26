@@ -5,6 +5,7 @@
     --text-red: #d32f2f;
     --font-title: 'Impact', 'Arial Black', sans-serif;
     --font-body: 'Helvetica Neue', Arial, sans-serif;
+    --border-color: #ccc;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,6 +14,8 @@ a { text-decoration: none; color: inherit; }
 li { list-style: none; }
 
 .container { max-width: 1440px; margin: 0 auto; padding: 0 40px; }
+
+.btn-underline { font-family: var(--font-title); font-size: 1rem; letter-spacing: 0.5px; text-decoration: underline; text-underline-offset: 4px; background: none; border: none; cursor: pointer; color: inherit; }
 
 /* Cabeçalho */
 .header { border-bottom: 2px solid var(--text-color); padding: 15px 0; background: var(--bg-main); position: sticky; top: 0; z-index: 100; }
@@ -94,6 +97,94 @@ li { list-style: none; }
 }
 
 /* =========================================
+   PÁGINA INICIAL (HOME)
+========================================= */
+
+/* Hero / Banner principal */
+.hero {
+    position: relative;
+    height: 65vh; min-height: 420px;
+    margin: 24px 40px 0;
+    background: linear-gradient(180deg, #2b2b2b, #111 70%);
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+}
+.hero-content { position: relative; width: 100%; padding: 40px; color: #fff; }
+.hero-title { font-family: var(--font-title); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; letter-spacing: 1px; }
+.hero-text-bottom { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 20px; flex-wrap: wrap; gap: 15px; }
+.hero-text-bottom .btn-underline { color: #fff; font-size: 1.1rem; }
+.hero-subtitle { font-family: var(--font-title); font-size: clamp(1.8rem, 5vw, 3.2rem); color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+.hero-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(244,243,237,0.85); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    z-index: 2;
+}
+.hero-arrow-left { left: 20px; }
+.hero-arrow-right { right: 20px; }
+
+/* Seções genéricas da home */
+.home-section { margin: 70px auto; }
+.section-title-flex { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px; }
+.section-title { font-family: var(--font-title); font-size: 1.3rem; letter-spacing: 0.5px; margin-bottom: 25px; }
+.section-title .arrow { margin-left: 4px; }
+
+/* Grade de produtos em destaque (SALE: ACESSÓRIOS) */
+.grid-4-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+
+/* COMPRE POR ATIVIDADE */
+.activity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.activity-tile {
+    position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+    aspect-ratio: 3 / 4; padding: 25px; border-radius: 6px; overflow: hidden;
+    background-color: #3a3a33; background-size: cover; background-position: center;
+    color: #fff; text-align: left;
+}
+.activity-tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.65) 100%); }
+.activity-tile h3, .activity-tile span { position: relative; z-index: 1; }
+.activity-tile h3 { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 1px; margin-bottom: 12px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+.activity-tile .btn-underline { color: #fff; font-size: 0.95rem; }
+
+/* COMPRE POR MARCAS */
+.brand-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 30px 20px; }
+.brand-logo { font-family: var(--font-title); font-size: 1.3rem; letter-spacing: 0.5px; white-space: nowrap; opacity: 0.85; transition: 0.2s; }
+.brand-logo:hover { opacity: 1; }
+
+/* Barra de benefícios (Frete grátis / Trocas / Parcelamento) */
+.promo-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; padding: 40px 40px; border-top: 1px solid var(--border-color); }
+.promo-item i { font-size: 1.8rem; margin: 12px 0; display: block; }
+.promo-item h4 { font-family: var(--font-title); font-size: 1.1rem; letter-spacing: 0.5px; margin-bottom: 4px; }
+.promo-item p { font-size: 0.8rem; font-weight: 700; }
+
+/* Rodapé */
+.footer { background: var(--bg-cards); margin-top: 0; }
+.footer-grid { display: grid; grid-template-columns: 1fr 1fr 1.3fr 1fr 1.2fr; gap: 40px; padding: 50px 40px; }
+.footer-col h4 { font-family: var(--font-title); font-size: 1rem; letter-spacing: 0.5px; margin-bottom: 15px; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { font-size: 0.85rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.contact-list li { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; }
+.contact-list li a { text-decoration: underline; text-underline-offset: 3px; }
+.security-badge { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; margin-bottom: 20px; }
+.payment-icons { display: flex; gap: 12px; font-size: 1.6rem; }
+.newsletter-form { display: flex; margin-bottom: 25px; }
+.newsletter-form input { flex: 1; padding: 12px 15px; border: 1px solid var(--border-color); border-right: none; background: #fff; font-family: var(--font-body); outline: none; }
+.newsletter-form button { width: 46px; border: 1px solid var(--text-color); background: var(--text-color); color: #fff; cursor: pointer; }
+.social-icons { display: flex; gap: 15px; font-size: 1.4rem; }
+.footer-bottom { padding: 18px 40px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; }
+
+@media (max-width: 992px) {
+    .grid-4-cols, .activity-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    .hero { margin: 0; height: 55vh; }
+    .grid-4-cols, .activity-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; padding: 40px 30px; }
+    .promo-bar { grid-template-columns: 1fr; padding: 30px; }
+}
+
+/* =========================================
    PÁGINA DE CATÁLOGO / FILTROS
 ========================================= */
 .catalog-page { margin-top: 40px; margin-bottom: 80px; }
@@ -105,27 +196,75 @@ li { list-style: none; }
 .sort-by label { font-family: var(--font-title); margin-right: 10px; }
 .sort-by select { background: transparent; border: none; font-family: var(--font-title); font-size: 1rem; outline: none; border-bottom: 1px solid var(--text-color); }
 
-.catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 50px; }
+.catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 50px; align-items: start; }
+
+/* Barra lateral de filtros (scrollável, como no mockup FILTRO.pdf) */
+.sidebar-filters { max-height: calc(100vh - 40px); overflow-y: auto; position: sticky; top: 100px; padding-right: 10px; }
+.filter-sidebar-header { display: none; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.filter-sidebar-header h3 { font-family: var(--font-title); font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+#btn-close-filter { background: none; border: none; font-size: 1.4rem; cursor: pointer; }
+
 .filter-group { margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
-.filter-group h4 { font-family: var(--font-title); margin-bottom: 15px; font-size: 1.2rem; }
+.filter-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 15px; }
+.filter-title h4 { font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 0; }
+.filter-title i { transition: transform 0.2s; }
+.filter-group.collapsed .filter-title i { transform: rotate(-90deg); }
+.filter-group.collapsed .filter-body { display: none; }
 
 .price-range { display: flex; align-items: center; gap: 10px; font-weight: bold; font-family: var(--font-title); }
 .price-range input[type="range"] { flex: 1; accent-color: var(--text-color); }
 
 .checkbox-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; }
-.checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--text-color); cursor: pointer; }
+.checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--text-color); cursor: pointer; flex-shrink: 0; }
 
-.size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+/* Categorias com subcategorias expansíveis (ROUPAS / ACESSÓRIOS / FOOTWEAR) */
+.category-item { margin-bottom: 12px; }
+.category-item > .checkbox-label { margin-bottom: 10px; }
+.subcategory-list { list-style: none; margin: 0 0 5px 28px; display: none; }
+.category-item.expanded .subcategory-list { display: block; }
+.subcategory-list li { margin-bottom: 10px; }
+.subcategory-list .checkbox-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0; }
+.subcategory-list .checkbox-label input[type="checkbox"] { width: 15px; height: 15px; }
+
+.size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .size-btn { padding: 10px; border: 1px solid var(--border-color); background: transparent; font-family: var(--font-title); font-size: 1rem; cursor: pointer; transition: 0.2s; }
 .size-btn:hover, .size-btn.active { background: var(--text-color); color: #fff; }
 
-.filter-actions { display: flex; flex-direction: column; gap: 15px; }
+.filter-actions { display: flex; flex-direction: column; gap: 15px; position: sticky; bottom: 0; background: var(--bg-main); padding-top: 10px; }
 .btn-outline { background: transparent; border: 2px solid var(--text-color); padding: 15px; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; }
 
 .grid-3-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.product-card { display: flex; flex-direction: column; }
+.product-card .img-wrapper { aspect-ratio: 1 / 1.1; background: var(--bg-cards); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; }
+.product-card .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.product-card .img-wrapper i { font-size: 3rem; color: #b9b9ac; }
+.product-info h3 { font-family: var(--font-title); font-size: 1rem; letter-spacing: 0.5px; }
+.product-name { font-size: 0.85rem; font-weight: 600; margin: 4px 0 8px; color: #444; }
+.prices { display: flex; align-items: center; gap: 10px; font-family: var(--font-title); }
+.price-old { text-decoration: line-through; color: #888; font-size: 0.95rem; }
+.price-new { font-size: 1.05rem; }
+.discount { color: var(--text-red); font-size: 0.85rem; }
+
+/* Variações de cor no card do produto */
+.color-swatches { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.swatch { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border-color); display: inline-block; }
+.swatch-more { font-size: 0.75rem; font-weight: bold; color: #555; }
+
 .pagination { display: flex; justify-content: flex-end; gap: 10px; margin-top: 50px; }
 .page-btn { width: 40px; height: 40px; border: none; background: transparent; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; }
 .page-btn.active { background: var(--text-color); color: #fff; border-radius: 4px; }
+
+/* Painel de filtro em overlay no mobile (com botão de fechar, como no FILTRO.pdf) */
+@media (max-width: 992px) {
+    .sidebar-filters {
+        display: none;
+        position: fixed; inset: 0; z-index: 200;
+        background: var(--bg-main);
+        max-height: 100vh; padding: 30px; overflow-y: auto;
+    }
+    .sidebar-filters.active { display: block; }
+    .filter-sidebar-header { display: flex; }
+}
 
 /* =========================================
    PÁGINA MINHA CONTA
@@ -159,7 +298,6 @@ li { list-style: none; }
 /* Responsividade adicional */
 @media (max-width: 992px) {
     .catalog-layout, .account-layout { grid-template-columns: 1fr; }
-    .sidebar-filters { display: none; } /* Pode ser ativado via JS num modal no mobile */
     .grid-3-cols { grid-template-columns: repeat(2, 1fr); }
     .form-grid-2 { grid-template-columns: 1fr; }
 }

@@ -33,45 +33,99 @@
         <div class="catalog-layout">
             <!-- Barra Lateral de Filtros -->
             <aside class="sidebar-filters" id="sidebar-filters">
+                <div class="filter-sidebar-header">
+                    <h3><i class="fa-solid fa-sliders"></i> FILTRAR</h3>
+                    <button id="btn-close-filter" aria-label="Fechar filtros"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
                 <div class="filter-group">
-                    <h4>PREÇO</h4>
-                    <div class="price-range">
-                        <span id="price-min">R$ 0</span>
-                        <input type="range" min="0" max="7000" value="7000" id="price-slider">
-                        <span id="price-max">R$ 7.000</span>
+                    <div class="filter-title"><h4>PREÇO</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <div class="price-range">
+                            <span id="price-min">R$ 0</span>
+                            <input type="range" min="0" max="7000" value="7000" id="price-slider">
+                            <span id="price-max">R$ 7.000</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="filter-group">
-                    <h4>CATEGORIAS</h4>
-                    <label class="checkbox-label"><input type="checkbox"> JAQUETAS</label>
-                    <label class="checkbox-label"><input type="checkbox"> CAMISETAS</label>
-                    <label class="checkbox-label"><input type="checkbox"> CALÇAS</label>
-                    <label class="checkbox-label"><input type="checkbox"> SHORTS E BERMUDAS</label>
-                    <label class="checkbox-label"><input type="checkbox"> MOCHILAS E BOLSAS</label>
-                    <label class="checkbox-label"><input type="checkbox"> TÊNIS</label>
+                    <div class="filter-title"><h4>CATEGORIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <div class="category-item expanded">
+                            <label class="checkbox-label"><input type="checkbox" class="category-toggle" checked> ROUPAS</label>
+                            <ul class="subcategory-list">
+                                <li><label class="checkbox-label"><input type="checkbox"> JAQUETAS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> CAMISETAS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> CALÇAS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> SHORTS E BERMUDAS</label></li>
+                            </ul>
+                        </div>
+                        <div class="category-item">
+                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> ACESSÓRIOS</label>
+                            <ul class="subcategory-list">
+                                <li><label class="checkbox-label"><input type="checkbox"> MOCHILAS E BOLSAS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> HEADWEAR</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> ÓCULOS</label></li>
+                            </ul>
+                        </div>
+                        <div class="category-item">
+                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> FOOTWEAR</label>
+                            <ul class="subcategory-list">
+                                <li><label class="checkbox-label"><input type="checkbox"> TÊNIS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> BOTAS</label></li>
+                                <li><label class="checkbox-label"><input type="checkbox"> SLIDERS</label></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="filter-group">
-                    <h4>GÊNERO</h4>
-                    <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
-                    <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
-                    <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
+                    <div class="filter-title"><h4>GÊNERO</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
+                        <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
+                        <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
+                    </div>
                 </div>
 
                 <div class="filter-group">
-                    <h4>TAMANHOS</h4>
-                    <div class="size-grid">
-                        <button class="size-btn">PP</button>
-                        <button class="size-btn">P</button>
-                        <button class="size-btn">M</button>
-                        <button class="size-btn">G</button>
-                        <button class="size-btn">GG</button>
-                        <button class="size-btn">34</button>
-                        <button class="size-btn">36</button>
-                        <button class="size-btn">38</button>
-                        <button class="size-btn">40</button>
-                        <button class="size-btn">42</button>
+                    <div class="filter-title"><h4>TAMANHOS</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <div class="size-grid">
+                            <button class="size-btn">PP</button>
+                            <button class="size-btn">P</button>
+                            <button class="size-btn">M</button>
+                            <button class="size-btn">G</button>
+                            <button class="size-btn">GG</button>
+                            <button class="size-btn">2GG</button>
+                            <button class="size-btn">34</button>
+                            <button class="size-btn">36</button>
+                            <button class="size-btn">38</button>
+                            <button class="size-btn">40</button>
+                            <button class="size-btn">42</button>
+                            <button class="size-btn">44</button>
+                            <button class="size-btn">46</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title"><h4>TECNOLOGIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <label class="checkbox-label"><input type="checkbox"> GORE-TEX</label>
+                        <label class="checkbox-label"><input type="checkbox"> THERMAL</label>
+                        <label class="checkbox-label"><input type="checkbox"> PROTEÇÃO UV</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title"><h4>ATIVIDADE</h4><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="filter-body">
+                        <label class="checkbox-label"><input type="checkbox" checked> TREKKING</label>
+                        <label class="checkbox-label"><input type="checkbox"> TRAIL RUNNING</label>
+                        <label class="checkbox-label"><input type="checkbox"> SKI E NEVE</label>
+                        <label class="checkbox-label"><input type="checkbox"> CASUAL</label>
                     </div>
                 </div>
 
@@ -84,24 +138,10 @@
             <!-- Grelha de Produtos -->
             <section class="products-area">
                 <div class="grid-3-cols">
-                    <!-- Produto Exemplo -->
+                    <!-- Linha 1 -->
                     <article class="product-card">
                         <div class="img-wrapper">
-                            <img src="img/jacket-red.png" alt="Jaqueta The North Face">
-                        </div>
-                        <div class="product-info">
-                            <h3>THE NORTH FACE</h3>
-                            <p class="product-name">CALÇA DE TRILHA GORE-TEX</p>
-                            <div class="prices">
-                                <span class="price-old">R$ 1.299,90</span>
-                                <span class="price-new">R$ 899,90 <span class="discount">-30%</span></span>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx">
+                            <img src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                         </div>
                         <div class="product-info">
                             <h3>ARC'TERYX</h3>
@@ -114,13 +154,116 @@
 
                     <article class="product-card">
                         <div class="img-wrapper">
-                            <img src="img/fleece.png" alt="Fleece Columbia">
+                            <img src="img/nike-acg-thermal-pants.png" alt="Calça Nike ACG Activitorium Thermal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>NIKE ACG</h3>
+                            <p class="product-name">ACTIVITORIUM THERMAL PANTS</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 899,90</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/salomon-recco-softshell.png" alt="Jaqueta Salomon Lab Recco Softshell" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>SALOMON</h3>
+                            <p class="product-name">SALOMON LAB RECCO SOFTSHELL</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 3.499,90</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Linha 2 -->
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/columbia-logo-tshirt.png" alt="Camiseta Columbia" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                         </div>
                         <div class="product-info">
                             <h3>COLUMBIA</h3>
-                            <p class="product-name">COLUMBIA MOUNTAIN FULL ZIP 2.0 FLEECE</p>
+                            <p class="product-name">CSC BASIC LOGO T-SHIRT</p>
                             <div class="prices">
-                                <span class="price-new">R$ 399,90</span>
+                                <span class="price-old">R$ 260,90</span>
+                                <span class="price-new">R$ 179,99 <span class="discount">-31%</span></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/patagonia-funhoggers-shorts.png" alt="Shorts Patagonia Funhoggers" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>PATAGONIA</h3>
+                            <p class="product-name">FUNHOGGERS SHORTS</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 185,90</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/tnf-polar-fleece.png" alt="Fleece The North Face" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>THE NORTH FACE</h3>
+                            <p class="product-name">POLAR FLEECE</p>
+                            <div class="color-swatches">
+                                <span class="swatch" style="background:#2b2b2b;"></span>
+                                <span class="swatch" style="background:#b3261e;"></span>
+                            </div>
+                            <div class="prices">
+                                <span class="price-new">R$ 359,90</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Linha 3 -->
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/oakley-software-windbreaker.png" alt="Corta-vento Oakley Software" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>OAKLEY</h3>
+                            <p class="product-name">SOFTWARE WINDBREAKER</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 600,00</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/nike-acg-lichen-fleece-hoodie.png" alt="Hoodie Nike ACG Lichen Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>NIKE ACG</h3>
+                            <p class="product-name">NIKE ACG LICHEN FLEECE HOODIE - MOSS</p>
+                            <div class="color-swatches">
+                                <span class="swatch" style="background:#8a8a3c;"></span>
+                                <span class="swatch" style="background:#4a6fa5;"></span>
+                                <span class="swatch-more">+2</span>
+                            </div>
+                            <div class="prices">
+                                <span class="price-new">R$ 500,00</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="img-wrapper">
+                            <img src="img/nike-acg-trail-shorts.png" alt="Shorts Nike ACG Trail Mica Green" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                        </div>
+                        <div class="product-info">
+                            <h3>NIKE ACG</h3>
+                            <p class="product-name">NIKE ACG TRAIL SHORTS - MICA GREEN</p>
+                            <div class="prices">
+                                <span class="price-new">R$ 299,90</span>
                             </div>
                         </div>
                     </article>

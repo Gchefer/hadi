@@ -30,25 +30,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Abrir Pesquisa
-    btnSearch.addEventListener('click', () => {
-        modalSearch.classList.add('active');
-    });
+    // Abrir Pesquisa (só existe em páginas com o header completo)
+    if (btnSearch) {
+        btnSearch.addEventListener('click', () => {
+            modalSearch.classList.add('active');
+        });
+    }
 
     // Abrir Carrinho
-    btnCart.addEventListener('click', () => {
-        modalCart.classList.add('active');
-    });
+    if (btnCart) {
+        btnCart.addEventListener('click', () => {
+            modalCart.classList.add('active');
+        });
+    }
 
     // Lógica do Botão de Utilizador (Verifica se está logado)
-    btnUser.addEventListener('click', () => {
-        if (isUserLoggedIn) {
-            userDropdown.classList.toggle('active');
-        } else {
-            modalAuth.classList.add('active');
-            userDropdown.classList.remove('active');
-        }
-    });
+    if (btnUser) {
+        btnUser.addEventListener('click', () => {
+            if (isUserLoggedIn) {
+                userDropdown.classList.toggle('active');
+            } else {
+                modalAuth.classList.add('active');
+                userDropdown.classList.remove('active');
+            }
+        });
+    }
 
     // --- LÓGICA DAS ABAS: LOGIN vs PRIMEIRO ACESSO ---
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -69,20 +75,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SIMULAÇÃO DE LOGIN ---
     const formLogin = document.getElementById('form-login');
-    formLogin.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Simula o login com sucesso
-        isUserLoggedIn = true; 
-        closeModal(modalAuth);
-        alert('Bem-vindo, Gustavo!');
-    });
+    if (formLogin) {
+        formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simula o login com sucesso
+            isUserLoggedIn = true;
+            closeModal(modalAuth);
+            alert('Bem-vindo, Gustavo!');
+        });
+    }
 
     // Fechar menu de utilizador ao clicar fora
-    document.addEventListener('click', (e) => {
-        if (!btnUser.contains(e.target) && !userDropdown.contains(e.target)) {
-            userDropdown.classList.remove('active');
+    if (btnUser && userDropdown) {
+        document.addEventListener('click', (e) => {
+            if (!btnUser.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.remove('active');
+            }
+        });
+    }
+
+    // --- NEWSLETTER (rodapé da Home) ---
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('input[type="email"]');
+            alert(`Obrigado! Enviaremos novidades para ${emailInput.value}`);
+            newsletterForm.reset();
+        });
+    }
+
+    // ==========================================
+    // PÁGINA DE CATÁLOGO: FILTROS (aba "FILTRAR")
+    // ==========================================
+    const sidebarFilters = document.getElementById('sidebar-filters');
+
+    if (sidebarFilters) {
+        // Abrir/fechar o painel de filtros no mobile
+        const btnMobileFilter = document.getElementById('btn-mobile-filter');
+        const btnCloseFilter = document.getElementById('btn-close-filter');
+
+        if (btnMobileFilter) {
+            btnMobileFilter.addEventListener('click', () => {
+                sidebarFilters.classList.add('active');
+            });
         }
-    });
+        if (btnCloseFilter) {
+            btnCloseFilter.addEventListener('click', () => {
+                sidebarFilters.classList.remove('active');
+            });
+        }
+
+        // Recolher/expandir cada grupo de filtro (PREÇO, CATEGORIAS, GÊNERO...)
+        sidebarFilters.querySelectorAll('.filter-title').forEach(title => {
+            title.addEventListener('click', () => {
+                title.closest('.filter-group').classList.toggle('collapsed');
+            });
+        });
+
+        // Expandir subcategorias ao marcar a categoria-mãe (ROUPAS, ACESSÓRIOS, FOOTWEAR)
+        sidebarFilters.querySelectorAll('.category-toggle').forEach(toggle => {
+            toggle.addEventListener('change', () => {
+                toggle.closest('.category-item').classList.toggle('expanded', toggle.checked);
+            });
+        });
+
+        // Seleção de tamanhos (TAMANHOS)
+        sidebarFilters.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+            });
+        });
+
+        // Limpar filtros
+        const btnClear = sidebarFilters.querySelector('.filter-actions .btn-outline');
+        if (btnClear) {
+            btnClear.addEventListener('click', () => {
+                sidebarFilters.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                sidebarFilters.querySelectorAll('.size-btn.active').forEach(btn => btn.classList.remove('active'));
+                sidebarFilters.querySelectorAll('.category-item.expanded').forEach(item => item.classList.remove('expanded'));
+                const slider = document.getElementById('price-slider');
+                const maxLabel = document.getElementById('price-max');
+                if (slider && maxLabel) {
+                    slider.value = slider.max;
+                    maxLabel.textContent = `R$ ${Number(slider.max).toLocaleString('pt-BR')}`;
+                }
+            });
+        }
+    }
 });
 
 // Atualização em tempo real do Slider de Preço

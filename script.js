@@ -1,5 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
+    // ==========================================
+    // MENU / MEGA MENU (permanece aberto enquanto o
+    // mouse estiver sobre o link OU sobre o painel,
+    // com uma pequena tolerância para não fechar "no meio do caminho")
+    // ==========================================
+    document.querySelectorAll('.has-dropdown').forEach(item => {
+        const menu = item.querySelector('.mega-menu');
+        if (!menu) return;
+        let closeTimer = null;
+
+        const open = () => {
+            clearTimeout(closeTimer);
+            document.querySelectorAll('.mega-menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
+            menu.classList.add('open');
+        };
+        const scheduleClose = () => {
+            clearTimeout(closeTimer);
+            closeTimer = setTimeout(() => menu.classList.remove('open'), 200);
+        };
+
+        item.addEventListener('mouseenter', open);
+        item.addEventListener('mouseleave', scheduleClose);
+        item.addEventListener('focusin', open);
+        item.addEventListener('focusout', scheduleClose);
+    });
+
     // --- SELEÇÃO DE ELEMENTOS ---
     // Botões do Header
     const btnSearch = document.getElementById('btn-search');
@@ -106,6 +132,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // CARRINHO: quantidade, remover item e cupom
+    // ==========================================
+    document.querySelectorAll('.cart-item').forEach(item => {
+        const qtyValue = item.querySelector('.qty-value');
+        item.querySelector('.qty-plus')?.addEventListener('click', () => {
+            qtyValue.textContent = String(Number(qtyValue.textContent) + 1).padStart(2, '0');
+        });
+        item.querySelector('.qty-minus')?.addEventListener('click', () => {
+            qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
+        });
+        item.querySelector('.cart-item-remove')?.addEventListener('click', () => item.remove());
+    });
+
+    const couponToggle = document.querySelector('.coupon-toggle');
+    if (couponToggle) {
+        couponToggle.addEventListener('click', () => {
+            couponToggle.nextElementSibling.classList.toggle('open');
+        });
+    }
+
+    // "VOLTAR AO CARRINHO" (checkout) reabre o modal do carrinho
+    const btnBackToCart = document.getElementById('btn-back-to-cart');
+    if (btnBackToCart && modalCart) {
+        btnBackToCart.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalCart.classList.add('active');
+        });
+    }
+
+    // ==========================================
     // PÁGINA DE CATÁLOGO: FILTROS (aba "FILTRAR")
     // ==========================================
     const sidebarFilters = document.getElementById('sidebar-filters');
@@ -161,6 +217,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     maxLabel.textContent = `R$ ${Number(slider.max).toLocaleString('pt-BR')}`;
                 }
             });
+        }
+
+        // "LIMPAR TODOS OS FILTROS" no topo da página de catálogo
+        const btnClearAll = document.getElementById('btn-clear-all-filters');
+        if (btnClearAll && btnClear) {
+            btnClearAll.addEventListener('click', () => btnClear.click());
+        }
+    }
+
+    // ==========================================
+    // PÁGINA MINHA CONTA: troca de abas
+    // ==========================================
+    const accountTabLinks = document.querySelectorAll('.account-tab-link');
+    if (accountTabLinks.length) {
+        function activateAccountTab(tabName) {
+            accountTabLinks.forEach(l => l.classList.toggle('active', l.dataset.tab === tabName));
+            document.querySelectorAll('.account-tab-content').forEach(c => {
+                c.classList.toggle('active', c.id === `tab-${tabName}`);
+            });
+        }
+        accountTabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                activateAccountTab(link.dataset.tab);
+                history.replaceState(null, '', `?tab=${link.dataset.tab}`);
+            });
+        });
+        // Abre a aba indicada na URL (?tab=dados / pedidos / config), vinda do menu de utilizador
+        const requestedTab = new URLSearchParams(window.location.search).get('tab');
+        if (requestedTab && document.getElementById(`tab-${requestedTab}`)) {
+            activateAccountTab(requestedTab);
         }
     }
 });

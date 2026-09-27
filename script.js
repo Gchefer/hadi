@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // MENU / MEGA MENU (permanece aberto enquanto o
-    // mouse estiver sobre o link OU sobre o painel,
-    // com uma pequena tolerância para não fechar "no meio do caminho")
+    // MENU / MEGA MENU (desktop: permanece aberto enquanto o
+    // mouse estiver sobre o link OU sobre o painel, com uma
+    // pequena tolerância para não fechar "no meio do caminho")
     // ==========================================
     document.querySelectorAll('.has-dropdown').forEach(item => {
         const menu = item.querySelector('.mega-menu');
@@ -24,6 +24,54 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('mouseleave', scheduleClose);
         item.addEventListener('focusin', open);
         item.addEventListener('focusout', scheduleClose);
+
+        // Mobile: o botão de seta abre/fecha o submenu como acordeão
+        // (independente do hover, que não existe em telas de toque)
+        const toggleBtn = item.querySelector('.dropdown-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.has-dropdown.open').forEach(li => {
+                    li.classList.remove('open');
+                    li.querySelector('.mega-menu')?.classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    menu.classList.add('open');
+                }
+            });
+        }
+    });
+
+    // ==========================================
+    // MENU MOBILE (gaveta lateral com hambúrguer)
+    // ==========================================
+    const btnMobileMenu = document.getElementById('btn-mobile-menu');
+    const navbar = document.querySelector('.navbar');
+    const navOverlay = document.getElementById('nav-overlay');
+    const btnMobileNavClose = document.querySelector('.mobile-nav-close');
+
+    function openMobileNav() {
+        navbar?.classList.add('open');
+        navOverlay?.classList.add('active');
+        document.body.classList.add('nav-open');
+    }
+    function closeMobileNav() {
+        navbar?.classList.remove('open');
+        navOverlay?.classList.remove('active');
+        document.body.classList.remove('nav-open');
+        document.querySelectorAll('.has-dropdown.open').forEach(li => {
+            li.classList.remove('open');
+            li.querySelector('.mega-menu')?.classList.remove('open');
+        });
+    }
+    btnMobileMenu?.addEventListener('click', openMobileNav);
+    btnMobileNavClose?.addEventListener('click', closeMobileNav);
+    navOverlay?.addEventListener('click', closeMobileNav);
+    // Fecha a gaveta automaticamente se a tela for redimensionada para desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) closeMobileNav();
     });
 
     // --- SELEÇÃO DE ELEMENTOS ---

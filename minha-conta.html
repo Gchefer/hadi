@@ -11,11 +11,14 @@
     <header class="header">
         <div class="container header-inner">
             <a href="index.html" class="logo">HADI</a>
+            <button id="btn-mobile-menu" class="mobile-menu-btn" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
 
             <nav class="navbar">
+                <div class="mobile-nav-header"><span>MENU</span><button class="mobile-nav-close" aria-label="Fechar menu"><i class="fa-solid fa-xmark"></i></button></div>
                 <ul class="nav-links">
                     <li class="has-dropdown">
                         <a href="catalogo.html">NEW IN</a>
+                        <button type="button" class="dropdown-toggle" aria-label="Abrir submenu"><i class="fa-solid fa-chevron-down"></i></button>
                         <div class="mega-menu">
                             <div class="mega-menu-grid">
                                 <div>
@@ -39,6 +42,7 @@
                     </li>
                     <li class="has-dropdown">
                         <a href="catalogo.html">HOMENS</a>
+                        <button type="button" class="dropdown-toggle" aria-label="Abrir submenu"><i class="fa-solid fa-chevron-down"></i></button>
                         <div class="mega-menu">
                             <div class="mega-menu-grid">
                                 <div>
@@ -80,6 +84,7 @@
                     </li>
                     <li class="has-dropdown">
                         <a href="catalogo.html">MULHERES</a>
+                        <button type="button" class="dropdown-toggle" aria-label="Abrir submenu"><i class="fa-solid fa-chevron-down"></i></button>
                         <div class="mega-menu">
                             <div class="mega-menu-grid">
                                 <div>
@@ -121,6 +126,7 @@
                     </li>
                     <li class="has-dropdown">
                         <a href="catalogo.html">ACESSÓRIOS</a>
+                        <button type="button" class="dropdown-toggle" aria-label="Abrir submenu"><i class="fa-solid fa-chevron-down"></i></button>
                         <div class="mega-menu">
                             <div class="mega-menu-grid">
                                 <div>
@@ -151,6 +157,7 @@
                     <li><a href="catalogo.html" class="sale-link">SALE</a></li>
                 </ul>
             </nav>
+            <div class="nav-overlay" id="nav-overlay"></div>
 
             <div class="header-icons">
                 <button id="btn-search" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>

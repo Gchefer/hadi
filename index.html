@@ -56,19 +56,196 @@
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL (Exemplo resumido da Home para poupar espaço) -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main>
-        <section class="hero">
+        <!-- HERO / BANNER PRINCIPAL -->
+        <section class="hero" style="background-image:url('img/hero-new-in.jpg'); background-size:cover; background-position:center;">
+            <button class="hero-arrow hero-arrow-left" aria-label="Slide anterior"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="hero-content">
                 <h1 class="hero-title">NEW IN</h1>
                 <div class="hero-text-bottom">
-                    <a href="#" class="btn-underline">COMPRE AGORA</a>
+                    <a href="catalogo.html" class="btn-underline">COMPRE AGORA</a>
                     <h2 class="hero-subtitle">FIELD COLLECTION</h2>
                 </div>
             </div>
+            <button class="hero-arrow hero-arrow-right" aria-label="Próximo slide"><i class="fa-solid fa-chevron-right"></i></button>
         </section>
-        <div style="height: 100vh; background: var(--bg-main);"></div> <!-- Espaçador para simular a página -->
+
+        <!-- SALE: ACESSÓRIOS -->
+        <section class="container home-section">
+            <div class="section-title-flex">
+                <h2 class="section-title" style="margin-bottom:0;">SALE: ACESSÓRIOS <span class="arrow">&gt;</span></h2>
+                <a href="catalogo.html" class="btn-underline">VER MAIS</a>
+            </div>
+            <div class="grid-4-cols">
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/patagonia-slingbag.png" alt="Patagonia Atom Slingbag 8L" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    </div>
+                    <div class="product-info">
+                        <h3>PATAGONIA</h3>
+                        <p class="product-name">PATAGONIA ATOM SLINGBAG 8L</p>
+                        <div class="prices">
+                            <span class="price-old">R$ 366,62</span>
+                            <span class="price-new">R$ 270,99 <span class="discount">-26,1%</span></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/oakley-eye-jacket-dune.png" alt="Óculos Oakley Satisfy x Oakley Eye Jacket Dune" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    </div>
+                    <div class="product-info">
+                        <h3>OAKLEY</h3>
+                        <p class="product-name">SATISFY X OAKLEY - EYE JACKET DUNE</p>
+                        <div class="prices">
+                            <span class="price-old">R$ 1.380,00</span>
+                            <span class="price-new">R$ 690,00 <span class="discount">-50%</span></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/arcteryx-bird-head-beanie.png" alt="Gorro Arc'teryx Bird Head Nightscape/Glacial" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    </div>
+                    <div class="product-info">
+                        <h3>ARC'TERYX</h3>
+                        <p class="product-name">ARC'TERYX BIRD HEAD NIGHTSCAPE/GLACIAL</p>
+                        <div class="prices">
+                            <span class="price-old">R$ 531,56</span>
+                            <span class="price-new">R$ 390,00 <span class="discount">-27%</span></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/oakley-radar-ev-path.png" alt="Óculos Oakley Radar EV Path Masculino" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    </div>
+                    <div class="product-info">
+                        <h3>OAKLEY</h3>
+                        <p class="product-name">OAKLEY RADAR EV PATH - MASCULINO</p>
+                        <div class="prices">
+                            <span class="price-old">R$ 1.670,00</span>
+                            <span class="price-new">R$ 999,00 <span class="discount">-40%</span></span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- COMPRE POR ATIVIDADE -->
+        <section class="container home-section">
+            <h2 class="section-title">COMPRE POR ATIVIDADE <span class="arrow">&gt;</span></h2>
+            <div class="activity-grid">
+                <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trekking.jpg')">
+                    <h3>TREKKING</h3>
+                    <span class="btn-underline">COMPRE AGORA</span>
+                </a>
+                <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trail-running.jpg')">
+                    <h3>TRAIL RUNNING</h3>
+                    <span class="btn-underline">COMPRE AGORA</span>
+                </a>
+                <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-ski.jpg')">
+                    <h3>SKI E NEVE</h3>
+                    <span class="btn-underline">COMPRE AGORA</span>
+                </a>
+                <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-casual.jpg')">
+                    <h3>CASUAL</h3>
+                    <span class="btn-underline">COMPRE AGORA</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- COMPRE POR MARCAS -->
+        <section class="container home-section">
+            <h2 class="section-title">COMPRE POR MARCAS <span class="arrow">&gt;</span></h2>
+            <div class="brand-row">
+                <a href="catalogo.html" class="brand-logo">THE NORTH FACE</a>
+                <a href="catalogo.html" class="brand-logo">ARC'TERYX</a>
+                <a href="catalogo.html" class="brand-logo">PATAGONIA</a>
+                <a href="catalogo.html" class="brand-logo">OAKLEY</a>
+                <a href="catalogo.html" class="brand-logo">SALOMON</a>
+                <a href="catalogo.html" class="brand-logo">COLUMBIA</a>
+                <a href="catalogo.html" class="brand-logo">NIKE ACG</a>
+            </div>
+        </section>
+
+        <!-- BARRA DE BENEFÍCIOS -->
+        <section class="promo-bar container">
+            <div class="promo-item">
+                <h4>FRETE GRÁTIS</h4>
+                <i class="fa-solid fa-truck-fast"></i>
+                <p>FRETE GRÁTIS EM COMPRAS ACIMA DE R$ 800</p>
+            </div>
+            <div class="promo-item">
+                <h4>TROCAS E DEVOLUÇÕES</h4>
+                <i class="fa-solid fa-rotate"></i>
+                <p>TROCA GRÁTIS EM ATÉ 30 DIAS</p>
+            </div>
+            <div class="promo-item">
+                <h4>PARCELAMENTO</h4>
+                <i class="fa-solid fa-credit-card"></i>
+                <p>PARCELE EM ATÉ 10X SEM JUROS</p>
+            </div>
+        </section>
     </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>CATEGORIAS</h4>
+                <ul>
+                    <li><a href="#">NEW IN</a></li>
+                    <li><a href="catalogo.html">HOMENS</a></li>
+                    <li><a href="catalogo.html">MULHERES</a></li>
+                    <li><a href="catalogo.html">ACESSÓRIOS</a></li>
+                    <li><a href="#" class="sale-link">SALE</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>INFORMAÇÕES</h4>
+                <ul>
+                    <li><a href="minha-conta.html">MINHA CONTA</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>ATENDIMENTO</h4>
+                <ul class="contact-list">
+                    <li><i class="fa-solid fa-phone"></i> <a href="tel:11912345678">11 912345678</a></li>
+                    <li><i class="fa-brands fa-whatsapp"></i> <a href="tel:5511912345678">5511912345678</a></li>
+                    <li><i class="fa-solid fa-envelope"></i> <a href="mailto:contato@hadiactivewear.com">CONTATO@HADIACTIVEWEAR.COM</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>SEGURANÇA</h4>
+                <p class="security-badge"><i class="fa-solid fa-shield-halved"></i> NAVEGAÇÃO SEGURA</p>
+                <h4>MEIOS DE PAGAMENTO</h4>
+                <div class="payment-icons">
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-amex"></i>
+                    <i class="fa-brands fa-cc-diners-club"></i>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>NEWSLETTER</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="SEU E-MAIL" required>
+                    <button type="submit" aria-label="Inscrever-se"><i class="fa-solid fa-envelope"></i></button>
+                </form>
+                <h4>REDES SOCIAIS</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom container">&copy; 2026, HADI ACTIVE WEAR</div>
+    </footer>
 
     <!-- ==========================================
          MODAIS (POP-UPS) INTERATIVOS

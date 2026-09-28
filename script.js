@@ -206,3 +206,5 @@ function nextStep(stepNumber) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
+
+// teste

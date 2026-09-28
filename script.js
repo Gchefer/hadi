@@ -267,6 +267,75 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // PÁGINA DE PRODUTO (produto.html)
+    // ==========================================
+    const productDetail = document.querySelector('.product-detail-layout');
+    if (productDetail) {
+        // Seleção de tamanho (só um por vez, diferente do filtro do catálogo)
+        document.querySelectorAll('.size-options .size-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.size-options .size-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Quantidade
+        const qtyValue = document.querySelector('.add-to-cart-row .qty-value');
+        document.querySelector('.add-to-cart-row .qty-plus')?.addEventListener('click', () => {
+            qtyValue.textContent = String(Number(qtyValue.textContent) + 1).padStart(2, '0');
+        });
+        document.querySelector('.add-to-cart-row .qty-minus')?.addEventListener('click', () => {
+            qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
+        });
+
+        // "ADICIONAR" -> feedback simples e abre o carrinho
+        document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
+            modalCart?.classList.add('active');
+        });
+
+        // Abas: Descrição / Frete e prazo / Medidas
+        document.querySelectorAll('.detail-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.detail-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.detail-tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add('active');
+            });
+        });
+
+        // Calcular frete (simulação)
+        const cepInput = document.getElementById('cep-input');
+        cepInput?.addEventListener('input', () => {
+            let v = cepInput.value.replace(/\D/g, '').slice(0, 8);
+            if (v.length > 5) v = `${v.slice(0, 5)}-${v.slice(5)}`;
+            cepInput.value = v;
+        });
+        document.getElementById('btn-calcular-frete')?.addEventListener('click', () => {
+            const resultado = document.getElementById('frete-resultado');
+            if (!/^\d{5}-?\d{3}$/.test(cepInput.value)) {
+                resultado.innerHTML = '<p class="form-error">DIGITE UM CEP VÁLIDO.</p>';
+                return;
+            }
+            resultado.innerHTML = `
+                <label class="radio-card"><input type="radio" name="frete-opcao" checked>
+                    <div class="card-content"><div class="radio-header"><span>PAC</span><span>R$16,40</span></div><p class="desc">4 DIAS ÚTEIS</p></div>
+                </label>
+                <label class="radio-card"><input type="radio" name="frete-opcao">
+                    <div class="card-content"><div class="radio-header"><span>SEDEX</span><span>R$13,40</span></div><p class="desc">7 DIAS ÚTEIS</p></div>
+                </label>`;
+        });
+
+        // Carrossel de avaliações
+        const reviewsTrack = document.getElementById('reviews-track');
+        document.querySelector('.review-arrow-right')?.addEventListener('click', () => {
+            reviewsTrack.scrollBy({ left: reviewsTrack.firstElementChild.offsetWidth + 20, behavior: 'smooth' });
+        });
+        document.querySelector('.review-arrow-left')?.addEventListener('click', () => {
+            reviewsTrack.scrollBy({ left: -(reviewsTrack.firstElementChild.offsetWidth + 20), behavior: 'smooth' });
+        });
+    }
+
+    // ==========================================
     // PÁGINA DE CATÁLOGO: FILTROS (aba "FILTRAR")
     // ==========================================
     const sidebarFilters = document.getElementById('sidebar-filters');

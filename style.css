@@ -230,9 +230,10 @@ li { list-style: none; }
 .activity-tile .btn-underline { color: #fff; font-size: 0.95rem; }
 
 /* COMPRE POR MARCAS */
-.brand-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 30px 20px; }
-.brand-logo { font-family: var(--font-title); font-size: 1.3rem; letter-spacing: 0.5px; white-space: nowrap; opacity: 0.85; transition: 0.2s; }
-.brand-logo:hover { opacity: 1; }
+.brand-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
+.brand-logo { display: flex; align-items: center; justify-content: center; height: 64px; width: 130px; background: #fff; border-radius: 6px; padding: 10px 16px; opacity: 0.9; transition: 0.2s; flex-shrink: 0; }
+.brand-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.brand-logo:hover { opacity: 1; transform: translateY(-2px); }
 
 /* Barra de benefícios (Frete grátis / Trocas / Parcelamento) */
 .promo-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; padding: 40px 40px; border-top: 1px solid var(--border-color); }
@@ -326,6 +327,7 @@ li { list-style: none; }
 
 .grid-3-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
 .product-card { display: flex; flex-direction: column; }
+.product-card-link { display: flex; flex-direction: column; color: inherit; height: 100%; }
 .product-card .img-wrapper { aspect-ratio: 1 / 1.1; background: var(--bg-cards); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 15px; }
 .product-card .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 .product-card .img-wrapper i { font-size: 3rem; color: #b9b9ac; }
@@ -516,4 +518,76 @@ li { list-style: none; }
     .options-grid { grid-template-columns: 1fr; }
     .success-title { font-size: 1.8rem; }
     .order-product { flex-direction: column; align-items: flex-start; text-align: left; }
+}
+
+/* =========================================
+   PÁGINA DE DETALHES DO PRODUTO
+========================================= */
+.product-page { margin-top: 30px; margin-bottom: 80px; }
+.breadcrumbs { font-size: 0.8rem; font-weight: 700; margin-bottom: 25px; }
+.breadcrumbs a { text-decoration: underline; text-underline-offset: 2px; }
+
+.product-detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+.product-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.gallery-image { aspect-ratio: 3/4; background: var(--bg-cards); display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; }
+.gallery-image img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-image i { font-size: 3rem; color: #b9b9ac; }
+
+.product-brand { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 0.5px; }
+.product-title { font-family: var(--font-title); font-size: 1.3rem; margin-bottom: 20px; text-transform: uppercase; }
+.product-price-row { display: flex; align-items: baseline; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+.product-price-row .price-new { font-family: var(--font-title); font-size: 1.8rem; }
+.installments { font-size: 0.8rem; font-weight: 700; color: #555; }
+
+.size-selector { margin-bottom: 25px; }
+.size-selector label { display: block; font-family: var(--font-title); font-size: 0.9rem; margin-bottom: 10px; }
+.size-options { display: flex; gap: 10px; }
+.size-options .size-btn { min-width: 48px; }
+
+.add-to-cart-row { display: flex; gap: 15px; margin-bottom: 30px; }
+.add-to-cart-row .qty-stepper { flex-shrink: 0; }
+.add-to-cart-row .btn-full { flex: 1; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+.detail-tabs { display: flex; gap: 30px; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+.detail-tab-btn { background: none; border: none; padding: 0 0 12px; font-family: var(--font-title); font-size: 0.95rem; cursor: pointer; color: #888; }
+.detail-tab-btn.active { color: var(--text-color); text-decoration: underline; text-underline-offset: 4px; }
+.detail-tab-content { display: none; font-size: 0.9rem; font-weight: 600; line-height: 1.6; }
+.detail-tab-content.active { display: block; }
+.detail-tab-content ul { margin: 12px 0 0 18px; }
+.detail-tab-content li { list-style: disc; margin-bottom: 6px; }
+
+.cep-row { display: flex; gap: 10px; align-items: center; }
+.cep-row label { font-family: var(--font-title); flex-shrink: 0; }
+.cep-row input { padding: 12px 15px; border: 1px solid var(--border-color); background: #fff; flex: 1; max-width: 160px; }
+.frete-resultado { margin-top: 15px; }
+.frete-resultado .radio-card { margin-bottom: 10px; }
+
+.measures-table { width: 100%; border-collapse: collapse; }
+.measures-table th, .measures-table td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+.measures-table th { font-family: var(--font-title); }
+
+/* Avaliações */
+.reviews-section { margin: 60px 0; }
+.reviews-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+.reviews-summary { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 700; }
+.stars { color: #1a1a1a; letter-spacing: 2px; }
+.reviews-carousel { display: flex; align-items: center; gap: 15px; }
+.reviews-track { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; flex: 1; scrollbar-width: none; }
+.reviews-track::-webkit-scrollbar { display: none; }
+.review-card { flex: 0 0 calc(33.333% - 14px); min-width: 220px; background: var(--bg-cards); padding: 25px; border-radius: 4px; }
+.review-title { font-family: var(--font-title); font-size: 1rem; margin-bottom: 15px; }
+.review-author { font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #555; }
+.review-arrow { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-main); cursor: pointer; }
+
+@media (max-width: 992px) {
+    .product-detail-layout { grid-template-columns: 1fr; }
+    .review-card { flex: 0 0 calc(50% - 10px); }
+}
+@media (max-width: 600px) {
+    .product-gallery { grid-template-columns: 1fr; }
+    .detail-tabs { gap: 18px; }
+    .detail-tab-btn { font-size: 0.8rem; }
+    .cep-row { flex-wrap: wrap; }
+    .review-card { flex: 0 0 85%; }
+    .add-to-cart-row { flex-direction: column; }
 }

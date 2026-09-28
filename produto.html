@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compre por Atividade - HADI</title>
+    <title>Jaqueta Beta AR Gore-Tex - Arc'teryx | HADI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- CABEÇALHO COM MEGA MENUS -->
     <header class="header">
         <div class="container header-inner">
             <a href="index.html" class="logo">HADI</a>
@@ -169,280 +168,185 @@
     </header>
 
 
-    <main class="container catalog-page">
-        <!-- Breadcrumbs e Título -->
-        <div class="catalog-header">
-            <div class="breadcrumbs">
-                <a href="index.html">HOME</a> &gt; <a href="catalogo.html">COMPRE POR ATIVIDADE</a> &gt; <span>TREKKING HOMENS ROUPAS</span>
+    <main class="container product-page">
+        <div class="breadcrumbs">
+            <a href="index.html">HOME</a> &gt;
+            <a href="catalogo.html">TREKKING</a> &gt;
+            <a href="catalogo.html">HOMENS</a> &gt;
+            <a href="catalogo.html">JAQUETAS</a>
+        </div>
+
+        <div class="product-detail-layout">
+            <!-- Galeria -->
+            <div class="product-gallery">
+                <div class="gallery-image">
+                    <img src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vista frontal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                </div>
+                <div class="gallery-image">
+                    <img src="img/arcteryx-beta-ar-modelo.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vestida no modelo" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                </div>
             </div>
-            <div class="catalog-actions">
-                <button id="btn-mobile-filter" class="btn-underline">FILTRAR</button>
-                <button id="btn-clear-all-filters" class="btn-underline">LIMPAR TODOS OS FILTROS</button>
-                <div class="sort-by">
-                    <label for="sort">ORDENAR POR</label>
-                    <select id="sort">
-                        <option>MAIS RECENTES</option>
-                        <option>MENOR PREÇO</option>
-                        <option>MAIOR PREÇO</option>
-                    </select>
+
+            <!-- Informações do produto -->
+            <div class="product-info-detail">
+                <h1 class="product-brand">ARC'TERYX</h1>
+                <p class="product-title">JAQUETA BETA AR GORE-TEX</p>
+
+                <div class="product-price-row">
+                    <span class="price-new">R$ 3.499,90</span>
+                    <span class="installments">OU 12X DE R$291,65 SEM JUROS</span>
+                </div>
+
+                <div class="size-selector">
+                    <label>TAMANHOS</label>
+                    <div class="size-options">
+                        <button type="button" class="size-btn">P</button>
+                        <button type="button" class="size-btn active">M</button>
+                        <button type="button" class="size-btn">G</button>
+                    </div>
+                </div>
+
+                <div class="add-to-cart-row">
+                    <div class="qty-stepper">
+                        <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
+                        <span class="qty-value">01</span>
+                        <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
+                    </div>
+                    <button type="button" class="btn-full" id="btn-add-to-cart">ADICIONAR <i class="fa-solid fa-bag-shopping"></i></button>
+                </div>
+
+                <div class="detail-tabs">
+                    <button type="button" class="detail-tab-btn" data-tab="descricao">DESCRIÇÃO</button>
+                    <button type="button" class="detail-tab-btn active" data-tab="frete">FRETE E PRAZO</button>
+                    <button type="button" class="detail-tab-btn" data-tab="medidas">MEDIDAS</button>
+                </div>
+
+                <div class="detail-tab-content" id="tab-descricao">
+                    <p>A Beta AR Gore-Tex é a jaqueta de trekking mais versátil da Arc'teryx, feita para proteção total contra chuva, vento e neve em trilhas de múltiplos dias.</p>
+                    <ul>
+                        <li>Tecido de 3 camadas GORE-TEX com membrana impermeável e respirável</li>
+                        <li>Costuras totalmente seladas</li>
+                        <li>Capuz ajustável compatível com capacete</li>
+                        <li>3 bolsos com zíper à prova d'água</li>
+                    </ul>
+                </div>
+
+                <div class="detail-tab-content active" id="tab-frete">
+                    <div class="cep-row">
+                        <label for="cep-input">CEP</label>
+                        <input type="text" id="cep-input" placeholder="_____-___">
+                        <button type="button" class="btn-outline" id="btn-calcular-frete">CALCULAR</button>
+                    </div>
+                    <p class="help-text" id="cep-help">NÃO SABE O SEU CEP? <a href="#">CLIQUE AQUI PARA ENCONTRAR</a>.</p>
+                    <div id="frete-resultado" class="frete-resultado"></div>
+                </div>
+
+                <div class="detail-tab-content" id="tab-medidas">
+                    <table class="measures-table">
+                        <thead>
+                            <tr><th>TAMANHO</th><th>PEITO (CM)</th><th>COMPRIMENTO (CM)</th><th>MANGA (CM)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>P</td><td>106</td><td>71</td><td>66</td></tr>
+                            <tr><td>M</td><td>112</td><td>73</td><td>68</td></tr>
+                            <tr><td>G</td><td>118</td><td>75</td><td>70</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="help-text">MEDIDAS TIRADAS COM A PEÇA NA POSIÇÃO PLANA. TOLERÂNCIA DE 1 A 2CM.</p>
                 </div>
             </div>
         </div>
 
-        <div class="catalog-layout">
-            <!-- Barra Lateral de Filtros -->
-            <aside class="sidebar-filters" id="sidebar-filters">
-                <div class="filter-sidebar-header">
-                    <h3><i class="fa-solid fa-sliders"></i> FILTRAR</h3>
-                    <button id="btn-close-filter" aria-label="Fechar filtros"><i class="fa-solid fa-xmark"></i></button>
+        <!-- Avaliações -->
+        <section class="reviews-section">
+            <div class="reviews-header">
+                <h2 class="section-title" style="margin-bottom:0;">AVALIAÇÕES DO PRODUTO</h2>
+                <div class="reviews-summary">
+                    <span class="stars" aria-hidden="true"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
+                    <span>4 AVALIAÇÕES</span>
                 </div>
+            </div>
+            <div class="reviews-carousel">
+                <button type="button" class="review-arrow review-arrow-left" aria-label="Avaliação anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="reviews-track" id="reviews-track">
+                    <article class="review-card">
+                        <p class="review-title">A JAQUETA É MARAVILHOSA!</p>
+                        <p class="review-author">M**RCIA J.</p>
+                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                    </article>
+                    <article class="review-card">
+                        <p class="review-title">TAMANHO FICOU GRANDE DEMAIS..</p>
+                        <p class="review-author">J***O C.</p>
+                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span>
+                    </article>
+                    <article class="review-card">
+                        <p class="review-title">MATERIAL ÓTIMO</p>
+                        <p class="review-author">N**LE M.</p>
+                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
+                    </article>
+                    <article class="review-card">
+                        <p class="review-title">ENTREGA RÁPIDA E BEM EMBALADA</p>
+                        <p class="review-author">P**LO S.</p>
+                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span>
+                    </article>
+                </div>
+                <button type="button" class="review-arrow review-arrow-right" aria-label="Próxima avaliação"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </section>
 
-                <div class="filter-group">
-                    <div class="filter-title"><h4>PREÇO</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <div class="price-range">
-                            <span id="price-min">R$ 0</span>
-                            <input type="range" min="0" max="7000" value="7000" id="price-slider">
-                            <span id="price-max">R$ 7.000</span>
-                        </div>
+        <!-- Você também pode gostar -->
+        <section class="home-section">
+            <h2 class="section-title">VOCÊ TAMBÉM PODE GOSTAR <span class="arrow">&gt;</span></h2>
+            <div class="grid-4-cols">
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/tnf-columbia-fullzip-fleece.png" alt="Columbia Mountain Full Zip 2.0 Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <div class="filter-title"><h4>CATEGORIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <div class="category-item expanded">
-                            <label class="checkbox-label"><input type="checkbox" class="category-toggle" checked> ROUPAS</label>
-                            <ul class="subcategory-list">
-                                <li><label class="checkbox-label"><input type="checkbox"> JAQUETAS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> CAMISETAS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> CALÇAS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> SHORTS E BERMUDAS</label></li>
-                            </ul>
-                        </div>
-                        <div class="category-item">
-                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> ACESSÓRIOS</label>
-                            <ul class="subcategory-list">
-                                <li><label class="checkbox-label"><input type="checkbox"> MOCHILAS E BOLSAS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> HEADWEAR</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> ÓCULOS</label></li>
-                            </ul>
-                        </div>
-                        <div class="category-item">
-                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> FOOTWEAR</label>
-                            <ul class="subcategory-list">
-                                <li><label class="checkbox-label"><input type="checkbox"> TÊNIS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> BOTAS</label></li>
-                                <li><label class="checkbox-label"><input type="checkbox"> SLIDERS</label></li>
-                            </ul>
-                        </div>
+                    <div class="product-info">
+                        <h3>COLUMBIA</h3>
+                        <p class="product-name">COLUMBIA MOUNTAIN FULL ZIP 2.0 FLEECE</p>
+                        <div class="prices"><span class="price-new">R$ 399,90</span></div>
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <div class="filter-title"><h4>GÊNERO</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
-                        <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
-                        <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
+                </article>
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/oakley-software-windbreaker.png" alt="Corta-vento Oakley Software" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <div class="filter-title"><h4>TAMANHOS</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <div class="size-grid">
-                            <button class="size-btn">PP</button>
-                            <button class="size-btn">P</button>
-                            <button class="size-btn">M</button>
-                            <button class="size-btn">G</button>
-                            <button class="size-btn">GG</button>
-                            <button class="size-btn">2GG</button>
-                            <button class="size-btn">34</button>
-                            <button class="size-btn">36</button>
-                            <button class="size-btn">38</button>
-                            <button class="size-btn">40</button>
-                            <button class="size-btn">42</button>
-                            <button class="size-btn">44</button>
-                            <button class="size-btn">46</button>
-                        </div>
+                    <div class="product-info">
+                        <h3>OAKLEY</h3>
+                        <p class="product-name">OAKLEY SOFTWARE WINDBREAKER</p>
+                        <div class="prices"><span class="price-new">R$ 1.600,00</span></div>
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <div class="filter-title"><h4>TECNOLOGIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox"> GORE-TEX</label>
-                        <label class="checkbox-label"><input type="checkbox"> THERMAL</label>
-                        <label class="checkbox-label"><input type="checkbox"> PROTEÇÃO UV</label>
+                </article>
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/nike-acg-lichen-fleece-hoodie.png" alt="Hoodie Nike ACG Lichen Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                     </div>
-                </div>
-
-                <div class="filter-group">
-                    <div class="filter-title"><h4>ATIVIDADE</h4><i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox" checked> TREKKING</label>
-                        <label class="checkbox-label"><input type="checkbox"> TRAIL RUNNING</label>
-                        <label class="checkbox-label"><input type="checkbox"> SKI E NEVE</label>
-                        <label class="checkbox-label"><input type="checkbox"> CASUAL</label>
+                    <div class="product-info">
+                        <h3>NIKE ACG</h3>
+                        <p class="product-name">NIKE ACG LICHEN FLEECE HOODIE - MOSS</p>
+                        <div class="color-swatches">
+                            <span class="swatch" style="background:#8a8a3c;"></span>
+                            <span class="swatch" style="background:#4a6fa5;"></span>
+                            <span class="swatch-more">+2</span>
+                        </div>
+                        <div class="prices"><span class="price-new">R$ 500,00</span></div>
                     </div>
-                </div>
-
-                <div class="filter-actions">
-                    <button class="btn-full">APLICAR FILTROS</button>
-                    <button class="btn-outline">LIMPAR FILTROS</button>
-                </div>
-            </aside>
-
-            <!-- Grelha de Produtos -->
-            <section class="products-area">
-                <div class="grid-3-cols">
-                    <!-- Linha 1 -->
-                    <article class="product-card">
-                        <a href="produto.html" class="product-card-link">
-                            <div class="img-wrapper">
-                                <img src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                            </div>
-                            <div class="product-info">
-                                <h3>ARC'TERYX</h3>
-                                <p class="product-name">JAQUETA BETA AR GORE-TEX</p>
-                                <div class="prices">
-                                    <span class="price-new">R$ 3.499,90</span>
-                                </div>
-                            </div>
-                        </a>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/nike-acg-thermal-pants.png" alt="Calça Nike ACG Activitorium Thermal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>NIKE ACG</h3>
-                            <p class="product-name">ACTIVITORIUM THERMAL PANTS</p>
-                            <div class="prices">
-                                <span class="price-new">R$ 899,90</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/salomon-recco-softshell.png" alt="Jaqueta Salomon Lab Recco Softshell" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>SALOMON</h3>
-                            <p class="product-name">SALOMON LAB RECCO SOFTSHELL</p>
-                            <div class="prices">
-                                <span class="price-new">R$ 3.499,90</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Linha 2 -->
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/columbia-logo-tshirt.png" alt="Camiseta Columbia" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>COLUMBIA</h3>
-                            <p class="product-name">CSC BASIC LOGO T-SHIRT</p>
-                            <div class="prices">
-                                <span class="price-old">R$ 260,90</span>
-                                <span class="price-new">R$ 179,99 <span class="discount">-31%</span></span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/patagonia-funhoggers-shorts.png" alt="Shorts Patagonia Funhoggers" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>PATAGONIA</h3>
-                            <p class="product-name">FUNHOGGERS SHORTS</p>
-                            <div class="prices">
-                                <span class="price-new">R$ 185,90</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/tnf-polar-fleece.png" alt="Fleece The North Face" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>THE NORTH FACE</h3>
-                            <p class="product-name">POLAR FLEECE</p>
-                            <div class="color-swatches">
-                                <span class="swatch" style="background:#2b2b2b;"></span>
-                                <span class="swatch" style="background:#b3261e;"></span>
-                            </div>
-                            <div class="prices">
-                                <span class="price-new">R$ 359,90</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Linha 3 -->
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/oakley-software-windbreaker.png" alt="Corta-vento Oakley Software" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>OAKLEY</h3>
-                            <p class="product-name">SOFTWARE WINDBREAKER</p>
-                            <div class="prices">
-                                <span class="price-new">R$ 600,00</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/nike-acg-lichen-fleece-hoodie.png" alt="Hoodie Nike ACG Lichen Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>NIKE ACG</h3>
-                            <p class="product-name">NIKE ACG LICHEN FLEECE HOODIE - MOSS</p>
-                            <div class="color-swatches">
-                                <span class="swatch" style="background:#8a8a3c;"></span>
-                                <span class="swatch" style="background:#4a6fa5;"></span>
-                                <span class="swatch-more">+2</span>
-                            </div>
-                            <div class="prices">
-                                <span class="price-new">R$ 500,00</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card">
-                        <div class="img-wrapper">
-                            <img src="img/nike-acg-trail-shorts.png" alt="Shorts Nike ACG Trail Mica Green" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                        </div>
-                        <div class="product-info">
-                            <h3>NIKE ACG</h3>
-                            <p class="product-name">NIKE ACG TRAIL SHORTS - MICA GREEN</p>
-                            <div class="prices">
-                                <span class="price-new">R$ 299,90</span>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Paginação -->
-                <div class="pagination">
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn">4</button>
-                    <button class="page-btn">&gt;</button>
-                </div>
-            </section>
-        </div>
+                </article>
+                <article class="product-card">
+                    <div class="img-wrapper">
+                        <img src="img/nike-acg-trail-shorts.png" alt="Shorts Nike ACG Trail Mica Green" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    </div>
+                    <div class="product-info">
+                        <h3>NIKE ACG</h3>
+                        <p class="product-name">NIKE ACG TRAIL SHORTS - MICA GREEN</p>
+                        <div class="prices"><span class="price-new">R$ 299,90</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
     </main>
 
-    <!-- RODAPÉ -->
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-col">
@@ -496,7 +400,7 @@
         <div class="footer-bottom container">&copy; 2026, HADI ACTIVE WEAR</div>
     </footer>
 
-    <!-- MODAIS (Pesquisa, Carrinho, Login, Menu de utilizador) -->
+
     <div id="modal-search" class="modal-overlay">
         <div class="modal-search-content">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
@@ -507,11 +411,13 @@
         </div>
     </div>
 
+    <!-- 2. MODAL DO CARRINHO (Lateral) -->
     <div id="modal-cart" class="modal-overlay">
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
             <div class="cart-items">
+                <!-- Exemplo de item no carrinho -->
                 <div class="cart-item">
                     <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                     <div class="item-details">
@@ -529,6 +435,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="cart-shipping">
                 <label>CALCULE O FRETE</label>
                 <div class="cart-shipping-row">
@@ -541,6 +448,7 @@
                 <input type="text" placeholder="CÓDIGO DO CUPOM">
                 <button type="button" class="btn-outline">APLICAR</button>
             </div>
+
             <div class="cart-footer">
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
@@ -548,20 +456,26 @@
         </div>
     </div>
 
+    <!-- 3. MODAL DE LOGIN / REGISTO -->
     <div id="modal-auth" class="modal-overlay">
         <div class="modal-center">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2 id="auth-title">BEM VINDO(A)</h2>
+            
             <div class="auth-tabs" id="auth-tabs">
                 <button class="tab-btn active" data-target="form-login">LOGIN</button>
                 <button class="tab-btn" data-target="form-register">PRIMEIRO ACESSO</button>
             </div>
+
+            <!-- Formulário Login -->
             <form id="form-login" class="auth-form active">
                 <input type="email" placeholder="E-MAIL" required>
                 <input type="password" placeholder="SENHA" required>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
+
+            <!-- Formulário Registo -->
             <form id="form-register" class="auth-form">
                 <input type="text" placeholder="NOME COMPLETO" required>
                 <input type="email" placeholder="E-MAIL" required>
@@ -586,6 +500,7 @@
         </div>
     </div>
 
+    <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
             <li><strong>Chefer</strong></li>
@@ -595,6 +510,8 @@
             <li><a href="index.html" id="btn-logout">SAIR &rarr;</a></li>
         </ul>
     </div>
+
+
 
     <script src="script.js"></script>
 </body>

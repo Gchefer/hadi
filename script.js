@@ -1,79 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // ==========================================
-    // MENU / MEGA MENU (desktop: permanece aberto enquanto o
-    // mouse estiver sobre o link OU sobre o painel, com uma
-    // pequena tolerância para não fechar "no meio do caminho")
-    // ==========================================
-    document.querySelectorAll('.has-dropdown').forEach(item => {
-        const menu = item.querySelector('.mega-menu');
-        if (!menu) return;
-        let closeTimer = null;
-
-        const open = () => {
-            clearTimeout(closeTimer);
-            document.querySelectorAll('.mega-menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
-            menu.classList.add('open');
-        };
-        const scheduleClose = () => {
-            clearTimeout(closeTimer);
-            closeTimer = setTimeout(() => menu.classList.remove('open'), 200);
-        };
-
-        item.addEventListener('mouseenter', open);
-        item.addEventListener('mouseleave', scheduleClose);
-        item.addEventListener('focusin', open);
-        item.addEventListener('focusout', scheduleClose);
-
-        // Mobile: o botão de seta abre/fecha o submenu como acordeão
-        // (independente do hover, que não existe em telas de toque)
-        const toggleBtn = item.querySelector('.dropdown-toggle');
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const isOpen = item.classList.contains('open');
-                document.querySelectorAll('.has-dropdown.open').forEach(li => {
-                    li.classList.remove('open');
-                    li.querySelector('.mega-menu')?.classList.remove('open');
-                });
-                if (!isOpen) {
-                    item.classList.add('open');
-                    menu.classList.add('open');
-                }
-            });
-        }
-    });
-
-    // ==========================================
-    // MENU MOBILE (gaveta lateral com hambúrguer)
-    // ==========================================
-    const btnMobileMenu = document.getElementById('btn-mobile-menu');
-    const navbar = document.querySelector('.navbar');
-    const navOverlay = document.getElementById('nav-overlay');
-    const btnMobileNavClose = document.querySelector('.mobile-nav-close');
-
-    function openMobileNav() {
-        navbar?.classList.add('open');
-        navOverlay?.classList.add('active');
-        document.body.classList.add('nav-open');
-    }
-    function closeMobileNav() {
-        navbar?.classList.remove('open');
-        navOverlay?.classList.remove('active');
-        document.body.classList.remove('nav-open');
-        document.querySelectorAll('.has-dropdown.open').forEach(li => {
-            li.classList.remove('open');
-            li.querySelector('.mega-menu')?.classList.remove('open');
-        });
-    }
-    btnMobileMenu?.addEventListener('click', openMobileNav);
-    btnMobileNavClose?.addEventListener('click', closeMobileNav);
-    navOverlay?.addEventListener('click', closeMobileNav);
-    // Fecha a gaveta automaticamente se a tela for redimensionada para desktop
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 900) closeMobileNav();
-    });
-
+    
     // --- SELEÇÃO DE ELEMENTOS ---
     // Botões do Header
     const btnSearch = document.getElementById('btn-search');
@@ -94,10 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES DE ABRIR/FECHAR MODAIS ---
     function closeModal(modal) {
-        if (!modal) return;
-        modal.classList.remove('active');
-        // Ao fechar o modal de acesso, volta para a aba de login (evita reabrir na recuperação de senha)
-        if (modal === modalAuth) showAuthView('login');
+        if(modal) modal.classList.remove('active');
     }
 
     closeBtns.forEach(btn => {
@@ -150,60 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- RECUPERAR SENHA (3º estado do modal de autenticação) ---
-    const authModalBox = document.querySelector('.modal-center');
-    const authTitle = document.getElementById('auth-title');
-    const formRecover = document.getElementById('form-recover');
-    const recoverSuccess = document.getElementById('recover-success');
-
-    function showAuthView(view) {
-        if (!authModalBox) return;
-        const isRecover = view === 'recover' || view === 'success';
-        authModalBox.classList.toggle('recover-mode', isRecover);
-        if (authTitle) authTitle.textContent = isRecover ? 'RECUPERAR SENHA' : 'BEM VINDO(A)';
-
-        authForms.forEach(f => f.classList.remove('active'));
-        tabBtns.forEach(b => b.classList.remove('active'));
-
-        if (view === 'recover') formRecover?.classList.add('active');
-        else if (view === 'success') recoverSuccess?.classList.add('active');
-        else {
-            const target = view === 'register' ? 'form-register' : 'form-login';
-            document.getElementById(target)?.classList.add('active');
-            document.querySelector(`.tab-btn[data-target="${target}"]`)?.classList.add('active');
-        }
-    }
-
-    // "ESQUECEU A SENHA?" (login) e "ESQUECI A SENHA" (Minha Conta)
-    document.getElementById('link-forgot')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        showAuthView('recover');
-    });
-    document.querySelectorAll('.open-recover').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            modalAuth?.classList.add('active');
-            userDropdown?.classList.remove('active');
-            showAuthView('recover');
-        });
-    });
-
-    formRecover?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailValue = document.getElementById('recover-email').value.trim();
-        document.getElementById('recover-sent-to').textContent = emailValue.toUpperCase();
-        showAuthView('success');
-    });
-    document.getElementById('resend-recover')?.addEventListener('click', () => {
-        alert('Enviamos o link novamente. Confira sua caixa de entrada.');
-    });
-    document.querySelectorAll('.back-to-login').forEach(btn => {
-        btn.addEventListener('click', () => showAuthView('login'));
-    });
-
-    // Ao reabrir o modal pelo ícone de utilizador, volta sempre para o Login
-    btnUser?.addEventListener('click', () => { if (!isUserLoggedIn) showAuthView('login'); });
-
     // --- SIMULAÇÃO DE LOGIN ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
@@ -233,105 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = newsletterForm.querySelector('input[type="email"]');
             alert(`Obrigado! Enviaremos novidades para ${emailInput.value}`);
             newsletterForm.reset();
-        });
-    }
-
-    // ==========================================
-    // CARRINHO: quantidade, remover item e cupom
-    // ==========================================
-    document.querySelectorAll('.cart-item').forEach(item => {
-        const qtyValue = item.querySelector('.qty-value');
-        item.querySelector('.qty-plus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Number(qtyValue.textContent) + 1).padStart(2, '0');
-        });
-        item.querySelector('.qty-minus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
-        });
-        item.querySelector('.cart-item-remove')?.addEventListener('click', () => item.remove());
-    });
-
-    const couponToggle = document.querySelector('.coupon-toggle');
-    if (couponToggle) {
-        couponToggle.addEventListener('click', () => {
-            couponToggle.nextElementSibling.classList.toggle('open');
-        });
-    }
-
-    // "VOLTAR AO CARRINHO" (checkout) reabre o modal do carrinho
-    const btnBackToCart = document.getElementById('btn-back-to-cart');
-    if (btnBackToCart && modalCart) {
-        btnBackToCart.addEventListener('click', (e) => {
-            e.preventDefault();
-            modalCart.classList.add('active');
-        });
-    }
-
-    // ==========================================
-    // PÁGINA DE PRODUTO (produto.html)
-    // ==========================================
-    const productDetail = document.querySelector('.product-detail-layout');
-    if (productDetail) {
-        // Seleção de tamanho (só um por vez, diferente do filtro do catálogo)
-        document.querySelectorAll('.size-options .size-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.size-options .size-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-
-        // Quantidade
-        const qtyValue = document.querySelector('.add-to-cart-row .qty-value');
-        document.querySelector('.add-to-cart-row .qty-plus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Number(qtyValue.textContent) + 1).padStart(2, '0');
-        });
-        document.querySelector('.add-to-cart-row .qty-minus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
-        });
-
-        // "ADICIONAR" -> feedback simples e abre o carrinho
-        document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
-            modalCart?.classList.add('active');
-        });
-
-        // Abas: Descrição / Frete e prazo / Medidas
-        document.querySelectorAll('.detail-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.detail-tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.detail-tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add('active');
-            });
-        });
-
-        // Calcular frete (simulação)
-        const cepInput = document.getElementById('cep-input');
-        cepInput?.addEventListener('input', () => {
-            let v = cepInput.value.replace(/\D/g, '').slice(0, 8);
-            if (v.length > 5) v = `${v.slice(0, 5)}-${v.slice(5)}`;
-            cepInput.value = v;
-        });
-        document.getElementById('btn-calcular-frete')?.addEventListener('click', () => {
-            const resultado = document.getElementById('frete-resultado');
-            if (!/^\d{5}-?\d{3}$/.test(cepInput.value)) {
-                resultado.innerHTML = '<p class="form-error">DIGITE UM CEP VÁLIDO.</p>';
-                return;
-            }
-            resultado.innerHTML = `
-                <label class="radio-card"><input type="radio" name="frete-opcao" checked>
-                    <div class="card-content"><div class="radio-header"><span>PAC</span><span>R$16,40</span></div><p class="desc">4 DIAS ÚTEIS</p></div>
-                </label>
-                <label class="radio-card"><input type="radio" name="frete-opcao">
-                    <div class="card-content"><div class="radio-header"><span>SEDEX</span><span>R$13,40</span></div><p class="desc">7 DIAS ÚTEIS</p></div>
-                </label>`;
-        });
-
-        // Carrossel de avaliações
-        const reviewsTrack = document.getElementById('reviews-track');
-        document.querySelector('.review-arrow-right')?.addEventListener('click', () => {
-            reviewsTrack.scrollBy({ left: reviewsTrack.firstElementChild.offsetWidth + 20, behavior: 'smooth' });
-        });
-        document.querySelector('.review-arrow-left')?.addEventListener('click', () => {
-            reviewsTrack.scrollBy({ left: -(reviewsTrack.firstElementChild.offsetWidth + 20), behavior: 'smooth' });
         });
     }
 
@@ -392,37 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
-        // "LIMPAR TODOS OS FILTROS" no topo da página de catálogo
-        const btnClearAll = document.getElementById('btn-clear-all-filters');
-        if (btnClearAll && btnClear) {
-            btnClearAll.addEventListener('click', () => btnClear.click());
-        }
-    }
-
-    // ==========================================
-    // PÁGINA MINHA CONTA: troca de abas
-    // ==========================================
-    const accountTabLinks = document.querySelectorAll('.account-tab-link');
-    if (accountTabLinks.length) {
-        function activateAccountTab(tabName) {
-            accountTabLinks.forEach(l => l.classList.toggle('active', l.dataset.tab === tabName));
-            document.querySelectorAll('.account-tab-content').forEach(c => {
-                c.classList.toggle('active', c.id === `tab-${tabName}`);
-            });
-        }
-        accountTabLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                activateAccountTab(link.dataset.tab);
-                history.replaceState(null, '', `?tab=${link.dataset.tab}`);
-            });
-        });
-        // Abre a aba indicada na URL (?tab=dados / pedidos / config), vinda do menu de utilizador
-        const requestedTab = new URLSearchParams(window.location.search).get('tab');
-        if (requestedTab && document.getElementById(`tab-${requestedTab}`)) {
-            activateAccountTab(requestedTab);
-        }
     }
 });
 
@@ -467,3 +206,5 @@ function nextStep(stepNumber) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
+
+// teste

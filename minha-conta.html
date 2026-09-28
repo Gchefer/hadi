@@ -175,7 +175,7 @@
         <div class="account-layout">
             <!-- Menu Lateral da Conta -->
             <aside class="account-sidebar">
-                <h2 class="user-greeting"><i class="fa-regular fa-circle-user"></i> MARIANA</h2>
+                <h2 class="user-greeting"><i class="fa-regular fa-circle-user"></i> GUSTAVO</h2>
                 <nav class="account-nav">
                     <ul>
                         <li><a href="#" class="account-tab-link active" data-tab="dados">DADOS PESSOAIS</a></li>
@@ -195,11 +195,11 @@
                         <h3>DADOS PESSOAIS</h3>
                         <div class="account-field-row">
                             <label>NOME COMPLETO</label>
-                            <input type="text" value="MARIANA SEGOVIA PENHA" readonly>
+                            <input type="text" value="GUSTAVO CHEFER readonly>
                         </div>
                         <div class="account-field-row">
                             <label>E-MAIL</label>
-                            <input type="email" value="MARI***@GM***.COM" readonly>
+                            <input type="email" value="GUSTAVO***@ICLOUD.COM" readonly>
                         </div>
                         <div class="account-field-row">
                             <label>TELEFONE</label>
@@ -207,15 +207,15 @@
                         </div>
                         <div class="account-field-row">
                             <label>DATA DE NASCIMENTO</label>
-                            <input type="text" value="12/04/2006" readonly>
+                            <input type="text" value="10/07/2006" readonly>
                         </div>
                         <div class="account-field-row">
                             <label>GÊNERO</label>
-                            <input type="text" value="F" readonly>
+                            <input type="text" value="M" readonly>
                         </div>
                         <div class="account-field-row">
                             <label>SENHA</label>
-                            <a href="#" class="btn-underline open-recover">ESQUECI A SENHA</a>
+                            <a href="#" class="btn-underline">ESQUECI A SENHA</a>
                         </div>
                         <a href="#" class="btn-underline">EDITAR</a>
                     </div>
@@ -278,8 +278,8 @@
                                 <div>
                                     <p><strong>MASTERCARD ****1642</strong></p>
                                     <p>EXPIRA EM: **/****</p>
-                                    <p>CPF: ***.***.***-25</p>
-                                    <p>NOME COMPLETO: MARIANA ******A</p>
+                                    <p>CPF: ***.***.***-30</p>
+                                    <p>NOME COMPLETO: GUSTAVO ******A</p>
                                 </div>
                             </div>
                             <button class="btn-underline text-red">EXCLUIR MÉTODO DE PAGAMENTO</button>
@@ -439,13 +439,13 @@
         </div>
     </div>
 
-    <!-- 3. MODAL DE LOGIN / REGISTO -->
+    <!-- 3. MODAL DE LOGIN / REGISTRO -->
     <div id="modal-auth" class="modal-overlay">
         <div class="modal-center">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-            <h2 id="auth-title">BEM VINDO(A)</h2>
+            <h2>BEM VINDO(A)</h2>
             
-            <div class="auth-tabs" id="auth-tabs">
+            <div class="auth-tabs">
                 <button class="tab-btn active" data-target="form-login">LOGIN</button>
                 <button class="tab-btn" data-target="form-register">PRIMEIRO ACESSO</button>
             </div>
@@ -454,7 +454,7 @@
             <form id="form-login" class="auth-form active">
                 <input type="email" placeholder="E-MAIL" required>
                 <input type="password" placeholder="SENHA" required>
-                <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
+                <a href="#" class="forgot-pwd">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
 
@@ -466,20 +466,6 @@
                 <input type="password" placeholder="CONFIRMAR SENHA" required>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
-            <!-- Recuperação de senha (3º estado do modal) -->
-            <form id="form-recover" class="auth-form">
-                <p class="auth-help">INFORME O E-MAIL DA SUA CONTA E ENVIAREMOS UM LINK PARA VOCÊ CRIAR UMA NOVA SENHA.</p>
-                <input type="email" id="recover-email" placeholder="E-MAIL" required>
-                <button type="submit" class="btn-full">ENVIAR LINK</button>
-                <button type="button" class="btn-underline back-to-login">VOLTAR AO LOGIN</button>
-            </form>
-            <div id="recover-success" class="auth-form">
-                <i class="fa-regular fa-circle-check success-mark"></i>
-                <h3 class="auth-success-title">VERIFIQUE SEU E-MAIL</h3>
-                <p class="auth-help">SE EXISTIR UMA CONTA PARA <strong id="recover-sent-to"></strong>, VOCÊ RECEBERÁ O LINK EM INSTANTES. CONFIRA TAMBÉM A CAIXA DE SPAM.</p>
-                <button type="button" class="btn-full back-to-login">VOLTAR AO LOGIN</button>
-                <button type="button" class="btn-underline" id="resend-recover">NÃO RECEBEU? REENVIAR</button>
-            </div>
         </div>
     </div>
 

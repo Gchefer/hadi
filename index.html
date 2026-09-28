@@ -172,7 +172,11 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main>
         <!-- HERO / BANNER PRINCIPAL -->
-        <section class="hero" style="background-image:url('img/hero-new-in.jpg'); background-size:cover; background-position:center;">
+        <section class="hero" aria-label="Destaque: New In - Field Collection">
+            <!-- Section da imagem: proporção fixa igual ao protótipo (1404x582), recorta com object-fit -->
+            <div class="hero-media">
+                <img src="img/hero-new-in.jpg" alt="Tênis Field Collection" width="1404" height="582" fetchpriority="high">
+            </div>
             <button class="hero-arrow hero-arrow-left" aria-label="Slide anterior"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="hero-content">
                 <h1 class="hero-title">NEW IN</h1>

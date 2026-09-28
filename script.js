@@ -94,7 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES DE ABRIR/FECHAR MODAIS ---
     function closeModal(modal) {
-        if(modal) modal.classList.remove('active');
+        if (!modal) return;
+        modal.classList.remove('active');
+        // Ao fechar o modal de acesso, volta para a aba de login (evita reabrir na recuperação de senha)
+        if (modal === modalAuth) showAuthView('login');
     }
 
     closeBtns.forEach(btn => {
@@ -146,6 +149,60 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById(targetFormId).classList.add('active');
         });
     });
+
+    // --- RECUPERAR SENHA (3º estado do modal de autenticação) ---
+    const authModalBox = document.querySelector('.modal-center');
+    const authTitle = document.getElementById('auth-title');
+    const formRecover = document.getElementById('form-recover');
+    const recoverSuccess = document.getElementById('recover-success');
+
+    function showAuthView(view) {
+        if (!authModalBox) return;
+        const isRecover = view === 'recover' || view === 'success';
+        authModalBox.classList.toggle('recover-mode', isRecover);
+        if (authTitle) authTitle.textContent = isRecover ? 'RECUPERAR SENHA' : 'BEM VINDO(A)';
+
+        authForms.forEach(f => f.classList.remove('active'));
+        tabBtns.forEach(b => b.classList.remove('active'));
+
+        if (view === 'recover') formRecover?.classList.add('active');
+        else if (view === 'success') recoverSuccess?.classList.add('active');
+        else {
+            const target = view === 'register' ? 'form-register' : 'form-login';
+            document.getElementById(target)?.classList.add('active');
+            document.querySelector(`.tab-btn[data-target="${target}"]`)?.classList.add('active');
+        }
+    }
+
+    // "ESQUECEU A SENHA?" (login) e "ESQUECI A SENHA" (Minha Conta)
+    document.getElementById('link-forgot')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        showAuthView('recover');
+    });
+    document.querySelectorAll('.open-recover').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalAuth?.classList.add('active');
+            userDropdown?.classList.remove('active');
+            showAuthView('recover');
+        });
+    });
+
+    formRecover?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailValue = document.getElementById('recover-email').value.trim();
+        document.getElementById('recover-sent-to').textContent = emailValue.toUpperCase();
+        showAuthView('success');
+    });
+    document.getElementById('resend-recover')?.addEventListener('click', () => {
+        alert('Enviamos o link novamente. Confira sua caixa de entrada.');
+    });
+    document.querySelectorAll('.back-to-login').forEach(btn => {
+        btn.addEventListener('click', () => showAuthView('login'));
+    });
+
+    // Ao reabrir o modal pelo ícone de utilizador, volta sempre para o Login
+    btnUser?.addEventListener('click', () => { if (!isUserLoggedIn) showAuthView('login'); });
 
     // --- SIMULAÇÃO DE LOGIN ---
     const formLogin = document.getElementById('form-login');

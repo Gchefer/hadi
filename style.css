@@ -98,6 +98,17 @@ li { list-style: none; }
 .auth-form { display: none; flex-direction: column; gap: 15px; }
 .auth-form.active { display: flex; }
 .auth-form input { padding: 15px; background: #e5e5df; border: none; font-family: var(--font-title); outline: none; }
+.forgot-pwd { font-size: 0.8rem; font-weight: bold; text-decoration: underline; align-self: flex-start; }
+
+/* Recuperar senha (3º estado do modal de autenticação) */
+.modal-center.recover-mode .auth-tabs { display: none; }
+.modal-center.recover-mode #auth-title { margin-bottom: 25px; }
+.auth-help { font-size: 0.8rem; font-weight: 700; line-height: 1.5; }
+.auth-form .back-to-login { align-self: center; }
+#recover-success { text-align: center; align-items: center; }
+#recover-success .btn-full { margin-bottom: 0; }
+.success-mark { font-size: 3.5rem; color: #2e7d32; }
+.auth-success-title { font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 0.5px; }
 
 /* Menu Suspenso Utilizador */
 .user-dropdown {

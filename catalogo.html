@@ -549,15 +549,15 @@
     <div id="modal-auth" class="modal-overlay">
         <div class="modal-center">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-            <h2>BEM VINDO(A)</h2>
-            <div class="auth-tabs">
+            <h2 id="auth-title">BEM VINDO(A)</h2>
+            <div class="auth-tabs" id="auth-tabs">
                 <button class="tab-btn active" data-target="form-login">LOGIN</button>
                 <button class="tab-btn" data-target="form-register">PRIMEIRO ACESSO</button>
             </div>
             <form id="form-login" class="auth-form active">
                 <input type="email" placeholder="E-MAIL" required>
                 <input type="password" placeholder="SENHA" required>
-                <a href="#" class="forgot-pwd">ESQUECEU A SENHA?</a>
+                <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
             <form id="form-register" class="auth-form">
@@ -567,6 +567,20 @@
                 <input type="password" placeholder="CONFIRMAR SENHA" required>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
+            <!-- Recuperação de senha (3º estado do modal) -->
+            <form id="form-recover" class="auth-form">
+                <p class="auth-help">INFORME O E-MAIL DA SUA CONTA E ENVIAREMOS UM LINK PARA VOCÊ CRIAR UMA NOVA SENHA.</p>
+                <input type="email" id="recover-email" placeholder="E-MAIL" required>
+                <button type="submit" class="btn-full">ENVIAR LINK</button>
+                <button type="button" class="btn-underline back-to-login">VOLTAR AO LOGIN</button>
+            </form>
+            <div id="recover-success" class="auth-form">
+                <i class="fa-regular fa-circle-check success-mark"></i>
+                <h3 class="auth-success-title">VERIFIQUE SEU E-MAIL</h3>
+                <p class="auth-help">SE EXISTIR UMA CONTA PARA <strong id="recover-sent-to"></strong>, VOCÊ RECEBERÁ O LINK EM INSTANTES. CONFIRA TAMBÉM A CAIXA DE SPAM.</p>
+                <button type="button" class="btn-full back-to-login">VOLTAR AO LOGIN</button>
+                <button type="button" class="btn-underline" id="resend-recover">NÃO RECEBEU? REENVIAR</button>
+            </div>
         </div>
     </div>
 

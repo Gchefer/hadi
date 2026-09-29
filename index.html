@@ -172,7 +172,8 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main>
         <!-- HERO / BANNER PRINCIPAL -->
-        <section class="hero" style="background-image:url('img/hero-new-in.jpg'); background-size:cover; background-position:center;">
+        <section class="hero">
+            <img class="hero-media" src="img/hero-new-in.jpg" alt="Nova coleção HADI - New In Field Collection">
             <button class="hero-arrow hero-arrow-left" aria-label="Slide anterior"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="hero-content">
                 <h1 class="hero-title">NEW IN</h1>
@@ -440,11 +441,12 @@
             </form>
 
             <!-- Formulário Registo -->
-            <form id="form-register" class="auth-form">
-                <input type="text" placeholder="NOME COMPLETO" required>
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
-                <input type="password" placeholder="CONFIRMAR SENHA" required>
+            <form id="form-register" class="auth-form" novalidate>
+                <input type="text" id="register-name" placeholder="NOME COMPLETO" required>
+                <input type="email" id="register-email" placeholder="E-MAIL" required>
+                <input type="password" id="register-pass" placeholder="SENHA (MÍNIMO 8 CARACTERES)" required minlength="8">
+                <input type="password" id="register-pass2" placeholder="CONFIRMAR SENHA" required>
+                <p class="form-error" id="register-error" role="alert"></p>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
             <!-- Recuperação de senha (3º estado do modal) -->
@@ -467,7 +469,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>GUSTAVO</strong></li>
+            <li><strong>Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>

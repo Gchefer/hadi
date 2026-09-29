@@ -562,11 +562,12 @@
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
-            <form id="form-register" class="auth-form">
-                <input type="text" placeholder="NOME COMPLETO" required>
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
-                <input type="password" placeholder="CONFIRMAR SENHA" required>
+            <form id="form-register" class="auth-form" novalidate>
+                <input type="text" id="register-name" placeholder="NOME COMPLETO" required>
+                <input type="email" id="register-email" placeholder="E-MAIL" required>
+                <input type="password" id="register-pass" placeholder="SENHA (MÍNIMO 8 CARACTERES)" required minlength="8">
+                <input type="password" id="register-pass2" placeholder="CONFIRMAR SENHA" required>
+                <p class="form-error" id="register-error" role="alert"></p>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
             <!-- Recuperação de senha (3º estado do modal) -->

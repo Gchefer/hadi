@@ -216,6 +216,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- CADASTRO (PRIMEIRO ACESSO): validação de senha antes de simular a conta ---
+    const formRegister = document.getElementById('form-register');
+    if (formRegister) {
+        const registerError = document.getElementById('register-error');
+        const registerPass = document.getElementById('register-pass');
+        const registerPass2 = document.getElementById('register-pass2');
+        [registerPass, registerPass2].forEach(inp => {
+            inp?.addEventListener('input', () => { if (registerError) registerError.textContent = ''; });
+        });
+
+        formRegister.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!formRegister.checkValidity()) {
+                // Deixa o navegador apontar o campo obrigatório vazio/e-mail inválido
+                formRegister.reportValidity();
+                return;
+            }
+            if (registerPass.value.length < 8) {
+                registerError.textContent = 'A SENHA DEVE TER PELO MENOS 8 CARACTERES.';
+                registerPass.focus();
+                return;
+            }
+            if (registerPass.value !== registerPass2.value) {
+                registerError.textContent = 'AS SENHAS NÃO COINCIDEM.';
+                registerPass2.focus();
+                return;
+            }
+            // Simula a criação de conta com sucesso
+            isUserLoggedIn = true;
+            closeModal(modalAuth);
+            alert('Conta criada com sucesso! Bem-vindo, ' + (document.getElementById('register-name').value.trim().split(' ')[0] || '') + '!');
+            formRegister.reset();
+        });
+    }
+
+    // --- CHECKOUT (PASSO 1): validação antes de avançar para pagamento ---
+    const formCheckoutStep1 = document.getElementById('form-checkout-step1');
+    if (formCheckoutStep1) {
+        const checkoutStep1Error = document.getElementById('checkout-step1-error');
+        formCheckoutStep1.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (checkoutStep1Error) checkoutStep1Error.textContent = '';
+            if (!formCheckoutStep1.checkValidity()) {
+                formCheckoutStep1.reportValidity();
+                if (checkoutStep1Error) checkoutStep1Error.textContent = 'PREENCHA TODOS OS CAMPOS OBRIGATÓRIOS CORRETAMENTE.';
+                return;
+            }
+            nextStep(2);
+        });
+    }
+
+    // --- MINHA CONTA: validação do formulário de endereço ---
+    const formAccountAddress = document.getElementById('form-account-address');
+    if (formAccountAddress) {
+        const addrError = document.getElementById('addr-error');
+        formAccountAddress.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (addrError) addrError.textContent = '';
+            if (!formAccountAddress.checkValidity()) {
+                formAccountAddress.reportValidity();
+                if (addrError) addrError.textContent = 'PREENCHA TODOS OS CAMPOS OBRIGATÓRIOS CORRETAMENTE.';
+                return;
+            }
+            alert('Endereço salvo com sucesso!');
+        });
+    }
+
     // Fechar menu de utilizador ao clicar fora
     if (btnUser && userDropdown) {
         document.addEventListener('click', (e) => {

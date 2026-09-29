@@ -182,52 +182,55 @@
                 
                 <!-- PASSO 1: IDENTIFICAÇÃO -->
                 <section id="step-1" class="checkout-step-content active">
-                    <div class="form-section">
-                        <h3>DADOS PESSOAIS</h3>
-                        <div class="form-grid-2">
-                            <div class="input-group full-width">
-                                <label>E-MAIL</label>
-                                <input type="email" value="GUSTAVO*******@ICLOUD.COM">
-                            </div>
-                            <div class="input-group full-width">
-                                <label>NOME COMPLETO</label>
-                                <input type="text" value="Gustavo Chefer">
-                            </div>
-                            <div class="input-group">
-                                <label>CPF</label>
-                                <input type="text" value="*** *** *** 25">
-                            </div>
-                            <div class="input-group">
-                                <label>TELEFONE</label>
-                                <input type="tel" value="11 91234-5678">
+                    <form id="form-checkout-step1" novalidate>
+                        <div class="form-section">
+                            <h3>DADOS PESSOAIS</h3>
+                            <div class="form-grid-2">
+                                <div class="input-group full-width">
+                                    <label for="checkout-email">E-MAIL</label>
+                                    <input type="email" id="checkout-email" value="GUSTAVO*******@ICLOUD.COM" required>
+                                </div>
+                                <div class="input-group full-width">
+                                    <label for="checkout-nome">NOME COMPLETO</label>
+                                    <input type="text" id="checkout-nome" value="Gustavo Chefer" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="checkout-cpf">CPF</label>
+                                    <input type="text" id="checkout-cpf" value="*** *** *** 25" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="checkout-tel">TELEFONE</label>
+                                    <input type="tel" id="checkout-tel" value="11 91234-5678" required>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-section">
-                        <div class="section-title-flex">
-                            <h3>ENDEREÇO DE ENTREGA</h3>
-                            <a href="#" class="btn-underline">EDITAR</a>
-                        </div>
-                        <div class="form-grid-2">
-                            <div class="input-group full-width">
-                                <label>CEP</label>
-                                <input type="text" value="00000-000">
-                                <a href="#" class="help-text">NÃO SEI O MEU CEP</a>
+                        <div class="form-section">
+                            <div class="section-title-flex">
+                                <h3>ENDEREÇO DE ENTREGA</h3>
+                                <a href="#" class="btn-underline">EDITAR</a>
                             </div>
-                            <div class="input-group full-width">
-                                <label>ENDEREÇO</label>
-                                <input type="text" value="RUA J*** ******, 12">
+                            <div class="form-grid-2">
+                                <div class="input-group full-width">
+                                    <label for="checkout-cep">CEP</label>
+                                    <input type="text" id="checkout-cep" value="00000-000" pattern="\d{5}-?\d{3}" title="Formato: 00000-000" required>
+                                    <a href="#" class="help-text">NÃO SEI O MEU CEP</a>
+                                </div>
+                                <div class="input-group full-width">
+                                    <label for="checkout-endereco">ENDEREÇO</label>
+                                    <input type="text" id="checkout-endereco" value="RUA J*** ******, 12" required>
+                                </div>
+                            </div>
+                            <div class="checkbox-group mt-20">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> UTILIZAR O MESMO ENDEREÇO PARA COBRANÇA
+                                </label>
                             </div>
                         </div>
-                        <div class="checkbox-group mt-20">
-                            <label class="checkbox-label">
-                                <input type="checkbox" checked> UTILIZAR O MESMO ENDEREÇO PARA COBRANÇA
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <button class="btn-full mt-20" onclick="nextStep(2)">IR PARA PAGAMENTO</button>
+
+                        <p class="form-error" id="checkout-step1-error" role="alert"></p>
+                        <button type="submit" class="btn-full mt-20">IR PARA PAGAMENTO</button>
+                    </form>
                 </section>
 
                 <!-- PASSO 2: PAGAMENTO -->
@@ -483,11 +486,12 @@
             </form>
 
             <!-- Formulário Registo -->
-            <form id="form-register" class="auth-form">
-                <input type="text" placeholder="NOME COMPLETO" required>
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
-                <input type="password" placeholder="CONFIRMAR SENHA" required>
+            <form id="form-register" class="auth-form" novalidate>
+                <input type="text" id="register-name" placeholder="NOME COMPLETO" required>
+                <input type="email" id="register-email" placeholder="E-MAIL" required>
+                <input type="password" id="register-pass" placeholder="SENHA (MÍNIMO 8 CARACTERES)" required minlength="8">
+                <input type="password" id="register-pass2" placeholder="CONFIRMAR SENHA" required>
+                <p class="form-error" id="register-error" role="alert"></p>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
             <!-- Recuperação de senha (3º estado do modal) -->

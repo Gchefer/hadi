@@ -1,0 +1,65 @@
+/* =========================================
+   BUSCA: MODAL + RESULTADOS (usa as variáveis do style.css)
+========================================= */
+#modal-search { background: rgba(26,26,26,0.45); }
+#modal-search .search-panel {
+    position: absolute; top: 70px; right: 40px; width: 620px; max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 100px); overflow-y: auto;
+    background: var(--bg-main); border: 1px solid var(--border-color);
+    box-shadow: 0 16px 30px rgba(0,0,0,0.12); padding: 25px 30px 30px;
+}
+.search-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.search-panel-head h2 { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 1px; }
+#modal-search .close-modal { position: static; font-size: 1.5rem; }
+
+.search-field { display: flex; align-items: center; background: #e5e5df; margin-bottom: 25px; }
+.search-field input { flex: 1; padding: 14px 15px; background: transparent; border: none; outline: none; font-family: var(--font-title); font-size: 1rem; text-transform: uppercase; }
+.search-field button { background: none; border: none; cursor: pointer; font-size: 1.3rem; padding: 0 15px; color: var(--text-color); }
+
+.search-subtitle { font-family: var(--font-title); font-size: 1.1rem; letter-spacing: 0.5px; margin-bottom: 15px; }
+.search-subtitle small { font-size: 0.85rem; color: #666; }
+
+/* Estado inicial: atividades */
+.search-activities { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.search-activities .activity-tile { aspect-ratio: 3 / 4; padding: 12px; align-items: center; justify-content: space-between; text-align: center; }
+.search-activities .activity-tile h3 { font-size: 1rem; letter-spacing: 2px; margin: 4px 0 0; }
+.search-activities .activity-tile .btn-underline { font-size: 0.75rem; }
+
+/* Resultados ao vivo (lista compacta) */
+.search-results-list { display: flex; flex-direction: column; }
+.search-result-row { display: flex; gap: 15px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+.search-result-row:hover .sr-name { text-decoration: underline; text-underline-offset: 3px; }
+.search-result-row img { width: 64px; height: 76px; object-fit: contain; background: var(--bg-cards); mix-blend-mode: multiply; padding: 6px; border-radius: 4px; flex-shrink: 0; }
+.sr-info { flex: 1; min-width: 0; }
+.sr-info h4 { font-family: var(--font-title); font-size: 0.95rem; letter-spacing: 0.5px; }
+.sr-name { font-size: 0.8rem; font-weight: 600; color: #444; margin-top: 2px; }
+.sr-price { font-family: var(--font-title); font-size: 0.95rem; text-align: right; white-space: nowrap; }
+.sr-price .price-old { display: block; font-size: 0.8rem; }
+.search-see-all { margin-top: 20px; }
+.search-see-all .btn-full { display: block; text-align: center; margin: 0; }
+.search-suggestions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+.chip { font-family: var(--font-title); font-size: 0.85rem; padding: 7px 14px; border: 1px solid var(--text-color); background: transparent; cursor: pointer; letter-spacing: 0.5px; }
+.chip:hover { background: var(--text-color); color: #fff; }
+
+.search-empty { text-align: center; padding: 25px 0 5px; }
+.search-empty i { font-size: 2.2rem; color: #b9b9ac; margin-bottom: 12px; display: block; }
+.search-empty p { font-weight: 700; font-size: 0.9rem; line-height: 1.5; }
+
+/* Página de resultados */
+.results-title { font-family: var(--font-title); font-size: 2rem; letter-spacing: 1px; }
+.results-title span { color: var(--text-red); }
+.results-count { font-weight: 700; font-size: 0.85rem; margin-top: 4px; }
+.active-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; align-items: center; }
+.filter-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-cards); padding: 7px 12px; font-family: var(--font-title); font-size: 0.85rem; }
+.filter-chip button { background: none; border: none; cursor: pointer; font-size: 0.85rem; }
+.page-search-bar { max-width: 520px; margin-top: 15px; }
+.badge-sale { position: absolute; top: 12px; left: 12px; background: var(--text-red); color: #fff; font-family: var(--font-title); font-size: 0.75rem; padding: 3px 8px; }
+.product-card .img-wrapper { position: relative; }
+
+@media (max-width: 992px) {
+    .search-activities { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    #modal-search .search-panel { top: 0; right: 0; left: 0; width: 100%; max-width: none; max-height: 100vh; height: 100%; border: none; padding: 20px; }
+    .results-title { font-size: 1.5rem; }
+}

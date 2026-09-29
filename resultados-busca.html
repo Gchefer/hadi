@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compre por Atividade - HADI</title>
+    <title>Resultados da busca - HADI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="busca.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -171,14 +171,18 @@
 
 
     <main class="container catalog-page">
+        <div class="breadcrumbs"><a href="index.html">HOME</a> &gt; <span>BUSCA</span></div>
         <div class="catalog-header">
             <div>
-                <div class="breadcrumbs" style="margin-bottom:8px"><a href="index.html">HOME</a> &gt; <a href="catalogo.html">CATÁLOGO</a></div>
+                <h1 class="results-title">RESULTADOS <span id="results-term"></span></h1>
                 <p class="results-count" id="results-count" aria-live="polite"></p>
+                <form id="page-search-form" class="search-field page-search-bar">
+                    <input type="text" id="page-search-input" placeholder="EX.: JAQUETA" autocomplete="off">
+                    <button type="submit" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
             </div>
             <div class="catalog-actions">
                 <button id="btn-mobile-filter" class="btn-underline">FILTRAR <span id="filter-badge"></span></button>
-                <button id="btn-clear-all-filters" class="btn-underline">LIMPAR TODOS OS FILTROS</button>
                 <div class="sort-by">
                     <label for="sort">ORDENAR POR</label>
                     <select id="sort"><option>MAIS RECENTES</option><option>MENOR PREÇO</option><option>MAIOR PREÇO</option></select>
@@ -295,9 +299,12 @@
                 <div class="grid-3-cols" id="results-grid"></div>
                 <div class="search-empty" id="results-empty" hidden style="padding:60px 0">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <p>NENHUM PRODUTO ENCONTRADO COM ESSES FILTROS.</p>
+                    <p>NENHUM PRODUTO ENCONTRADO.<br>REMOVA ALGUNS FILTROS OU TENTE OUTRO TERMO.</p>
                     <div class="search-suggestions" style="justify-content:center">
                         <button type="button" class="chip" id="empty-clear">LIMPAR FILTROS</button>
+                        <button type="button" class="chip" data-q="Jaqueta">JAQUETA</button>
+                        <button type="button" class="chip" data-q="Fleece">FLEECE</button>
+                        <button type="button" class="chip" data-q="Shorts">SHORTS</button>
                     </div>
                 </div>
                 <div class="pagination" id="results-pagination"></div>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HADI Active Wear</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="busca.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -367,12 +368,25 @@
 
     <!-- 1. MODAL DE PESQUISA -->
     <div id="modal-search" class="modal-overlay">
-        <div class="modal-search-content">
-            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-            <div class="search-bar">
+        <div class="search-panel" role="dialog" aria-label="Buscar">
+            <div class="search-panel-head">
                 <h2>BUSCAR</h2>
-                <input type="text" placeholder="Digite o que procura...">
+                <button class="close-modal" aria-label="Fechar busca"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <form id="search-form" class="search-field" role="search">
+                <input type="text" id="search-input" placeholder="EX.: JAQUETA" autocomplete="off">
+                <button type="submit" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div id="search-start">
+                <h3 class="search-subtitle">COMPRE POR ATIVIDADE &gt;</h3>
+                <div class="search-activities">
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trekking.jpg')"><h3>TREKKING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trail-running.jpg')"><h3>TRAIL RUNNING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-ski.jpg')"><h3>SKI E NEVE</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-casual.jpg')"><h3>CASUAL</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                </div>
+            </div>
+            <div id="search-live" hidden></div>
         </div>
     </div>
 
@@ -469,7 +483,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>Chefer</strong></li>
+            <li><strong>CHEFER</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -478,5 +492,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="busca.js"></script>
 </body>
 </html>

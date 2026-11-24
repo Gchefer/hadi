@@ -457,36 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return article;
     }
 
-    const catalogGrid = document.getElementById('catalog-grid');
-    if (catalogGrid && typeof api !== 'undefined') {
-        const catalogStatus = document.getElementById('catalog-status');
-        // catalogo.html?q=termo -> resultados da busca (modal de busca, busca.js)
-        const termoBusca = (new URLSearchParams(window.location.search).get('q') || '').trim();
-        if (termoBusca) {
-            const crumb = document.querySelector('.catalog-header .breadcrumbs span');
-            if (crumb) crumb.textContent = `BUSCA: "${termoBusca.toUpperCase()}"`;
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) searchInput.value = termoBusca;
-        }
-        (termoBusca ? api.buscarProdutosPorTermo(termoBusca) : api.listarProdutos())
-            .then(produtos => {
-                catalogGrid.innerHTML = '';
-                if (!produtos || produtos.length === 0) {
-                    if (catalogStatus) {
-                        catalogStatus.textContent = termoBusca ? `NENHUM PRODUTO ENCONTRADO PARA "${termoBusca.toUpperCase()}".` : 'NENHUM PRODUTO ENCONTRADO.';
-                        catalogStatus.style.display = 'block';
-                    }
-                    return;
-                }
-                produtos.forEach(p => catalogGrid.appendChild(renderProductCard(p)));
-            })
-            .catch(() => {
-                if (catalogStatus) {
-                    catalogStatus.textContent = 'NÃO FOI POSSÍVEL CARREGAR OS PRODUTOS. VERIFIQUE SE O BACKEND (hado-backend) ESTÁ RODANDO EM http://localhost:8080.';
-                    catalogStatus.style.display = 'block';
-                }
-            });
-    }
+    // Catálogo (catalogo.html): filtros, ordenação e paginação ficam em busca.js
 
     const vitrineGrid = document.getElementById('vitrine-grid');
     if (vitrineGrid && typeof api !== 'undefined') {
@@ -590,32 +561,196 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const productDetail = document.querySelector('.product-detail-layout');
     if (productDetail) {
-        // Se a URL tiver ?codigo=X, sobrescreve o conteúdo estático (demo Arc'teryx) com o produto real da API
-        const codigoProduto = new URLSearchParams(window.location.search).get('codigo');
-        let produtoAtual = codigoProduto ? Number(codigoProduto) : null;
-        if (codigoProduto && typeof api !== 'undefined') {
+        // Produto vindo da API: ?codigo=X (sem código, mostra o produto 1 — Arc'teryx de demonstração)
+        const codigoProduto = new URLSearchParams(window.location.search).get('codigo') || '1';
+        let produtoAtual = Number(codigoProduto) || 1;
+        const escHTML = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const listaAttr = s => (s || '').split(',').map(x => x.trim()).filter(Boolean);
+        const estrelasHTML = (nota) => [1, 2, 3, 4, 5].map(i =>
+            nota >= i ? '<i class="fa-solid fa-star"></i>'
+                : nota >= i - 0.5 ? '<i class="fa-solid fa-star-half-stroke"></i>'
+                    : '<i class="fa-regular fa-star"></i>').join('');
+
+        function preencherProduto(produto) {
+            document.getElementById('detail-brand').textContent = produto.marca || '';
+            document.getElementById('detail-title').textContent = produto.nome || '';
+            document.getElementById('detail-price').textContent = formatarPreco(produto.preco);
+            const parcelas = document.querySelector('.product-price-row .installments');
+            if (parcelas) parcelas.textContent = `OU 12X DE ${formatarPreco(Number(produto.preco) / 12).replace(/\s/g, '')} SEM JUROS`;
+            const img = document.getElementById('detail-image-main');
+            if (img) {
+                img.src = caminhoImagem(produto.imagem);
+                img.alt = produto.nome || '';
+            }
+            document.title = `${produto.nome} - HADI`;
+
+            // Breadcrumb: HOME > ATIVIDADE > DEPARTAMENTO > SUBCATEGORIA
+            const crumbs = document.getElementById('detail-breadcrumbs');
+            if (crumbs) {
+                const partes = [listaAttr(produto.atividades)[0], produto.departamento, produto.subcategoria || produto.categoria].filter(Boolean);
+                crumbs.innerHTML = '<a href="index.html">HOME</a>' + partes.map(p => ` &gt; <a href="catalogo.html">${escHTML(p.toUpperCase())}</a>`).join('');
+            }
+
+            // Tamanhos do produto (acessórios sem tamanho escondem o seletor)
+            const tamanhos = listaAttr(produto.tamanhos);
+            const sizeBox = document.getElementById('detail-sizes');
+            if (sizeBox) {
+                sizeBox.hidden = !tamanhos.length;
+                sizeBox.querySelector('.size-options').innerHTML = tamanhos
+                    .map((t, i) => `<button type="button" class="size-btn${i === Math.floor((tamanhos.length - 1) / 2) ? ' active' : ''}">${escHTML(t)}</button>`).join('');
+            }
+            const selTam = document.getElementById('review-tamanho');
+            if (selTam) selTam.innerHTML = '<option value="">TAMANHO COMPRADO (OPCIONAL)</option>' + tamanhos.map(t => `<option>${escHTML(t)}</option>`).join('');
+            if (selTam) selTam.hidden = !tamanhos.length;
+            const tabMedidas = document.querySelector('.detail-tab-btn[data-tab="medidas"]');
+            if (tabMedidas && !tamanhos.length) tabMedidas.hidden = true;
+
+            // Descrição gerada a partir dos dados do produto (antes era o texto fixo da Arc'teryx)
+            const desc = document.getElementById('tab-descricao');
+            if (desc) {
+                const itens = [
+                    ['TECNOLOGIA', listaAttr(produto.tecnologias).join(', ')],
+                    ['INDICADO PARA', listaAttr(produto.atividades).join(', ')],
+                    ['GÊNERO', listaAttr(produto.generos).join(', ')],
+                    ['TAMANHOS', tamanhos.join(' / ')],
+                ].filter(([, v]) => v);
+                desc.innerHTML = `<p>${escHTML(produto.descricao || `${produto.marca} ${produto.nome}`)}</p>` +
+                    (itens.length ? `<ul>${itens.map(([k, v]) => `<li><strong>${k}:</strong> ${escHTML(v.toUpperCase())}</li>`).join('')}</ul>` : '');
+            }
+        }
+
+        // "Você também pode gostar": outros produtos, priorizando a mesma subcategoria
+        function carregarRelacionados(produto) {
+            const relatedGrid = document.getElementById('related-grid');
+            if (!relatedGrid) return;
+            api.listarProdutos().then(produtos => {
+                const outros = (produtos || []).filter(p => p.codigo !== produto.codigo);
+                const mesmaSub = outros.filter(p => p.subcategoria && p.subcategoria === produto.subcategoria);
+                const resto = outros.filter(p => !mesmaSub.includes(p)).sort((a, b) => (b.mediaAvaliacoes || 0) - (a.mediaAvaliacoes || 0));
+                relatedGrid.innerHTML = '';
+                [...mesmaSub, ...resto].slice(0, 4).forEach(p => relatedGrid.appendChild(renderProductCard(p)));
+            }).catch(() => { /* sem sugestões se o backend falhar */ });
+        }
+
+        if (typeof api !== 'undefined') {
             api.buscarProdutoPorCodigo(codigoProduto)
                 .then(produto => {
-                    if (!produto || !produto.codigo) return; // mantém o conteúdo demo se não encontrar
-                    document.getElementById('detail-brand').textContent = produto.marca || '';
-                    document.getElementById('detail-title').textContent = produto.nome || '';
-                    document.getElementById('detail-price').textContent = formatarPreco(produto.preco);
-                    const img = document.getElementById('detail-image-main');
-                    if (img) {
-                        img.src = caminhoImagem(produto.imagem);
-                        img.alt = produto.nome || '';
-                    }
-                    document.title = `${produto.nome} - HADI`;
+                    if (!produto || !produto.codigo) return;
+                    preencherProduto(produto);
+                    carregarRelacionados(produto);
                 })
                 .catch(() => { /* backend fora do ar: mantém o conteúdo demo */ });
         }
 
-        // Seleção de tamanho (só um por vez, diferente do filtro do catálogo)
-        document.querySelectorAll('.size-options .size-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.size-options .size-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        // ---------- AVALIAÇÕES ----------
+        const reviewsTrackEl = document.getElementById('reviews-track');
+        const formReview = document.getElementById('form-review');
+        const reviewError = document.getElementById('review-error');
+        let notaEscolhida = 0;
+
+        function renderAvaliacoes(dados) {
+            const total = dados.total || 0;
+            const media = Number(dados.media) || 0;
+            const lista = dados.avaliacoes || [];
+            document.getElementById('reviews-summary').innerHTML = total
+                ? `<span class="stars" aria-hidden="true">${estrelasHTML(media)}</span><span>${total} ${total === 1 ? 'AVALIAÇÃO' : 'AVALIAÇÕES'}</span>`
+                : '';
+            document.getElementById('reviews-media').textContent = total ? media.toLocaleString('pt-BR', { minimumFractionDigits: 1 }) : '–';
+            document.getElementById('reviews-media-stars').innerHTML = estrelasHTML(media);
+            const recomendam = lista.filter(a => a.recomenda).length;
+            document.getElementById('reviews-recomendam').textContent = total ? `${Math.round(recomendam / total * 100)}% RECOMENDAM` : 'SEM AVALIAÇÕES AINDA';
+            document.getElementById('reviews-bars').innerHTML = [5, 4, 3, 2, 1].map(n => {
+                const qtd = (dados.porNota && dados.porNota[n]) || 0;
+                const pct = total ? Math.round(qtd / total * 100) : 0;
+                return `<li><span>${n} <i class="fa-solid fa-star"></i></span><span class="bar"><span style="width:${pct}%"></span></span><span>${qtd}</span></li>`;
+            }).join('');
+            document.getElementById('reviews-empty').hidden = total > 0;
+            document.querySelector('.reviews-carousel').hidden = total === 0;
+            reviewsTrackEl.innerHTML = lista.map(a => `
+                <article class="review-card">
+                    <span class="stars">${estrelasHTML(a.nota)}</span>
+                    <p class="review-title">${escHTML(a.titulo)}</p>
+                    ${a.comentario ? `<p class="review-text">${escHTML(a.comentario)}</p>` : ''}
+                    <p class="review-author">${escHTML(a.autor)}${a.tamanhoComprado ? ` · TAMANHO ${escHTML(a.tamanhoComprado)}` : ''}</p>
+                    <p class="review-date">${a.data ? new Date(a.data + 'T12:00:00').toLocaleDateString('pt-BR') : ''}${a.recomenda ? ' · <i class="fa-solid fa-thumbs-up"></i> RECOMENDA' : ''}</p>
+                </article>`).join('');
+        }
+
+        function carregarAvaliacoes() {
+            if (typeof api === 'undefined' || !api.listarAvaliacoes) return;
+            api.listarAvaliacoes(produtoAtual).then(renderAvaliacoes).catch(() => {
+                document.getElementById('reviews-empty').hidden = false;
+                document.getElementById('reviews-empty').textContent = 'NÃO FOI POSSÍVEL CARREGAR AS AVALIAÇÕES.';
             });
+        }
+        carregarAvaliacoes();
+
+        function pintarNota(n) {
+            formReview.querySelectorAll('.review-stars-input button').forEach(b => {
+                const on = Number(b.dataset.nota) <= n;
+                b.querySelector('i').className = on ? 'fa-solid fa-star' : 'fa-regular fa-star';
+                b.setAttribute('aria-pressed', on);
+            });
+        }
+        formReview?.querySelectorAll('.review-stars-input button').forEach(b => {
+            b.addEventListener('click', () => { notaEscolhida = Number(b.dataset.nota); pintarNota(notaEscolhida); });
+        });
+
+        document.getElementById('btn-write-review')?.addEventListener('click', () => {
+            if (!isUserLoggedIn || !clienteLogado) {
+                // Precisa estar logado: abre o modal de login
+                modalAuth?.classList.add('active');
+                return;
+            }
+            formReview.hidden = false;
+            document.getElementById('review-titulo').focus();
+        });
+        document.getElementById('btn-cancel-review')?.addEventListener('click', () => {
+            formReview.hidden = true;
+            reviewError.textContent = '';
+        });
+
+        formReview?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            reviewError.classList.remove('ok');
+            reviewError.textContent = '';
+            const titulo = document.getElementById('review-titulo').value.trim();
+            if (!notaEscolhida) { reviewError.textContent = 'ESCOLHA UMA NOTA DE 1 A 5 ESTRELAS.'; return; }
+            if (!titulo) { reviewError.textContent = 'DÊ UM TÍTULO PARA A SUA AVALIAÇÃO.'; return; }
+            if (!clienteLogado) { modalAuth?.classList.add('active'); return; }
+            const btn = formReview.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            try {
+                await api.avaliarProduto({
+                    codigoProduto: produtoAtual,
+                    codigoCliente: clienteLogado.codigo,
+                    nota: notaEscolhida,
+                    titulo,
+                    comentario: document.getElementById('review-comentario').value.trim(),
+                    tamanhoComprado: document.getElementById('review-tamanho').value || null,
+                    recomenda: document.getElementById('review-recomenda').checked,
+                });
+                formReview.reset();
+                notaEscolhida = 0;
+                pintarNota(0);
+                formReview.hidden = true;
+                carregarAvaliacoes();
+                reviewsTrackEl.scrollTo({ left: 0 });
+            } catch (err) {
+                reviewError.textContent = err.status
+                    ? (err.message || 'NÃO FOI POSSÍVEL ENVIAR A AVALIAÇÃO.').toUpperCase()
+                    : 'NÃO FOI POSSÍVEL CONECTAR AO SERVIDOR.';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Seleção de tamanho (só um por vez; os botões são recriados com os tamanhos do produto)
+        document.querySelector('.size-options')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.size-btn');
+            if (!btn) return;
+            document.querySelectorAll('.size-options .size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         });
 
         // Quantidade
@@ -629,7 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // "ADICIONAR" -> adiciona ao carrinho real (localStorage, api.js) e abre o carrinho
         document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
-            const codigo = produtoAtual || 1; // produto demo (Arc'teryx, seedado pelo DataLoader) quando a página é aberta sem ?codigo=
+            const codigo = produtoAtual;
             const quantidade = Number(qtyValue?.textContent) || 1;
             carrinho.adicionar(codigo, quantidade);
             if (typeof renderCarrinho === 'function') renderCarrinho();
@@ -671,10 +806,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Carrossel de avaliações
         const reviewsTrack = document.getElementById('reviews-track');
         document.querySelector('.review-arrow-right')?.addEventListener('click', () => {
-            reviewsTrack.scrollBy({ left: reviewsTrack.firstElementChild.offsetWidth + 20, behavior: 'smooth' });
+            if (reviewsTrack.firstElementChild) reviewsTrack.scrollBy({ left: reviewsTrack.firstElementChild.offsetWidth + 20, behavior: 'smooth' });
         });
         document.querySelector('.review-arrow-left')?.addEventListener('click', () => {
-            reviewsTrack.scrollBy({ left: -(reviewsTrack.firstElementChild.offsetWidth + 20), behavior: 'smooth' });
+            if (reviewsTrack.firstElementChild) reviewsTrack.scrollBy({ left: -(reviewsTrack.firstElementChild.offsetWidth + 20), behavior: 'smooth' });
         });
     }
 

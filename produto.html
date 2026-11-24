@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaqueta Beta AR Gore-Tex - Arc'teryx | HADI</title>
-    <link rel="stylesheet" href="style.css?v=20261124b">
-    <link rel="stylesheet" href="busca.css?v=20261124b">
+    <link rel="stylesheet" href="style.css?v=20261124c">
+    <link rel="stylesheet" href="busca.css?v=20261124c">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -170,7 +170,7 @@
 
 
     <main class="container product-page">
-        <div class="breadcrumbs">
+        <div class="breadcrumbs" id="detail-breadcrumbs">
             <a href="index.html">HOME</a> &gt;
             <a href="catalogo.html">TREKKING</a> &gt;
             <a href="catalogo.html">HOMENS</a> &gt;
@@ -182,9 +182,6 @@
             <div class="product-gallery">
                 <div class="gallery-image">
                     <img id="detail-image-main" src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vista frontal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                </div>
-                <div class="gallery-image">
-                    <img src="img/arcteryx-beta-ar-modelo.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vestida no modelo" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                 </div>
             </div>
 
@@ -198,7 +195,7 @@
                     <span class="installments">OU 12X DE R$291,65 SEM JUROS</span>
                 </div>
 
-                <div class="size-selector">
+                <div class="size-selector" id="detail-sizes">
                     <label>TAMANHOS</label>
                     <div class="size-options">
                         <button type="button" class="size-btn">P</button>
@@ -258,39 +255,50 @@
             </div>
         </div>
 
-        <!-- Avaliações -->
-        <section class="reviews-section">
+        <!-- Avaliações (GET /api/produto/{codigo}/avaliacoes e POST /api/avaliacao, em script.js) -->
+        <section class="reviews-section" id="avaliacoes">
             <div class="reviews-header">
                 <h2 class="section-title" style="margin-bottom:0;">AVALIAÇÕES DO PRODUTO</h2>
-                <div class="reviews-summary">
-                    <span class="stars" aria-hidden="true"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
-                    <span>4 AVALIAÇÕES</span>
-                </div>
+                <div class="reviews-summary" id="reviews-summary"></div>
             </div>
+
+            <div class="reviews-overview" id="reviews-overview">
+                <div class="reviews-score">
+                    <strong id="reviews-media">–</strong>
+                    <span class="stars" id="reviews-media-stars" aria-hidden="true"></span>
+                    <span class="help-text" id="reviews-recomendam"></span>
+                </div>
+                <ul class="reviews-bars" id="reviews-bars"></ul>
+                <button type="button" class="btn-outline" id="btn-write-review">ESCREVER AVALIAÇÃO</button>
+            </div>
+
+            <form id="form-review" class="review-form" hidden novalidate>
+                <h3>SUA AVALIAÇÃO</h3>
+                <div class="review-stars-input" role="radiogroup" aria-label="Nota">
+                    <button type="button" data-nota="1" aria-label="1 estrela"><i class="fa-regular fa-star"></i></button>
+                    <button type="button" data-nota="2" aria-label="2 estrelas"><i class="fa-regular fa-star"></i></button>
+                    <button type="button" data-nota="3" aria-label="3 estrelas"><i class="fa-regular fa-star"></i></button>
+                    <button type="button" data-nota="4" aria-label="4 estrelas"><i class="fa-regular fa-star"></i></button>
+                    <button type="button" data-nota="5" aria-label="5 estrelas"><i class="fa-regular fa-star"></i></button>
+                </div>
+                <input type="text" id="review-titulo" maxlength="80" placeholder="TÍTULO (EX.: MATERIAL ÓTIMO)">
+                <textarea id="review-comentario" maxlength="1000" rows="4" placeholder="CONTE COMO FOI SUA EXPERIÊNCIA COM O PRODUTO"></textarea>
+                <div class="review-form-row">
+                    <select id="review-tamanho" aria-label="Tamanho comprado"><option value="">TAMANHO COMPRADO (OPCIONAL)</option></select>
+                    <label class="checkbox-label"><input type="checkbox" id="review-recomenda" checked> RECOMENDO ESTE PRODUTO</label>
+                </div>
+                <p class="form-error" id="review-error"></p>
+                <div class="review-form-row">
+                    <button type="submit" class="btn-full">ENVIAR AVALIAÇÃO</button>
+                    <button type="button" class="btn-underline" id="btn-cancel-review">CANCELAR</button>
+                </div>
+            </form>
+
+            <p class="help-text" id="reviews-empty" hidden>ESTE PRODUTO AINDA NÃO TEM AVALIAÇÕES. SEJA O PRIMEIRO A AVALIAR!</p>
+
             <div class="reviews-carousel">
                 <button type="button" class="review-arrow review-arrow-left" aria-label="Avaliação anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="reviews-track" id="reviews-track">
-                    <article class="review-card">
-                        <p class="review-title">A JAQUETA É MARAVILHOSA!</p>
-                        <p class="review-author">M**RCIA J.</p>
-                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                    </article>
-                    <article class="review-card">
-                        <p class="review-title">TAMANHO FICOU GRANDE DEMAIS..</p>
-                        <p class="review-author">J***O C.</p>
-                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span>
-                    </article>
-                    <article class="review-card">
-                        <p class="review-title">MATERIAL ÓTIMO</p>
-                        <p class="review-author">N**LE M.</p>
-                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
-                    </article>
-                    <article class="review-card">
-                        <p class="review-title">ENTREGA RÁPIDA E BEM EMBALADA</p>
-                        <p class="review-author">P**LO S.</p>
-                        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span>
-                    </article>
-                </div>
+                <div class="reviews-track" id="reviews-track"></div>
                 <button type="button" class="review-arrow review-arrow-right" aria-label="Próxima avaliação"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </section>
@@ -298,53 +306,8 @@
         <!-- Você também pode gostar -->
         <section class="home-section">
             <h2 class="section-title">VOCÊ TAMBÉM PODE GOSTAR <span class="arrow">&gt;</span></h2>
-            <div class="grid-4-cols">
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/tnf-columbia-fullzip-fleece.png" alt="Columbia Mountain Full Zip 2.0 Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>COLUMBIA</h3>
-                        <p class="product-name">COLUMBIA MOUNTAIN FULL ZIP 2.0 FLEECE</p>
-                        <div class="prices"><span class="price-new">R$ 399,90</span></div>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/oakley-software-windbreaker.png" alt="Corta-vento Oakley Software" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>OAKLEY</h3>
-                        <p class="product-name">OAKLEY SOFTWARE WINDBREAKER</p>
-                        <div class="prices"><span class="price-new">R$ 1.600,00</span></div>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/nike-acg-lichen-fleece-hoodie.png" alt="Hoodie Nike ACG Lichen Fleece" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>NIKE ACG</h3>
-                        <p class="product-name">NIKE ACG LICHEN FLEECE HOODIE - MOSS</p>
-                        <div class="color-swatches">
-                            <span class="swatch" style="background:#8a8a3c;"></span>
-                            <span class="swatch" style="background:#4a6fa5;"></span>
-                            <span class="swatch-more">+2</span>
-                        </div>
-                        <div class="prices"><span class="price-new">R$ 500,00</span></div>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/nike-acg-trail-shorts.png" alt="Shorts Nike ACG Trail Mica Green" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>NIKE ACG</h3>
-                        <p class="product-name">NIKE ACG TRAIL SHORTS - MICA GREEN</p>
-                        <div class="prices"><span class="price-new">R$ 299,90</span></div>
-                    </div>
-                </article>
-            </div>
+            <!-- Preenchido via script.js: outros produtos da API (mesma subcategoria primeiro) -->
+            <div class="grid-4-cols" id="related-grid"></div>
         </section>
     </main>
 
@@ -516,8 +479,8 @@
 
 
 
-    <script src="api.js?v=20261124b"></script>
-    <script src="script.js?v=20261124b"></script>
-    <script src="busca.js?v=20261124b"></script>
+    <script src="api.js?v=20261124c"></script>
+    <script src="script.js?v=20261124c"></script>
+    <script src="busca.js?v=20261124c"></script>
 </body>
 </html>

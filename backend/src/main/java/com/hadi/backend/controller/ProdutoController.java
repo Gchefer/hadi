@@ -2,6 +2,7 @@ package com.hadi.backend.controller;
 
 import com.hadi.backend.dto.ProdutoDTO;
 import com.hadi.backend.entity.Produto;
+import com.hadi.backend.repository.AvaliacaoRepository;
 import com.hadi.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,6 +41,24 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+
+    /** Converte para DTO já com média e total de avaliações (estrelas nos cards e na página do produto). */
+    private List<ProdutoDTO> comAvaliacoes(List<Produto> produtos) {
+        Map<Long, Object[]> resumo = new HashMap<>();
+        for (Object[] linha : avaliacaoRepository.resumoPorProduto()) resumo.put((Long) linha[0], linha);
+        return produtos.stream().map(p -> {
+            ProdutoDTO dto = ProdutoDTO.fromEntity(p);
+            Object[] r = resumo.get(p.getCodigo());
+            if (r != null) {
+                dto.setMediaAvaliacoes(Math.round(((Number) r[1]).doubleValue() * 10) / 10.0);
+                dto.setTotalAvaliacoes(((Number) r[2]).longValue());
+            }
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
     /** Chave do painel admin (header X-Admin-Key). Configurável em hadi.admin.key. */
     @Value("${hadi.admin.key:hadi-admin}")
@@ -66,7 +87,7 @@ public class ProdutoController {
         if (produto.isEmpty() || !produto.get().isAtivo()) {
             return java.util.Collections.emptyMap(); // {} — contrato documentado para "não encontrado"
         }
-        return ProdutoDTO.fromEntity(produto.get());
+        return comAvaliacoes(List.of(produto.get())).get(0);
     }
 
     @PostMapping("/produto")
@@ -133,23 +154,17 @@ public class ProdutoController {
 
     @GetMapping("/produtos")
     public List<ProdutoDTO> listarTodos() {
-        return produtoRepository.findByAtivoTrue().stream()
-                .map(ProdutoDTO::fromEntity)
-                .collect(Collectors.toList());
+        return comAvaliacoes(produtoRepository.findByAtivoTrue());
     }
 
     @GetMapping("/produto/vitrine")
     public List<ProdutoDTO> carregarVitrine() {
-        return produtoRepository.findByDestaqueTrueAndAtivoTrue().stream()
-                .map(ProdutoDTO::fromEntity)
-                .collect(Collectors.toList());
+        return comAvaliacoes(produtoRepository.findByDestaqueTrueAndAtivoTrue());
     }
 
     @GetMapping("/produto/busca/{termo}")
     public List<ProdutoDTO> buscarPorDescricao(@PathVariable String termo) {
-        return produtoRepository.fazerBusca("%" + termo + "%").stream()
-                .map(ProdutoDTO::fromEntity)
-                .collect(Collectors.toList());
+        return comAvaliacoes(produtoRepository.fazerBusca("%" + termo + "%"));
     }
 
     private void aplicarDTO(ProdutoDTO dto, Produto produto) {
@@ -161,5 +176,12 @@ public class ProdutoController {
         produto.setPrecoOriginal(dto.getPrecoOriginal());
         produto.setImagem(dto.getImagem());
         produto.setDestaque(dto.isDestaque());
+        // Atributos de filtro: só altera os que vierem preenchidos (o painel admin pode não enviá-los)
+        if (dto.getDepartamento() != null) produto.setDepartamento(dto.getDepartamento());
+        if (dto.getSubcategoria() != null) produto.setSubcategoria(dto.getSubcategoria());
+        if (dto.getGeneros() != null) produto.setGeneros(dto.getGeneros());
+        if (dto.getTamanhos() != null) produto.setTamanhos(dto.getTamanhos());
+        if (dto.getTecnologias() != null) produto.setTecnologias(dto.getTecnologias());
+        if (dto.getAtividades() != null) produto.setAtividades(dto.getAtividades());
     }
 }

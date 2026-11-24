@@ -16,6 +16,14 @@ public class ProdutoDTO {
     private BigDecimal precoOriginal;
     private String imagem;
     private boolean destaque;
+    private String departamento;
+    private String subcategoria;
+    private String generos;
+    private String tamanhos;
+    private String tecnologias;
+    private String atividades;
+    private Double mediaAvaliacoes;
+    private long totalAvaliacoes;
 
     public ProdutoDTO() {
     }
@@ -31,6 +39,12 @@ public class ProdutoDTO {
         dto.precoOriginal = p.getPrecoOriginal();
         dto.imagem = p.getImagem();
         dto.destaque = p.isDestaque();
+        dto.departamento = p.getDepartamento();
+        dto.subcategoria = p.getSubcategoria();
+        dto.generos = p.getGeneros();
+        dto.tamanhos = p.getTamanhos();
+        dto.tecnologias = p.getTecnologias();
+        dto.atividades = p.getAtividades();
         return dto;
     }
 
@@ -104,5 +118,69 @@ public class ProdutoDTO {
 
     public void setDestaque(boolean destaque) {
         this.destaque = destaque;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getSubcategoria() {
+        return subcategoria;
+    }
+
+    public void setSubcategoria(String subcategoria) {
+        this.subcategoria = subcategoria;
+    }
+
+    public String getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(String generos) {
+        this.generos = generos;
+    }
+
+    public String getTamanhos() {
+        return tamanhos;
+    }
+
+    public void setTamanhos(String tamanhos) {
+        this.tamanhos = tamanhos;
+    }
+
+    public String getTecnologias() {
+        return tecnologias;
+    }
+
+    public void setTecnologias(String tecnologias) {
+        this.tecnologias = tecnologias;
+    }
+
+    public String getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(String atividades) {
+        this.atividades = atividades;
+    }
+
+    public Double getMediaAvaliacoes() {
+        return mediaAvaliacoes;
+    }
+
+    public void setMediaAvaliacoes(Double mediaAvaliacoes) {
+        this.mediaAvaliacoes = mediaAvaliacoes;
+    }
+
+    public long getTotalAvaliacoes() {
+        return totalAvaliacoes;
+    }
+
+    public void setTotalAvaliacoes(long totalAvaliacoes) {
+        this.totalAvaliacoes = totalAvaliacoes;
     }
 }

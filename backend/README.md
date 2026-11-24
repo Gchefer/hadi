@@ -94,9 +94,15 @@ Se o backend estiver rodando em outro host/porta, ajuste a constante
 
 | Entidade | Endpoints do backend usados pelo frontend |
 |---|---|
-| **Produto** | `GET /api/produtos` (catálogo), `GET /api/produto/vitrine` (home), `GET /api/produto/{codigo}` (página de detalhes, carrinho, checkout) |
+| **Produto** | `GET /api/produtos` (catálogo com filtros), `GET /api/produto/vitrine` (home), `GET /api/produto/{codigo}` (página de detalhes, carrinho, checkout), `GET /api/produto/busca/{termo}` (modal de busca) |
 | **Cliente** | `POST /api/cliente` (cadastro), `POST /api/cliente/login` (login), `PUT /api/cliente` (editar endereço em Minha Conta), `PATCH /api/cliente/resetarSenha` (esqueci a senha) |
 | **Pedido** | `POST /api/pedido` (finalizar compra no checkout), `GET /api/pedido/cliente/{codigo}` (aba "Meus Pedidos" em Minha Conta) |
+| **Avaliação** | `GET /api/produto/{codigo}/avaliacoes` (média, total, distribuição por nota e lista), `POST /api/avaliacao` (cliente logado avalia; uma avaliação por cliente/produto), `DELETE /api/avaliacao/{codigo}` (admin, header `X-Admin-Key`) |
+
+Os produtos também trazem os atributos usados pelos filtros do catálogo (`departamento`,
+`subcategoria`, `generos`, `tamanhos`, `tecnologias`, `atividades`, separados por vírgula) e o
+resumo das avaliações (`mediaAvaliacoes`, `totalAvaliacoes`). Na primeira execução o `DataLoader`
+grava avaliações de demonstração; em bancos antigos ele completa os atributos de filtro dos produtos de demonstração.
 
 A sessão do cliente logado e o carrinho de compras são guardados no
 `localStorage` do navegador (`api.js` (raiz)), já que o escopo do backend

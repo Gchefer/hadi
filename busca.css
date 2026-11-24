@@ -72,3 +72,8 @@
 .pagination .page-btn:disabled { opacity: .3; cursor: default; }
 #results-grid .product-card { animation: fadeIn .3s ease; }
 @media (min-width: 993px) { .active-filters:empty { display: none; } }
+
+/* Nota média nos cards do catálogo */
+.card-rating { font-size: 0.75rem; font-weight: 700; margin-top: 6px; }
+.card-rating i { color: #c8a200; }
+.card-rating span { color: #666; font-weight: 400; }

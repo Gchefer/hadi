@@ -97,6 +97,7 @@ Se o backend estiver rodando em outro host/porta, ajuste a constante
 | **Produto** | `GET /api/produtos` (catálogo com filtros), `GET /api/produto/vitrine` (home), `GET /api/produto/{codigo}` (página de detalhes, carrinho, checkout), `GET /api/produto/busca/{termo}` (modal de busca) |
 | **Cliente** | `POST /api/cliente` (cadastro), `POST /api/cliente/login` (login), `PUT /api/cliente` (editar endereço em Minha Conta), `PATCH /api/cliente/resetarSenha` (esqueci a senha) |
 | **Pedido** | `POST /api/pedido` (finalizar compra no checkout), `GET /api/pedido/cliente/{codigo}` (aba "Meus Pedidos" em Minha Conta) |
+| **CEP / Frete** | `GET /api/cep/{cep}` (endereço pelo ViaCEP), `GET /api/frete/{cep}?subtotal=` (endereço + PAC/SEDEX com valor e prazo; PAC grátis acima de R$ 800). O `POST /api/pedido` aceita `cepEntrega` e `tipoEntrega` e soma o frete ao total, calculado no servidor |
 | **Avaliação** | `GET /api/produto/{codigo}/avaliacoes` (média, total, distribuição por nota e lista), `POST /api/avaliacao` (cliente logado avalia; uma avaliação por cliente/produto), `DELETE /api/avaliacao/{codigo}` (admin, header `X-Admin-Key`) |
 
 Os produtos também trazem os atributos usados pelos filtros do catálogo (`departamento`,

@@ -36,6 +36,10 @@ const api = {
     listarAvaliacoes: (codigoProduto) => apiRequest(`/produto/${codigoProduto}/avaliacoes`),
     avaliarProduto: (dados) => apiRequest('/avaliacao', { method: 'POST', body: JSON.stringify(dados) }),
 
+    // --- CEP / FRETE ---
+    consultarCep: (cep) => apiRequest(`/cep/${String(cep).replace(/\D/g, '')}`),
+    calcularFrete: (cep, subtotal) => apiRequest(`/frete/${String(cep).replace(/\D/g, '')}` + (subtotal != null ? `?subtotal=${Number(subtotal).toFixed(2)}` : '')),
+
     // --- PRODUTO (painel admin: exige a chave X-Admin-Key) ---
     cadastrarProduto: (dados, chave) => apiRequest('/produto', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': chave }, body: JSON.stringify(dados) }),
     alterarProduto: (dados, chave) => apiRequest('/produto', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': chave }, body: JSON.stringify(dados) }),

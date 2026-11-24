@@ -14,6 +14,9 @@ public class PedidoRespostaDTO {
     private String clienteNome;
     private List<ItemPedidoDTO> itens;
     private BigDecimal valorTotal;
+    private BigDecimal valorFrete;
+    private String tipoEntrega;
+    private String cepEntrega;
     private String formaPagamento;
     private String status;
     private LocalDateTime dataPedido;
@@ -25,6 +28,9 @@ public class PedidoRespostaDTO {
         dto.clienteNome = p.getCliente() != null ? p.getCliente().getNome() : null;
         dto.itens = p.getItens().stream().map(ItemPedidoDTO::fromEntity).collect(Collectors.toList());
         dto.valorTotal = p.getValorTotal();
+        dto.valorFrete = p.getValorFrete();
+        dto.tipoEntrega = p.getTipoEntrega();
+        dto.cepEntrega = p.getCepEntrega();
         dto.formaPagamento = p.getFormaPagamento();
         dto.status = p.getStatus();
         dto.dataPedido = p.getDataPedido();
@@ -93,5 +99,29 @@ public class PedidoRespostaDTO {
 
     public void setDataPedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
+    }
+
+    public BigDecimal getValorFrete() {
+        return valorFrete;
+    }
+
+    public void setValorFrete(BigDecimal valorFrete) {
+        this.valorFrete = valorFrete;
+    }
+
+    public String getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public String getCepEntrega() {
+        return cepEntrega;
+    }
+
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
     }
 }

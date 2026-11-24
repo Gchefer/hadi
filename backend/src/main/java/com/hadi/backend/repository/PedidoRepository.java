@@ -1,0 +1,11 @@
+package com.hadi.backend.repository;
+
+import com.hadi.backend.entity.Pedido;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
+
+    List<Pedido> findByCliente_CodigoOrderByDataPedidoDesc(Long clienteCodigo);
+}

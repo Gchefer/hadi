@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compre por Atividade - HADI</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="busca.css">
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <link rel="stylesheet" href="busca.css?v=20261124b">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -171,23 +171,27 @@
 
 
     <main class="container catalog-page">
+        <!-- Breadcrumbs e Título -->
         <div class="catalog-header">
-            <div>
-                <div class="breadcrumbs" style="margin-bottom:8px"><a href="index.html">HOME</a> &gt; <a href="catalogo.html">CATÁLOGO</a></div>
-                <p class="results-count" id="results-count" aria-live="polite"></p>
+            <div class="breadcrumbs">
+                <a href="index.html">HOME</a> &gt; <a href="catalogo.html">COMPRE POR ATIVIDADE</a> &gt; <span>TREKKING HOMENS ROUPAS</span>
             </div>
             <div class="catalog-actions">
-                <button id="btn-mobile-filter" class="btn-underline">FILTRAR <span id="filter-badge"></span></button>
+                <button id="btn-mobile-filter" class="btn-underline">FILTRAR</button>
                 <button id="btn-clear-all-filters" class="btn-underline">LIMPAR TODOS OS FILTROS</button>
                 <div class="sort-by">
                     <label for="sort">ORDENAR POR</label>
-                    <select id="sort"><option>MAIS RECENTES</option><option>MENOR PREÇO</option><option>MAIOR PREÇO</option></select>
+                    <select id="sort">
+                        <option>MAIS RECENTES</option>
+                        <option>MENOR PREÇO</option>
+                        <option>MAIOR PREÇO</option>
+                    </select>
                 </div>
             </div>
         </div>
-        <div class="active-filters" id="results-chip"></div>
 
         <div class="catalog-layout">
+            <!-- Barra Lateral de Filtros -->
             <aside class="sidebar-filters" id="sidebar-filters">
                 <div class="filter-sidebar-header">
                     <h3><i class="fa-solid fa-sliders"></i> FILTRAR</h3>
@@ -208,8 +212,8 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>CATEGORIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <div class="category-item">
-                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> ROUPAS</label>
+                        <div class="category-item expanded">
+                            <label class="checkbox-label"><input type="checkbox" class="category-toggle" checked> ROUPAS</label>
                             <ul class="subcategory-list">
                                 <li><label class="checkbox-label"><input type="checkbox"> JAQUETAS</label></li>
                                 <li><label class="checkbox-label"><input type="checkbox"> CAMISETAS</label></li>
@@ -239,7 +243,7 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>GÊNERO</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox"> HOMENS</label>
+                        <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
                         <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
                         <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
                     </div>
@@ -278,7 +282,7 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>ATIVIDADE</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox"> TREKKING</label>
+                        <label class="checkbox-label"><input type="checkbox" checked> TREKKING</label>
                         <label class="checkbox-label"><input type="checkbox"> TRAIL RUNNING</label>
                         <label class="checkbox-label"><input type="checkbox"> SKI E NEVE</label>
                         <label class="checkbox-label"><input type="checkbox"> CASUAL</label>
@@ -286,21 +290,25 @@
                 </div>
 
                 <div class="filter-actions">
-                    <button type="button" class="btn-full" id="btn-apply-filters">APLICAR FILTROS</button>
-                    <button type="button" class="btn-outline">LIMPAR FILTROS</button>
+                    <button class="btn-full">APLICAR FILTROS</button>
+                    <button class="btn-outline">LIMPAR FILTROS</button>
                 </div>
             </aside>
 
+            <!-- Grelha de Produtos (preenchida via API em script.js -> carregarCatalogo()) -->
             <section class="products-area">
-                <div class="grid-3-cols" id="results-grid"></div>
-                <div class="search-empty" id="results-empty" hidden style="padding:60px 0">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <p>NENHUM PRODUTO ENCONTRADO COM ESSES FILTROS.</p>
-                    <div class="search-suggestions" style="justify-content:center">
-                        <button type="button" class="chip" id="empty-clear">LIMPAR FILTROS</button>
-                    </div>
+                <p id="catalog-status" class="help-text" style="display:none;"></p>
+                <div class="grid-3-cols" id="catalog-grid">
                 </div>
-                <div class="pagination" id="results-pagination"></div>
+
+                <!-- Paginação -->
+                <div class="pagination">
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">&gt;</button>
+                </div>
             </section>
         </div>
     </main>
@@ -387,23 +395,9 @@
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
-            <div class="cart-items">
-                <div class="cart-item">
-                    <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    <div class="item-details">
-                        <h4>ARC'TERYX</h4>
-                        <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                        <p>R$ 3.499,90</p>
-                        <div class="cart-item-footer">
-                            <div class="qty-stepper">
-                                <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
-                                <span class="qty-value">01</span>
-                                <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
-                            </div>
-                            <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Preenchido via script.js -> renderCarrinho() -->
+                <p class="help-text" id="cart-empty-msg" style="display:none;">SEU CARRINHO ESTÁ VAZIO.</p>
             </div>
             <div class="cart-shipping">
                 <label>CALCULE O FRETE</label>
@@ -418,6 +412,7 @@
                 <button type="button" class="btn-outline">APLICAR</button>
             </div>
             <div class="cart-footer">
+                <p class="cart-total" id="cart-total" style="font-weight:700; margin-bottom:10px;"></p>
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
             </div>
@@ -433,8 +428,9 @@
                 <button class="tab-btn" data-target="form-register">PRIMEIRO ACESSO</button>
             </div>
             <form id="form-login" class="auth-form active">
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
+                <input type="email" id="login-email" placeholder="E-MAIL" required>
+                <input type="password" id="login-pass" placeholder="SENHA" required>
+                <p class="form-error" id="login-error" role="alert"></p>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
@@ -465,7 +461,7 @@
 
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>Chefer</strong></li>
+            <li><strong id="user-dropdown-name">Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -473,7 +469,8 @@
         </ul>
     </div>
 
-    <script src="script.js"></script>
-    <script src="busca.js"></script>
+    <script src="api.js?v=20261124b"></script>
+    <script src="script.js?v=20261124b"></script>
+    <script src="busca.js?v=20261124b"></script>
 </body>
 </html>

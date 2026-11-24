@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - HADI</title>
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <style>
+        .adm { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .adm h1 { font-size: 1.6rem; letter-spacing: 1px; margin-bottom: 6px; }
+        .adm .sub { font-size: .8rem; margin-bottom: 20px; }
+        .adm-card { background: #fff; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border-color); }
+        .adm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .adm-grid .full { grid-column: 1 / -1; }
+        .adm label { display: block; font-size: .7rem; font-weight: 700; margin-bottom: 4px; }
+        .adm input[type=text], .adm input[type=number], .adm input[type=password], .adm textarea, .adm select {
+            width: 100%; padding: 10px; background: #e5e5df; border: none; font-family: inherit; }
+        .adm textarea { min-height: 70px; resize: vertical; }
+        .adm-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .adm button { padding: 12px 22px; background: #1a1a1a; color: #fff; border: none; cursor: pointer; font-weight: 700; letter-spacing: 1px; }
+        .adm button.sec { background: transparent; color: #1a1a1a; border: 1px solid #1a1a1a; }
+        .adm button.del { background: var(--text-red); }
+        .adm table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+        .adm th, .adm td { padding: 8px; border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: middle; }
+        .adm td img { width: 48px; height: 48px; object-fit: contain; background: var(--bg-cards); }
+        .adm-msg { font-size: .8rem; font-weight: 700; margin-top: 10px; min-height: 1em; }
+        .adm-msg.err { color: var(--text-red); }
+        @media (max-width: 600px) { .adm-grid { grid-template-columns: 1fr; } .adm table { display: block; overflow-x: auto; } }
+    </style>
+</head>
+<body>
+<main class="adm">
+    <h1>PAINEL ADMIN &mdash; PRODUTOS</h1>
+    <p class="sub"><a href="index.html" class="btn-underline">&larr; VOLTAR À LOJA</a></p>
+
+    <section class="adm-card">
+        <label for="adm-key">CHAVE DE ADMINISTRADOR (padrão: hadi-admin)</label>
+        <input type="password" id="adm-key" autocomplete="off">
+    </section>
+
+    <section class="adm-card">
+        <h2 id="form-titulo" style="font-size:1rem; margin-bottom:14px;">CADASTRAR NOVO PRODUTO</h2>
+        <form id="form-produto" novalidate>
+            <input type="hidden" id="p-codigo">
+            <div class="adm-grid">
+                <div><label for="p-marca">MARCA*</label><input type="text" id="p-marca" required></div>
+                <div><label for="p-nome">NOME*</label><input type="text" id="p-nome" required></div>
+                <div><label for="p-categoria">CATEGORIA</label><input type="text" id="p-categoria" placeholder="Jaquetas, Acessórios..."></div>
+                <div><label for="p-preco">PREÇO (R$)*</label><input type="number" id="p-preco" step="0.01" min="0.01" required></div>
+                <div><label for="p-preco-original">PREÇO ORIGINAL (R$) - OPCIONAL, PARA PROMOÇÃO</label><input type="number" id="p-preco-original" step="0.01" min="0"></div>
+                <div><label for="p-imagem-arquivo">FOTO DO PRODUTO (PNG/JPG/WEBP)</label><input type="file" id="p-imagem-arquivo" accept="image/*"></div>
+                <div class="full"><label for="p-imagem">NOME DA IMAGEM (preenchido automaticamente no upload, ou use um arquivo de img/)</label><input type="text" id="p-imagem" placeholder="ex: arcteryx-beta-ar.png"></div>
+                <div class="full"><label for="p-descricao">DESCRIÇÃO</label><textarea id="p-descricao"></textarea></div>
+                <div class="full"><label><input type="checkbox" id="p-destaque"> EXIBIR NA VITRINE DA HOME (SALE)</label></div>
+            </div>
+            <div class="adm-actions">
+                <button type="submit" id="btn-salvar">SALVAR PRODUTO</button>
+                <button type="button" class="sec" id="btn-cancelar" style="display:none;">CANCELAR EDIÇÃO</button>
+            </div>
+            <p class="adm-msg" id="adm-msg" role="alert"></p>
+        </form>
+    </section>
+
+    <section class="adm-card">
+        <h2 style="font-size:1rem; margin-bottom:14px;">PRODUTOS CADASTRADOS</h2>
+        <table>
+            <thead><tr><th></th><th>CÓD.</th><th>MARCA / NOME</th><th>CATEGORIA</th><th>PREÇO</th><th>VITRINE</th><th></th></tr></thead>
+            <tbody id="adm-lista"></tbody>
+        </table>
+    </section>
+</main>
+
+<script src="api.js?v=20261124b"></script>
+<script>
+    const $ = (id) => document.getElementById(id);
+    const msg = $('adm-msg');
+    let produtos = [];
+
+    const chave = () => $('adm-key').value.trim();
+    $('adm-key').value = sessionStorage.getItem('hadi_admin_key') || '';
+    $('adm-key').addEventListener('input', () => sessionStorage.setItem('hadi_admin_key', chave()));
+
+    function mostrar(texto, erro) { msg.textContent = texto; msg.className = 'adm-msg' + (erro ? ' err' : ''); }
+
+    async function carregar() {
+        try {
+            produtos = await api.listarProdutos();
+        } catch {
+            $('adm-lista').innerHTML = '<tr><td colspan="7">Backend fora do ar (' + API_BASE_URL + ').</td></tr>';
+            return;
+        }
+        $('adm-lista').innerHTML = '';
+        produtos.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><img src="${caminhoImagem(p.imagem)}" alt=""></td>
+                <td>${p.codigo}</td>
+                <td><strong></strong><br><span></span></td>
+                <td></td>
+                <td>${formatarPreco(p.preco)}</td>
+                <td>${p.destaque ? 'SIM' : '-'}</td>
+                <td><button type="button" class="sec">EDITAR</button> <button type="button" class="del">EXCLUIR</button></td>`;
+            // textContent evita injeção de HTML vinda dos dados do banco
+            tr.querySelector('strong').textContent = p.marca;
+            tr.querySelector('span').textContent = p.nome;
+            tr.children[3].textContent = p.categoria || '-';
+            tr.querySelector('.sec').addEventListener('click', () => editar(p));
+            tr.querySelector('.del').addEventListener('click', () => excluir(p));
+            $('adm-lista').appendChild(tr);
+        });
+    }
+
+    function editar(p) {
+        $('p-codigo').value = p.codigo;
+        $('p-marca').value = p.marca || '';
+        $('p-nome').value = p.nome || '';
+        $('p-categoria').value = p.categoria || '';
+        $('p-preco').value = p.preco;
+        $('p-preco-original').value = p.precoOriginal || '';
+        $('p-imagem').value = p.imagem || '';
+        $('p-descricao').value = p.descricao || '';
+        $('p-destaque').checked = !!p.destaque;
+        $('form-titulo').textContent = 'EDITAR PRODUTO #' + p.codigo;
+        $('btn-cancelar').style.display = 'inline-block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function limpar() {
+        $('form-produto').reset();
+        $('p-codigo').value = '';
+        $('form-titulo').textContent = 'CADASTRAR NOVO PRODUTO';
+        $('btn-cancelar').style.display = 'none';
+    }
+    $('btn-cancelar').addEventListener('click', () => { limpar(); mostrar(''); });
+
+    async function excluir(p) {
+        if (!confirm(`Excluir "${p.nome}"?`)) return;
+        try {
+            await api.excluirProduto(p.codigo, chave());
+            mostrar('Produto removido.');
+            carregar();
+        } catch (e) { mostrar(e.message, true); }
+    }
+
+    $('form-produto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        mostrar('');
+        if (!$('form-produto').checkValidity()) { $('form-produto').reportValidity(); return; }
+        try {
+            const arquivo = $('p-imagem-arquivo').files[0];
+            if (arquivo) {
+                $('p-imagem').value = await api.enviarImagemProduto(arquivo, chave());
+            }
+            const dados = {
+                codigo: $('p-codigo').value ? Number($('p-codigo').value) : null,
+                marca: $('p-marca').value.trim(),
+                nome: $('p-nome').value.trim(),
+                categoria: $('p-categoria').value.trim(),
+                preco: Number($('p-preco').value),
+                precoOriginal: $('p-preco-original').value ? Number($('p-preco-original').value) : null,
+                imagem: $('p-imagem').value.trim(),
+                descricao: $('p-descricao').value.trim(),
+                destaque: $('p-destaque').checked,
+            };
+            const resposta = dados.codigo ? await api.alterarProduto(dados, chave()) : await api.cadastrarProduto(dados, chave());
+            mostrar(typeof resposta === 'string' ? resposta : 'Salvo com sucesso!');
+            limpar();
+            carregar();
+        } catch (err) {
+            mostrar(err.message || 'Erro ao salvar o produto.', true);
+        }
+    });
+
+    carregar();
+</script>
+</body>
+</html>

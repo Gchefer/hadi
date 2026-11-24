@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HADI Active Wear</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="busca.css">
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <link rel="stylesheet" href="busca.css?v=20261124b">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -192,63 +192,8 @@
                 <h2 class="section-title" style="margin-bottom:0;">SALE: ACESSÓRIOS <span class="arrow">&gt;</span></h2>
                 <a href="catalogo.html" class="btn-underline">VER MAIS</a>
             </div>
-            <div class="grid-4-cols">
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/patagonia-slingbag.png" alt="Patagonia Atom Slingbag 8L" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>PATAGONIA</h3>
-                        <p class="product-name">PATAGONIA ATOM SLINGBAG 8L</p>
-                        <div class="prices">
-                            <span class="price-old">R$ 366,62</span>
-                            <span class="price-new">R$ 270,99 <span class="discount">-26,1%</span></span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/oakley-eye-jacket-dune.png" alt="Óculos Oakley Satisfy x Oakley Eye Jacket Dune" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>OAKLEY</h3>
-                        <p class="product-name">SATISFY X OAKLEY - EYE JACKET DUNE</p>
-                        <div class="prices">
-                            <span class="price-old">R$ 1.380,00</span>
-                            <span class="price-new">R$ 690,00 <span class="discount">-50%</span></span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/arcteryx-bird-head-beanie.png" alt="Gorro Arc'teryx Bird Head Nightscape/Glacial" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>ARC'TERYX</h3>
-                        <p class="product-name">ARC'TERYX BIRD HEAD NIGHTSCAPE/GLACIAL</p>
-                        <div class="prices">
-                            <span class="price-old">R$ 531,56</span>
-                            <span class="price-new">R$ 390,00 <span class="discount">-27%</span></span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="product-card">
-                    <div class="img-wrapper">
-                        <img src="img/oakley-radar-ev-path.png" alt="Óculos Oakley Radar EV Path Masculino" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    </div>
-                    <div class="product-info">
-                        <h3>OAKLEY</h3>
-                        <p class="product-name">OAKLEY RADAR EV PATH - MASCULINO</p>
-                        <div class="prices">
-                            <span class="price-old">R$ 1.670,00</span>
-                            <span class="price-new">R$ 999,00 <span class="discount">-40%</span></span>
-                        </div>
-                    </div>
-                </article>
-            </div>
+            <!-- Preenchido via API em script.js -> carregarVitrine() -->
+            <div class="grid-4-cols" id="vitrine-grid"></div>
         </section>
 
         <!-- COMPRE POR ATIVIDADE -->
@@ -395,24 +340,9 @@
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
-            <div class="cart-items">
-                <!-- Exemplo de item no carrinho -->
-                <div class="cart-item">
-                    <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    <div class="item-details">
-                        <h4>ARC'TERYX</h4>
-                        <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                        <p>R$ 3.499,90</p>
-                        <div class="cart-item-footer">
-                            <div class="qty-stepper">
-                                <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
-                                <span class="qty-value">01</span>
-                                <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
-                            </div>
-                            <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Preenchido via script.js -> renderCarrinho() -->
+                <p class="help-text" id="cart-empty-msg" style="display:none;">SEU CARRINHO ESTÁ VAZIO.</p>
             </div>
 
             <div class="cart-shipping">
@@ -429,6 +359,7 @@
             </div>
 
             <div class="cart-footer">
+                <p class="cart-total" id="cart-total" style="font-weight:700; margin-bottom:10px;"></p>
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
             </div>
@@ -448,8 +379,9 @@
 
             <!-- Formulário Login -->
             <form id="form-login" class="auth-form active">
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
+                <input type="email" id="login-email" placeholder="E-MAIL" required>
+                <input type="password" id="login-pass" placeholder="SENHA" required>
+                <p class="form-error" id="login-error" role="alert"></p>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
@@ -483,7 +415,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>CHEFER</strong></li>
+            <li><strong id="user-dropdown-name">Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -491,7 +423,8 @@
         </ul>
     </div>
 
-    <script src="script.js"></script>
-    <script src="busca.js"></script>
+    <script src="api.js?v=20261124b"></script>
+    <script src="script.js?v=20261124b"></script>
+    <script src="busca.js?v=20261124b"></script>
 </body>
 </html>

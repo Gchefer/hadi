@@ -606,3 +606,26 @@ li { list-style: none; }
     .review-card { flex: 0 0 85%; }
     .add-to-cart-row { flex-direction: column; }
 }
+
+/* ===== Minha Conta: validações, edição de dados e verificação de cartão ===== */
+.field-hint { display: block; font-size: 0.7rem; font-weight: 700; margin-top: 4px; min-height: 1em; }
+.field-hint.ok { color: #2e7d32; }
+.field-hint.bad { color: var(--text-red); }
+.form-error.ok { color: #2e7d32; }
+.account-field-row select { flex: 1; min-width: 200px; padding: 12px 15px; background: #e5e5df; border: none; font-family: var(--font-body); font-weight: bold; }
+.account-field-row input:not([readonly]), .account-field-row select:not([disabled]) { outline: 2px solid var(--text-color); }
+.account-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 10px; }
+
+.card-modal { max-width: 460px; max-height: 92vh; overflow-y: auto; }
+.card-preview { background: linear-gradient(135deg, #1a1a1a, #4a4a44); color: #fff; border-radius: 10px; padding: 18px 20px; margin: 10px 0 18px; display: flex; flex-direction: column; gap: 18px; }
+.card-preview .cp-brand { font-family: var(--font-title); letter-spacing: 2px; font-size: 0.9rem; opacity: .85; }
+.card-preview .cp-number { font-size: 1.15rem; letter-spacing: 3px; font-weight: 700; word-break: break-all; }
+.card-preview .cp-row { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; letter-spacing: 1px; }
+.card-row { display: flex; gap: 12px; }
+.card-row input { flex: 1; min-width: 0; }
+.card-checks { list-style: none; font-size: 0.7rem; font-weight: 700; display: grid; gap: 4px; }
+.card-checks li::before { content: "○ "; }
+.card-checks li.ok { color: #2e7d32; }
+.card-checks li.ok::before { content: "✔ "; }
+.card-checks li.bad { color: var(--text-red); }
+.card-checks li.bad::before { content: "✘ "; }

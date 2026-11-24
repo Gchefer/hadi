@@ -89,8 +89,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botões de fechar
     const closeBtns = document.querySelectorAll('.close-modal');
 
-    // Estado de Autenticação Simulado (Altere para true para ver o menu "A Minha Conta")
-    let isUserLoggedIn = false;
+    // Estado de autenticação real: vem da sessão salva em localStorage pelo api.js
+    // depois de um login/cadastro bem-sucedido contra o backend.
+    let clienteLogado = (typeof sessao !== 'undefined') ? sessao.obter() : null;
+    let isUserLoggedIn = !!clienteLogado;
+
+    function atualizarUIDoUsuario() {
+        const primeiroNome = clienteLogado ? ((clienteLogado.nome || '').trim().split(/\s+/)[0] || clienteLogado.email || '') : '';
+        const nomeEl = document.getElementById('user-dropdown-name');
+        if (nomeEl && clienteLogado) nomeEl.textContent = primeiroNome || 'MINHA CONTA';
+        // Saudação da Minha Conta (antes fixa como "MARIANA" no HTML do mockup)
+        const saudacao = document.querySelector('.user-greeting');
+        if (saudacao) {
+            saudacao.innerHTML = '<i class="fa-regular fa-circle-user"></i> ';
+            saudacao.append(clienteLogado ? primeiroNome.toUpperCase() : 'VISITANTE');
+        }
+    }
+    atualizarUIDoUsuario();
+
+    // Páginas que mostram dados da conta: depois de entrar, recarrega para buscar os dados do cliente.
+    const paginaComDadosDaConta = !!(document.getElementById('form-dados') || document.getElementById('form-checkout-step1'));
+
+    // Confirma no backend que a sessão salva ainda é válida (conta existe e é a mesma).
+    // Se o navegador ainda tiver um api.js antigo em cache (sem sessaoPronta), usa a sessão local em vez de quebrar.
+    const sessaoValidada = (typeof sessaoPronta !== 'undefined' ? sessaoPronta : Promise.resolve(sessao.obter()));
+    sessaoValidada.then((c) => {
+        const mudou = !!clienteLogado !== !!c;
+        clienteLogado = c;
+        isUserLoggedIn = !!c;
+        atualizarUIDoUsuario();
+        if (mudou && typeof renderCarrinho === 'function') renderCarrinho();
+        // Sem login nas páginas da conta/checkout: já abre o modal de acesso.
+        if (!c && paginaComDadosDaConta && modalAuth) modalAuth.classList.add('active');
+    });
+
+    // "SAIR" do menu do usuário e da barra lateral da Minha Conta (antes esta só navegava, sem deslogar)
+    document.querySelectorAll('#btn-logout, .logout-link').forEach((el) => el.addEventListener('click', (e) => {
+        e.preventDefault();
+        sessao.limpar();
+        window.location.href = 'index.html';
+    }));
 
     // --- FUNÇÕES DE ABRIR/FECHAR MODAIS ---
     function closeModal(modal) {
@@ -188,13 +226,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    formRecover?.addEventListener('submit', (e) => {
+    formRecover?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const emailValue = document.getElementById('recover-email').value.trim();
+        // PATCH /api/cliente/resetarSenha: zera a senha do cliente para "Senha1234" (regra fixa do backend)
+        if (typeof api !== 'undefined') {
+            try { await api.resetarSenha(emailValue); } catch { /* segue para a tela de sucesso mesmo assim */ }
+        }
         document.getElementById('recover-sent-to').textContent = emailValue.toUpperCase();
         showAuthView('success');
     });
-    document.getElementById('resend-recover')?.addEventListener('click', () => {
+    document.getElementById('resend-recover')?.addEventListener('click', async () => {
+        const emailValue = document.getElementById('recover-sent-to')?.textContent || '';
+        if (typeof api !== 'undefined' && emailValue) {
+            try { await api.resetarSenha(emailValue); } catch { /* ignora falha no reenvio */ }
+        }
         alert('Enviamos o link novamente. Confira sua caixa de entrada.');
     });
     document.querySelectorAll('.back-to-login').forEach(btn => {
@@ -204,19 +250,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ao reabrir o modal pelo ícone de utilizador, volta sempre para o Login
     btnUser?.addEventListener('click', () => { if (!isUserLoggedIn) showAuthView('login'); });
 
-    // --- SIMULAÇÃO DE LOGIN ---
+    // --- LOGIN (integrado com POST /api/cliente/login) ---
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
-        formLogin.addEventListener('submit', (e) => {
+        const loginError = document.getElementById('login-error');
+        formLogin.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Simula o login com sucesso
-            isUserLoggedIn = true;
-            closeModal(modalAuth);
-            alert('Bem-vindo, Gustavo!');
+            if (loginError) loginError.textContent = '';
+            if (!formLogin.checkValidity()) {
+                formLogin.reportValidity();
+                return;
+            }
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-pass').value;
+            const btn = formLogin.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            try {
+                const cliente = await api.login(email, senha);
+                if (!cliente || !cliente.codigo) {
+                    if (loginError) loginError.textContent = 'E-MAIL OU SENHA INVÁLIDOS.';
+                    return;
+                }
+                sessao.salvar(cliente);
+                clienteLogado = cliente;
+                isUserLoggedIn = true;
+                atualizarUIDoUsuario();
+                if (typeof renderCarrinho === 'function') renderCarrinho(); // carrinho da conta (+ itens sem login)
+                closeModal(modalAuth);
+                formLogin.reset();
+                if (paginaComDadosDaConta) window.location.reload();
+            } catch (err) {
+                if (loginError) loginError.textContent = err.status
+                    ? (err.message || 'ERRO AO FAZER LOGIN.').toUpperCase()
+                    : 'NÃO FOI POSSÍVEL CONECTAR AO SERVIDOR. VERIFIQUE SE O BACKEND ESTÁ RODANDO EM ' + API_BASE_URL;
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+            }
         });
     }
 
-    // --- CADASTRO (PRIMEIRO ACESSO): validação de senha antes de simular a conta ---
+    // --- CADASTRO / PRIMEIRO ACESSO (integrado com POST /api/cliente) ---
     const formRegister = document.getElementById('form-register');
     if (formRegister) {
         const registerError = document.getElementById('register-error');
@@ -226,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inp?.addEventListener('input', () => { if (registerError) registerError.textContent = ''; });
         });
 
-        formRegister.addEventListener('submit', (e) => {
+        formRegister.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!formRegister.checkValidity()) {
                 // Deixa o navegador apontar o campo obrigatório vazio/e-mail inválido
@@ -243,11 +317,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 registerPass2.focus();
                 return;
             }
-            // Simula a criação de conta com sucesso
-            isUserLoggedIn = true;
-            closeModal(modalAuth);
-            alert('Conta criada com sucesso! Bem-vindo, ' + (document.getElementById('register-name').value.trim().split(' ')[0] || '') + '!');
-            formRegister.reset();
+
+            const nome = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const senha = registerPass.value;
+            const btn = formRegister.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            try {
+                const resposta = await api.cadastrarCliente({ nome, email, senha });
+                if (typeof resposta === 'string' && resposta.toLowerCase().includes('sucesso')) {
+                    // O backend responde "Cliente gravado com sucesso! <codigo>" — extraímos o código.
+                    const codigoMatch = resposta.match(/(\d+)\s*$/);
+                    clienteLogado = { codigo: codigoMatch ? Number(codigoMatch[1]) : null, nome, email };
+                    sessao.salvar(clienteLogado);
+                    isUserLoggedIn = true;
+                    atualizarUIDoUsuario();
+                    if (typeof renderCarrinho === 'function') renderCarrinho();
+                    closeModal(modalAuth);
+                    formRegister.reset();
+                    if (paginaComDadosDaConta) window.location.reload();
+                } else {
+                    // Ex.: "E-mail já cadastrado!"
+                    registerError.textContent = (resposta || 'NÃO FOI POSSÍVEL CRIAR A CONTA.').toUpperCase();
+                }
+            } catch (err) {
+                registerError.textContent = err.status
+                    ? (err.message || 'NÃO FOI POSSÍVEL CRIAR A CONTA.').toUpperCase()
+                    : 'NÃO FOI POSSÍVEL CONECTAR AO SERVIDOR. VERIFIQUE SE O BACKEND ESTÁ RODANDO EM ' + API_BASE_URL;
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+            }
         });
     }
 
@@ -267,21 +367,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- MINHA CONTA: validação do formulário de endereço ---
-    const formAccountAddress = document.getElementById('form-account-address');
-    if (formAccountAddress) {
-        const addrError = document.getElementById('addr-error');
-        formAccountAddress.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (addrError) addrError.textContent = '';
-            if (!formAccountAddress.checkValidity()) {
-                formAccountAddress.reportValidity();
-                if (addrError) addrError.textContent = 'PREENCHA TODOS OS CAMPOS OBRIGATÓRIOS CORRETAMENTE.';
-                return;
-            }
-            alert('Endereço salvo com sucesso!');
-        });
-    }
+    // (Dados Pessoais, endereço e cartões da Minha Conta ficam em conta.js)
+
+    const pedidosLista = document.getElementById('pedidos-lista');
+    if (pedidosLista && typeof api !== 'undefined') sessaoValidada.then(() => {
+        const pedidosVazio = document.getElementById('pedidos-vazio');
+        if (!clienteLogado || !clienteLogado.codigo) {
+            if (pedidosVazio) { pedidosVazio.textContent = 'FAÇA LOGIN PARA VER SEUS PEDIDOS.'; pedidosVazio.style.display = 'block'; }
+        } else {
+            api.buscarPedidosDoCliente(clienteLogado.codigo)
+                .then(pedidos => {
+                    if (!pedidos || pedidos.length === 0) {
+                        if (pedidosVazio) { pedidosVazio.textContent = 'VOCÊ AINDA NÃO FEZ NENHUM PEDIDO.'; pedidosVazio.style.display = 'block'; }
+                        return;
+                    }
+                    pedidos.forEach(pedido => {
+                        const card = document.createElement('div');
+                        card.className = 'order-details-card';
+                        const itensHtml = (pedido.itens || []).map(item => `
+                            <div class="order-product">
+                                <img src="${caminhoImagem(item.produtoImagem)}" alt="${item.produtoNome}" style="width:80px; mix-blend-mode:multiply;" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                                <div><h4>${item.produtoNome}</h4><p>QUANTIDADE: ${item.quantidade}</p></div>
+                            </div>`).join('');
+                        card.innerHTML = `
+                            ${itensHtml}
+                            <ul class="order-summary-list mt-20">
+                                <li><span>PEDIDO</span> <span>#${pedido.codigo}</span></li>
+                                <li><span>VALOR TOTAL</span> <span>${formatarPreco(pedido.valorTotal)}</span></li>
+                                <li><span>FORMA DE PAGAMENTO</span> <span>${pedido.formaPagamento || '-'}</span></li>
+                                <li><span>STATUS</span> <span>${pedido.status || '-'}</span></li>
+                            </ul>`;
+                        pedidosLista.appendChild(card);
+                    });
+                })
+                .catch(() => {
+                    if (pedidosVazio) { pedidosVazio.textContent = 'NÃO FOI POSSÍVEL CARREGAR SEUS PEDIDOS.'; pedidosVazio.style.display = 'block'; }
+                });
+        }
+    });
 
     // Fechar menu de utilizador ao clicar fora
     if (btnUser && userDropdown) {
@@ -304,18 +427,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // CARRINHO: quantidade, remover item e cupom
+    // PRODUTOS: catálogo (catalogo.html) e vitrine (index.html), via API
     // ==========================================
-    document.querySelectorAll('.cart-item').forEach(item => {
-        const qtyValue = item.querySelector('.qty-value');
-        item.querySelector('.qty-plus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Number(qtyValue.textContent) + 1).padStart(2, '0');
-        });
-        item.querySelector('.qty-minus')?.addEventListener('click', () => {
-            qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
-        });
-        item.querySelector('.cart-item-remove')?.addEventListener('click', () => item.remove());
-    });
+    function renderProductCard(produto) {
+        const precoOld = produto.precoOriginal
+            ? `<span class="price-old">${formatarPreco(produto.precoOriginal)}</span>`
+            : '';
+        let discount = '';
+        if (produto.precoOriginal && produto.precoOriginal > 0) {
+            const pct = Math.round((1 - produto.preco / produto.precoOriginal) * 100);
+            if (pct > 0) discount = ` <span class="discount">-${pct}%</span>`;
+        }
+        const article = document.createElement('article');
+        article.className = 'product-card';
+        article.innerHTML = `
+            <a href="produto.html?codigo=${produto.codigo}" class="product-card-link">
+                <div class="img-wrapper">
+                    <img src="${caminhoImagem(produto.imagem)}" alt="${produto.nome}" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                </div>
+                <div class="product-info">
+                    <h3>${produto.marca || ''}</h3>
+                    <p class="product-name">${produto.nome || ''}</p>
+                    <div class="prices">
+                        ${precoOld}
+                        <span class="price-new">${formatarPreco(produto.preco)}${discount}</span>
+                    </div>
+                </div>
+            </a>`;
+        return article;
+    }
+
+    const catalogGrid = document.getElementById('catalog-grid');
+    if (catalogGrid && typeof api !== 'undefined') {
+        const catalogStatus = document.getElementById('catalog-status');
+        // catalogo.html?q=termo -> resultados da busca (modal de busca, busca.js)
+        const termoBusca = (new URLSearchParams(window.location.search).get('q') || '').trim();
+        if (termoBusca) {
+            const crumb = document.querySelector('.catalog-header .breadcrumbs span');
+            if (crumb) crumb.textContent = `BUSCA: "${termoBusca.toUpperCase()}"`;
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.value = termoBusca;
+        }
+        (termoBusca ? api.buscarProdutosPorTermo(termoBusca) : api.listarProdutos())
+            .then(produtos => {
+                catalogGrid.innerHTML = '';
+                if (!produtos || produtos.length === 0) {
+                    if (catalogStatus) {
+                        catalogStatus.textContent = termoBusca ? `NENHUM PRODUTO ENCONTRADO PARA "${termoBusca.toUpperCase()}".` : 'NENHUM PRODUTO ENCONTRADO.';
+                        catalogStatus.style.display = 'block';
+                    }
+                    return;
+                }
+                produtos.forEach(p => catalogGrid.appendChild(renderProductCard(p)));
+            })
+            .catch(() => {
+                if (catalogStatus) {
+                    catalogStatus.textContent = 'NÃO FOI POSSÍVEL CARREGAR OS PRODUTOS. VERIFIQUE SE O BACKEND (hado-backend) ESTÁ RODANDO EM http://localhost:8080.';
+                    catalogStatus.style.display = 'block';
+                }
+            });
+    }
+
+    const vitrineGrid = document.getElementById('vitrine-grid');
+    if (vitrineGrid && typeof api !== 'undefined') {
+        api.buscarVitrine()
+            .then(produtos => {
+                vitrineGrid.innerHTML = '';
+                (produtos || []).forEach(p => vitrineGrid.appendChild(renderProductCard(p)));
+            })
+            .catch(() => { /* Home segue normalmente sem a vitrine se o backend estiver fora do ar */ });
+    }
+
+    // ==========================================
+    // CARRINHO: integrado com a API de Produto + localStorage (api.js)
+    // ==========================================
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartEmptyMsg = document.getElementById('cart-empty-msg');
+    const cartTotalEl = document.getElementById('cart-total');
+
+    let renderCarrinhoId = 0;
+    async function renderCarrinho() {
+        if (!cartItemsEl || typeof api === 'undefined') return;
+        const meuId = ++renderCarrinhoId; // cliques rápidos (+/-) não podem duplicar itens na tela
+        const itens = carrinho.obter();
+        cartItemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+
+        if (itens.length === 0) {
+            if (cartEmptyMsg) cartEmptyMsg.style.display = 'block';
+            if (cartTotalEl) cartTotalEl.textContent = '';
+            return;
+        }
+        if (cartEmptyMsg) cartEmptyMsg.style.display = 'none';
+
+        let total = 0;
+        const produtos = await Promise.all(itens.map(i => api.buscarProdutoPorCodigo(i.codigo).catch(() => undefined)));
+        if (meuId !== renderCarrinhoId) return; // um render mais novo já assumiu
+        cartItemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+        for (const [idx, item] of itens.entries()) {
+            const produto = produtos[idx];
+            if (produto === undefined) continue; // backend fora do ar: mantém o item guardado
+            if (!produto.codigo) { // {} = produto excluído/inexistente
+                carrinho.remover(item.codigo);
+                continue;
+            }
+            total += Number(produto.preco) * item.quantidade;
+
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+                <img src="${caminhoImagem(produto.imagem)}" alt="${produto.nome}" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                <div class="item-details">
+                    <h4>${produto.marca || ''}</h4>
+                    <p>${produto.nome || ''}</p>
+                    <p>${formatarPreco(produto.preco)}</p>
+                    <div class="cart-item-footer">
+                        <div class="qty-stepper">
+                            <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
+                            <span class="qty-value">${String(item.quantidade).padStart(2, '0')}</span>
+                            <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
+                        </div>
+                        <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>`;
+            div.querySelector('.qty-plus').addEventListener('click', () => {
+                carrinho.atualizarQuantidade(item.codigo, item.quantidade + 1);
+                renderCarrinho();
+            });
+            div.querySelector('.qty-minus').addEventListener('click', () => {
+                carrinho.atualizarQuantidade(item.codigo, item.quantidade - 1);
+                renderCarrinho();
+            });
+            div.querySelector('.cart-item-remove').addEventListener('click', () => {
+                carrinho.remover(item.codigo);
+                renderCarrinho();
+            });
+            cartItemsEl.appendChild(div);
+        }
+        if (cartTotalEl) cartTotalEl.textContent = 'TOTAL: ' + formatarPreco(total);
+    }
+    renderCarrinho();
+    // Recarrega sempre que o carrinho é aberto (outra página pode ter adicionado itens)
+    document.getElementById('btn-cart')?.addEventListener('click', renderCarrinho);
 
     const couponToggle = document.querySelector('.coupon-toggle');
     if (couponToggle) {
@@ -338,6 +590,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const productDetail = document.querySelector('.product-detail-layout');
     if (productDetail) {
+        // Se a URL tiver ?codigo=X, sobrescreve o conteúdo estático (demo Arc'teryx) com o produto real da API
+        const codigoProduto = new URLSearchParams(window.location.search).get('codigo');
+        let produtoAtual = codigoProduto ? Number(codigoProduto) : null;
+        if (codigoProduto && typeof api !== 'undefined') {
+            api.buscarProdutoPorCodigo(codigoProduto)
+                .then(produto => {
+                    if (!produto || !produto.codigo) return; // mantém o conteúdo demo se não encontrar
+                    document.getElementById('detail-brand').textContent = produto.marca || '';
+                    document.getElementById('detail-title').textContent = produto.nome || '';
+                    document.getElementById('detail-price').textContent = formatarPreco(produto.preco);
+                    const img = document.getElementById('detail-image-main');
+                    if (img) {
+                        img.src = caminhoImagem(produto.imagem);
+                        img.alt = produto.nome || '';
+                    }
+                    document.title = `${produto.nome} - HADI`;
+                })
+                .catch(() => { /* backend fora do ar: mantém o conteúdo demo */ });
+        }
+
         // Seleção de tamanho (só um por vez, diferente do filtro do catálogo)
         document.querySelectorAll('.size-options .size-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -355,8 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
             qtyValue.textContent = String(Math.max(1, Number(qtyValue.textContent) - 1)).padStart(2, '0');
         });
 
-        // "ADICIONAR" -> feedback simples e abre o carrinho
+        // "ADICIONAR" -> adiciona ao carrinho real (localStorage, api.js) e abre o carrinho
         document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
+            const codigo = produtoAtual || 1; // produto demo (Arc'teryx, seedado pelo DataLoader) quando a página é aberta sem ?codigo=
+            const quantidade = Number(qtyValue?.textContent) || 1;
+            carrinho.adicionar(codigo, quantidade);
+            if (typeof renderCarrinho === 'function') renderCarrinho();
             modalCart?.classList.add('active');
         });
 
@@ -534,3 +810,124 @@ function nextStep(stepNumber) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
+
+/* ==========================================================================
+   CHECKOUT: resumo real (carrinho + API de Produto) e finalização (POST /api/pedido)
+   ========================================================================== */
+async function renderResumoCheckout() {
+    const container = document.getElementById('summary-products');
+    if (!container || typeof api === 'undefined') return;
+    const itens = carrinho.obter();
+    container.innerHTML = '';
+    let subtotal = 0;
+
+    let quantidadeTotal = 0;
+    for (const item of itens) {
+        let produto;
+        try {
+            produto = await api.buscarProdutoPorCodigo(item.codigo);
+        } catch {
+            continue; // backend fora do ar
+        }
+        if (!produto || !produto.codigo) {
+            carrinho.remover(item.codigo); // produto excluído do catálogo: não pode ir para o pedido
+            continue;
+        }
+        subtotal += Number(produto.preco) * item.quantidade;
+        quantidadeTotal += item.quantidade;
+
+        const div = document.createElement('div');
+        div.className = 'summary-product';
+        div.innerHTML = `
+            <img src="${caminhoImagem(produto.imagem)}" alt="${produto.nome}" class="summary-img" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+            <div class="summary-prod-info">
+                <p class="summary-prod-name">${produto.nome || ''}</p>
+                <p class="summary-prod-price">${formatarPreco(produto.preco)} ${item.quantidade > 1 ? '&times; ' + item.quantidade : ''}</p>
+            </div>`;
+        container.appendChild(div);
+    }
+
+    document.getElementById('checkout-subtotal').textContent = formatarPreco(subtotal);
+    document.getElementById('checkout-total').textContent = formatarPreco(subtotal);
+    document.getElementById('checkout-items-count').textContent = 'ITENS NO CARRINHO: ' + quantidadeTotal;
+}
+
+async function finalizarPedido() {
+    const erroEl = document.getElementById('checkout-finalizar-error');
+    if (erroEl) erroEl.textContent = '';
+
+    const cliente = (typeof sessao !== 'undefined') ? sessao.obter() : null;
+    if (!cliente || !cliente.codigo) {
+        if (erroEl) erroEl.textContent = 'FAÇA LOGIN PARA FINALIZAR O PEDIDO.';
+        return;
+    }
+    const itens = carrinho.obter();
+    if (itens.length === 0) {
+        if (erroEl) erroEl.textContent = 'SEU CARRINHO ESTÁ VAZIO.';
+        return;
+    }
+    const formaPagamentoInput = document.querySelector('input[name="pagamento"]:checked');
+    const formaPagamento = formaPagamentoInput ? formaPagamentoInput.closest('label').textContent.trim() : 'CARTÃO DE CRÉDITO';
+
+    const btn = document.getElementById('btn-finalizar');
+    if (btn) btn.disabled = true;
+    try {
+        const resposta = await api.criarPedido({
+            clienteCodigo: cliente.codigo,
+            formaPagamento,
+            itens: itens.map(i => ({ produtoCodigo: i.codigo, quantidade: i.quantidade })),
+        });
+        // A API responde 200 também em falhas de negócio ("Cliente não encontrado!", "produto não encontrado!").
+        if (typeof resposta !== 'string' || !resposta.toLowerCase().includes('sucesso')) {
+            if (erroEl) erroEl.textContent = String(resposta || 'NÃO FOI POSSÍVEL FINALIZAR O PEDIDO.').toUpperCase()
+                + (/cliente/i.test(resposta) ? ' FAÇA LOGIN NOVAMENTE.' : '');
+            renderResumoCheckout();
+            return;
+        }
+        const codigoMatch = resposta.match(/(\d+)\s*$/);
+
+        document.getElementById('confirm-codigo').textContent = codigoMatch ? '#' + codigoMatch[1] : '-';
+        document.getElementById('confirm-total').textContent = document.getElementById('checkout-total').textContent;
+        document.getElementById('confirm-pagamento').textContent = formaPagamento;
+
+        carrinho.limpar();
+        nextStep(3);
+    } catch (err) {
+        if (erroEl) erroEl.textContent = err.status
+            ? (err.message || 'NÃO FOI POSSÍVEL FINALIZAR O PEDIDO.').toUpperCase()
+            : 'NÃO FOI POSSÍVEL FINALIZAR O PEDIDO. VERIFIQUE SE O BACKEND ESTÁ RODANDO.';
+        console.error(err);
+    } finally {
+        if (btn) btn.disabled = false;
+    }
+}
+
+/* Checkout passo 1: preenche com os dados da conta logada (antes vinham fixos do mockup). */
+async function preencherCheckoutComConta() {
+    const cliente = await (typeof sessaoPronta !== 'undefined' ? sessaoPronta : Promise.resolve(sessao.obter()));
+    const set = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+    const d = (v) => String(v || '').replace(/\D/g, '');
+    if (!cliente) {
+        const erro = document.getElementById('checkout-step1-error');
+        if (erro) erro.textContent = 'FAÇA LOGIN PARA CARREGAR SEUS DADOS E FINALIZAR O PEDIDO.';
+        return;
+    }
+    set('checkout-email', cliente.email);
+    set('checkout-nome', cliente.nome);
+    const cpf = d(cliente.documento);
+    if (cpf.length === 11) set('checkout-cpf', cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'));
+    const tel = d(cliente.telefone);
+    if (tel) set('checkout-tel', tel.length === 11 ? tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3') : tel.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3'));
+    const cep = d(cliente.cep);
+    if (cep.length === 8) set('checkout-cep', cep.replace(/(\d{5})(\d{3})/, '$1-$2'));
+    // "endereco" vem do ViaCEP como "Logradouro - Bairro": o número entra logo após a rua.
+    const [rua, ...bairro] = String(cliente.endereco || '').split(' - ');
+    const linha1 = [rua, cliente.numero].filter(Boolean).join(', ');
+    const cidadeUf = [cliente.cidade, cliente.estado].filter(Boolean).join('/');
+    set('checkout-endereco', [linha1, cliente.complemento, ...bairro, cidadeUf].filter(Boolean).join(' - '));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('summary-products')) renderResumoCheckout();
+    if (document.getElementById('form-checkout-step1') && typeof sessao !== 'undefined') preencherCheckoutComConta();
+});

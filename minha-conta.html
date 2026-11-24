@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Conta - HADI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <link rel="stylesheet" href="busca.css?v=20261124b">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -175,7 +176,7 @@
         <div class="account-layout">
             <!-- Menu Lateral da Conta -->
             <aside class="account-sidebar">
-                <h2 class="user-greeting"><i class="fa-regular fa-circle-user"></i> GUSTAVO</h2>
+                <h2 class="user-greeting"><i class="fa-regular fa-circle-user"></i></h2>
                 <nav class="account-nav">
                     <ul>
                         <li><a href="#" class="account-tab-link active" data-tab="dados">DADOS PESSOAIS</a></li>
@@ -193,97 +194,103 @@
                 <div class="account-tab-content active" id="tab-dados">
                     <div class="form-section">
                         <h3>DADOS PESSOAIS</h3>
+                        <form id="form-dados" novalidate>
                         <div class="account-field-row">
-                            <label>NOME COMPLETO</label>
-                            <input type="text" value="GUSTAVO CHEFER" readonly>
+                            <label for="conta-nome">NOME COMPLETO</label>
+                            <input type="text" id="conta-nome" readonly required>
                         </div>
                         <div class="account-field-row">
-                            <label>E-MAIL</label>
-                            <input type="email" value="GUST***@ICLOUD.COM" readonly>
+                            <label for="conta-email">E-MAIL</label>
+                            <input type="email" id="conta-email" readonly>
                         </div>
                         <div class="account-field-row">
-                            <label>TELEFONE</label>
-                            <input type="tel" value="11 9 1234-5678" readonly>
+                            <label for="conta-telefone">TELEFONE</label>
+                            <input type="tel" id="conta-telefone" placeholder="(11) 91234-5678" readonly>
                         </div>
                         <div class="account-field-row">
-                            <label>DATA DE NASCIMENTO</label>
-                            <input type="text" value="10/07/2006" readonly>
+                            <label for="conta-nascimento">DATA DE NASCIMENTO</label>
+                            <input type="date" id="conta-nascimento" readonly>
                         </div>
                         <div class="account-field-row">
-                            <label>GÊNERO</label>
-                            <input type="text" value="M" readonly>
+                            <label for="conta-genero">GÊNERO</label>
+                            <select id="conta-genero" disabled>
+                                <option value="">NÃO INFORMADO</option>
+                                <option value="F">FEMININO</option>
+                                <option value="M">MASCULINO</option>
+                                <option value="O">OUTRO</option>
+                            </select>
                         </div>
                         <div class="account-field-row">
                             <label>SENHA</label>
                             <a href="#" class="btn-underline open-recover">ESQUECI A SENHA</a>
                         </div>
-                        <a href="#" class="btn-underline">EDITAR</a>
+                        <p class="form-error" id="dados-msg" role="alert"></p>
+                        <div class="account-actions">
+                            <a href="#" class="btn-underline" id="btn-editar-dados">EDITAR</a>
+                            <button type="submit" class="btn-full" id="btn-salvar-dados" style="display:none; max-width:200px;">SALVAR</button>
+                            <a href="#" class="btn-underline" id="btn-cancelar-dados" style="display:none;">CANCELAR</a>
+                        </div>
+                        </form>
                     </div>
 
                     <div class="form-section">
                         <h3>ENDEREÇO</h3>
-                        <div class="form-grid-2">
-                            <div class="input-group full-width">
-                                <label>NOME COMPLETO*</label>
-                                <input type="text" placeholder="">
+                        <form id="form-account-address" novalidate>
+                            <div class="form-grid-2">
+                                <div class="input-group full-width">
+                                    <label for="addr-nome">NOME COMPLETO*</label>
+                                    <input type="text" id="addr-nome" placeholder="" required>
+                                </div>
+                                <div class="input-group full-width">
+                                    <label for="addr-cpf">CPF*</label>
+                                    <input type="text" id="addr-cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14" autocomplete="off" required>
+                                    <small class="field-hint" id="addr-cpf-hint"></small>
+                                </div>
+                                <div class="input-group full-width">
+                                    <label for="addr-cep">CEP*</label>
+                                    <input type="text" id="addr-cep" placeholder="00000-000" inputmode="numeric" maxlength="9" autocomplete="off" required>
+                                    <small class="field-hint" id="addr-cep-hint"></small>
+                                    <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" rel="noopener" class="help-text">NÃO SABE O SEU CEP? CLIQUE AQUI PARA ENCONTRAR.</a>
+                                </div>
+                                <div class="input-group full-width">
+                                    <label for="addr-endereco">ENDEREÇO*</label>
+                                    <input type="text" id="addr-endereco" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="addr-numero">NÚMERO*</label>
+                                    <input type="text" id="addr-numero" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="addr-complemento">COMPLEMENTO (OPCIONAL)</label>
+                                    <input type="text" id="addr-complemento">
+                                </div>
+                                <div class="input-group">
+                                    <label for="addr-estado">ESTADO*</label>
+                                    <select id="addr-estado" required>
+                                        <option value="">SELECIONE</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="addr-cidade">CIDADE*</label>
+                                    <select id="addr-cidade" required>
+                                        <option value="">SELECIONE</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="input-group full-width">
-                                <label>CPF*</label>
-                                <input type="text" placeholder="___.___.___-__">
+                            <div class="checkbox-group mt-20">
+                                <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE ENTREGA PREFERIDO.</label>
+                                <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE COBRANÇA PREFERIDO.</label>
                             </div>
-                            <div class="input-group full-width">
-                                <label>CEP*</label>
-                                <input type="text" placeholder="_____-___">
-                                <a href="#" class="help-text">NÃO SABE O SEU CEP? CLIQUE AQUI PARA ENCONTRAR.</a>
-                            </div>
-                            <div class="input-group full-width">
-                                <label>ENDEREÇO*</label>
-                                <input type="text">
-                            </div>
-                            <div class="input-group">
-                                <label>NÚMERO*</label>
-                                <input type="text">
-                            </div>
-                            <div class="input-group">
-                                <label>COMPLEMENTO (OPCIONAL)</label>
-                                <input type="text">
-                            </div>
-                            <div class="input-group">
-                                <label>ESTADO*</label>
-                                <select>
-                                    <option value="">SELECIONE</option>
-                                    <option>SP</option>
-                                    <option>RJ</option>
-                                    <option>MG</option>
-                                </select>
-                            </div>
-                            <div class="input-group">
-                                <label>CIDADE*</label>
-                                <select>
-                                    <option value="">SELECIONE</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="checkbox-group mt-20">
-                            <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE ENTREGA PREFERIDO.</label>
-                            <label class="checkbox-label"><input type="checkbox" checked> SALVAR COMO ENDEREÇO DE COBRANÇA PREFERIDO.</label>
-                        </div>
+                            <p class="form-error" id="addr-error" role="alert"></p>
+                            <button type="submit" class="btn-full mt-20" style="max-width:260px;">SALVAR ENDEREÇO</button>
+                        </form>
                     </div>
 
                     <div class="form-section">
                         <h3>GERENCIAR MÉTODOS DE PAGAMENTO</h3>
-                        <div class="saved-card">
-                            <div class="card-info">
-                                <i class="fa-brands fa-cc-mastercard"></i>
-                                <div>
-                                    <p><strong>MASTERCARD ****1642</strong></p>
-                                    <p>EXPIRA EM: **/****</p>
-                                    <p>CPF: ***.***.***-25</p>
-                                    <p>NOME COMPLETO: GUSTAVO *****R</p>
-                                </div>
-                            </div>
-                            <button class="btn-underline text-red">EXCLUIR MÉTODO DE PAGAMENTO</button>
-                        </div>
+                        <div id="cartoes-lista"></div>
+                        <p class="help-text" id="cartoes-vazio" style="display:none;">NENHUM CARTÃO CADASTRADO.</p>
+                        <button type="button" class="btn-full mt-20" id="btn-add-cartao" style="max-width:260px;">ADICIONAR / VERIFICAR CARTÃO</button>
                         <div class="checkbox-group mt-20">
                             <label class="checkbox-label"><input type="checkbox" checked> UTILIZAR ENDEREÇO DE ENTREGA NA COBRANÇA</label>
                         </div>
@@ -294,21 +301,9 @@
                 <div class="account-tab-content" id="tab-pedidos">
                     <div class="form-section">
                         <h3>MEUS PEDIDOS</h3>
-                        <div class="order-details-card">
-                            <div class="order-product">
-                                <img src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex" style="width:80px; mix-blend-mode:multiply;" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                                <div>
-                                    <h4>ARC'TERYX</h4>
-                                    <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                                </div>
-                            </div>
-                            <ul class="order-summary-list mt-20">
-                                <li><span>VALOR TOTAL</span> <span>R$ 3.499,90</span></li>
-                                <li><span>FORMA DE PAGAMENTO</span> <span>CARTÃO DE CRÉDITO</span></li>
-                                <li><span>STATUS</span> <span>ENTREGUE</span></li>
-                            </ul>
-                        </div>
-                        <p class="help-text mt-20">SEUS PRÓXIMOS PEDIDOS TAMBÉM APARECERÃO AQUI.</p>
+                        <!-- Preenchido via API em script.js -> carregarPedidosDaConta() -->
+                        <div id="pedidos-lista"></div>
+                        <p class="help-text mt-20" id="pedidos-vazio" style="display:none;">VOCÊ AINDA NÃO FEZ NENHUM PEDIDO.</p>
                     </div>
                 </div>
 
@@ -385,12 +380,25 @@
     </footer>
 
     <div id="modal-search" class="modal-overlay">
-        <div class="modal-search-content">
-            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-            <div class="search-bar">
+        <div class="search-panel" role="dialog" aria-label="Buscar">
+            <div class="search-panel-head">
                 <h2>BUSCAR</h2>
-                <input type="text" placeholder="Digite o que procura...">
+                <button class="close-modal" aria-label="Fechar busca"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <form id="search-form" class="search-field" role="search">
+                <input type="text" id="search-input" placeholder="EX.: JAQUETA" autocomplete="off">
+                <button type="submit" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div id="search-start">
+                <h3 class="search-subtitle">COMPRE POR ATIVIDADE &gt;</h3>
+                <div class="search-activities">
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trekking.jpg')"><h3>TREKKING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trail-running.jpg')"><h3>TRAIL RUNNING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-ski.jpg')"><h3>SKI E NEVE</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-casual.jpg')"><h3>CASUAL</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                </div>
+            </div>
+            <div id="search-live" hidden></div>
         </div>
     </div>
 
@@ -399,24 +407,10 @@
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
-            <div class="cart-items">
+            <div class="cart-items" id="cart-items">
                 <!-- Exemplo de item no carrinho -->
-                <div class="cart-item">
-                    <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    <div class="item-details">
-                        <h4>ARC'TERYX</h4>
-                        <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                        <p>R$ 3.499,90</p>
-                        <div class="cart-item-footer">
-                            <div class="qty-stepper">
-                                <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
-                                <span class="qty-value">01</span>
-                                <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
-                            </div>
-                            <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Preenchido via script.js -> renderCarrinho() -->
+                <p class="help-text" id="cart-empty-msg" style="display:none;">SEU CARRINHO ESTÁ VAZIO.</p>
             </div>
 
             <div class="cart-shipping">
@@ -433,9 +427,42 @@
             </div>
 
             <div class="cart-footer">
+                <p class="cart-total" id="cart-total" style="font-weight:700; margin-bottom:10px;"></p>
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: VERIFICAR / ADICIONAR CARTÃO -->
+    <div id="modal-cartao" class="modal-overlay">
+        <div class="modal-center card-modal">
+            <button class="close-modal" type="button"><i class="fa-solid fa-xmark"></i></button>
+            <h2>VERIFICAR CARTÃO</h2>
+            <div class="card-preview" id="card-preview">
+                <span class="cp-brand" id="cp-brand">CARTÃO</span>
+                <span class="cp-number" id="cp-number">•••• •••• •••• ••••</span>
+                <div class="cp-row"><span id="cp-name">NOME NO CARTÃO</span><span id="cp-exp">MM/AA</span></div>
+            </div>
+            <form id="form-cartao" class="auth-form active" novalidate autocomplete="off">
+                <input type="text" id="card-numero" placeholder="NÚMERO DO CARTÃO" inputmode="numeric" maxlength="23" required>
+                <input type="text" id="card-nome" placeholder="NOME COMO NO CARTÃO" required>
+                <div class="card-row">
+                    <input type="text" id="card-validade" placeholder="VALIDADE (MM/AA)" inputmode="numeric" maxlength="5" required>
+                    <input type="password" id="card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required>
+                </div>
+                <input type="text" id="card-cpf" placeholder="CPF DO TITULAR" inputmode="numeric" maxlength="14" required>
+                <ul class="card-checks" id="card-checks">
+                    <li data-check="numero">NÚMERO VÁLIDO (ALGORITMO DE LUHN)</li>
+                    <li data-check="nome">NOME DO TITULAR</li>
+                    <li data-check="validade">VALIDADE (NÃO VENCIDO)</li>
+                    <li data-check="cvv">CÓDIGO DE SEGURANÇA (CVV)</li>
+                    <li data-check="cpf">CPF DO TITULAR VÁLIDO</li>
+                </ul>
+                <p class="form-error" id="card-msg" role="alert"></p>
+                <button type="submit" class="btn-full">VERIFICAR E SALVAR CARTÃO</button>
+                <p class="help-text">POR SEGURANÇA, GUARDAMOS APENAS A BANDEIRA, OS 4 ÚLTIMOS DÍGITOS E A VALIDADE. O NÚMERO COMPLETO E O CVV NUNCA SÃO ARMAZENADOS.</p>
+            </form>
         </div>
     </div>
 
@@ -452,18 +479,20 @@
 
             <!-- Formulário Login -->
             <form id="form-login" class="auth-form active">
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
+                <input type="email" id="login-email" placeholder="E-MAIL" required>
+                <input type="password" id="login-pass" placeholder="SENHA" required>
+                <p class="form-error" id="login-error" role="alert"></p>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
 
             <!-- Formulário Registo -->
-            <form id="form-register" class="auth-form">
-                <input type="text" placeholder="NOME COMPLETO" required>
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
-                <input type="password" placeholder="CONFIRMAR SENHA" required>
+            <form id="form-register" class="auth-form" novalidate>
+                <input type="text" id="register-name" placeholder="NOME COMPLETO" required>
+                <input type="email" id="register-email" placeholder="E-MAIL" required>
+                <input type="password" id="register-pass" placeholder="SENHA (MÍNIMO 8 CARACTERES)" required minlength="8">
+                <input type="password" id="register-pass2" placeholder="CONFIRMAR SENHA" required>
+                <p class="form-error" id="register-error" role="alert"></p>
                 <button type="submit" class="btn-full">CRIAR CONTA</button>
             </form>
             <!-- Recuperação de senha (3º estado do modal) -->
@@ -486,7 +515,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>CHEFER</strong></li>
+            <li><strong id="user-dropdown-name">Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -495,6 +524,9 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="api.js?v=20261124b"></script>
+    <script src="script.js?v=20261124b"></script>
+    <script src="busca.js?v=20261124b"></script>
+    <script src="conta.js?v=20261124b"></script>
 </body>
 </html>

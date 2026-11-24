@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaqueta Beta AR Gore-Tex - Arc'teryx | HADI</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="busca.css">
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <link rel="stylesheet" href="busca.css?v=20261124b">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -181,20 +181,20 @@
             <!-- Galeria -->
             <div class="product-gallery">
                 <div class="gallery-image">
-                    <img src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vista frontal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
+                    <img id="detail-image-main" src="img/arcteryx-beta-ar.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vista frontal" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                 </div>
                 <div class="gallery-image">
                     <img src="img/arcteryx-beta-ar-modelo.png" alt="Jaqueta Arc'teryx Beta AR Gore-Tex - vestida no modelo" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
                 </div>
             </div>
 
-            <!-- Informações do produto -->
+            <!-- Informações do produto (via API em script.js -> carregarDetalheProduto() quando a URL tem ?codigo=) -->
             <div class="product-info-detail">
-                <h1 class="product-brand">ARC'TERYX</h1>
-                <p class="product-title">JAQUETA BETA AR GORE-TEX</p>
+                <h1 class="product-brand" id="detail-brand">ARC'TERYX</h1>
+                <p class="product-title" id="detail-title">JAQUETA BETA AR GORE-TEX</p>
 
                 <div class="product-price-row">
-                    <span class="price-new">R$ 3.499,90</span>
+                    <span class="price-new" id="detail-price">R$ 3.499,90</span>
                     <span class="installments">OU 12X DE R$291,65 SEM JUROS</span>
                 </div>
 
@@ -430,24 +430,10 @@
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
-            <div class="cart-items">
+            <div class="cart-items" id="cart-items">
                 <!-- Exemplo de item no carrinho -->
-                <div class="cart-item">
-                    <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    <div class="item-details">
-                        <h4>ARC'TERYX</h4>
-                        <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                        <p>R$ 3.499,90</p>
-                        <div class="cart-item-footer">
-                            <div class="qty-stepper">
-                                <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
-                                <span class="qty-value">01</span>
-                                <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
-                            </div>
-                            <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Preenchido via script.js -> renderCarrinho() -->
+                <p class="help-text" id="cart-empty-msg" style="display:none;">SEU CARRINHO ESTÁ VAZIO.</p>
             </div>
 
             <div class="cart-shipping">
@@ -464,6 +450,7 @@
             </div>
 
             <div class="cart-footer">
+                <p class="cart-total" id="cart-total" style="font-weight:700; margin-bottom:10px;"></p>
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
             </div>
@@ -483,8 +470,9 @@
 
             <!-- Formulário Login -->
             <form id="form-login" class="auth-form active">
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
+                <input type="email" id="login-email" placeholder="E-MAIL" required>
+                <input type="password" id="login-pass" placeholder="SENHA" required>
+                <p class="form-error" id="login-error" role="alert"></p>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
@@ -518,7 +506,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>Chefer</strong></li>
+            <li><strong id="user-dropdown-name">Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -528,7 +516,8 @@
 
 
 
-    <script src="script.js"></script>
-    <script src="busca.js"></script>
+    <script src="api.js?v=20261124b"></script>
+    <script src="script.js?v=20261124b"></script>
+    <script src="busca.js?v=20261124b"></script>
 </body>
 </html>

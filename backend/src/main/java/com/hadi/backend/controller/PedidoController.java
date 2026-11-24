@@ -8,6 +8,7 @@ import com.hadi.backend.entity.Pedido;
 import com.hadi.backend.entity.Produto;
 import com.hadi.backend.repository.ClienteRepository;
 import com.hadi.backend.repository.PedidoRepository;
+import com.hadi.backend.service.FreteService;
 import com.hadi.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class PedidoController {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FreteService freteService;
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -98,6 +102,14 @@ public class PedidoController {
             item.setPrecoUnitario(produto.getPreco());
             pedido.getItens().add(item);
             total = total.add(produto.getPreco().multiply(BigDecimal.valueOf(itemDTO.getQuantidade())));
+        }
+        // Frete calculado no servidor (o cliente só informa CEP e tipo de entrega)
+        if (dto.getCepEntrega() != null && !dto.getCepEntrega().isBlank()) {
+            FreteService.Opcao frete = freteService.opcao(dto.getCepEntrega(), dto.getTipoEntrega(), total);
+            pedido.setCepEntrega(FreteService.normalizarCep(dto.getCepEntrega()));
+            pedido.setTipoEntrega(frete.tipo());
+            pedido.setValorFrete(frete.valor());
+            total = total.add(frete.valor());
         }
         pedido.setValorTotal(total);
 

@@ -10,6 +10,8 @@ public class PedidoDTO {
     private List<ItemDTO> itens;
     private String formaPagamento;
     private String status;
+    private String cepEntrega;   // opcional: com CEP, o backend calcula o frete
+    private String tipoEntrega;  // PAC (padrão) ou SEDEX
 
     public Long getCodigo() {
         return codigo;
@@ -52,6 +54,22 @@ public class PedidoDTO {
     }
 
     /** Item mínimo enviado pelo carrinho: qual produto e quantas unidades. */
+    public String getCepEntrega() {
+        return cepEntrega;
+    }
+
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
+    }
+
+    public String getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
     public static class ItemDTO {
         private Long produtoCodigo;
         private int quantidade;

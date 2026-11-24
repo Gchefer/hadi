@@ -535,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItemsEl.appendChild(div);
         }
         if (cartTotalEl) cartTotalEl.textContent = 'TOTAL: ' + formatarPreco(total);
+        window.subtotalCarrinho = total; // usado pelo cálculo de frete do carrinho (frete.js)
     }
     renderCarrinho();
     // Recarrega sempre que o carrinho é aberto (outra página pode ter adicionado itens)
@@ -781,27 +782,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Calcular frete (simulação)
-        const cepInput = document.getElementById('cep-input');
-        cepInput?.addEventListener('input', () => {
-            let v = cepInput.value.replace(/\D/g, '').slice(0, 8);
-            if (v.length > 5) v = `${v.slice(0, 5)}-${v.slice(5)}`;
-            cepInput.value = v;
-        });
-        document.getElementById('btn-calcular-frete')?.addEventListener('click', () => {
-            const resultado = document.getElementById('frete-resultado');
-            if (!/^\d{5}-?\d{3}$/.test(cepInput.value)) {
-                resultado.innerHTML = '<p class="form-error">DIGITE UM CEP VÁLIDO.</p>';
-                return;
-            }
-            resultado.innerHTML = `
-                <label class="radio-card"><input type="radio" name="frete-opcao" checked>
-                    <div class="card-content"><div class="radio-header"><span>PAC</span><span>R$16,40</span></div><p class="desc">4 DIAS ÚTEIS</p></div>
-                </label>
-                <label class="radio-card"><input type="radio" name="frete-opcao">
-                    <div class="card-content"><div class="radio-header"><span>SEDEX</span><span>R$13,40</span></div><p class="desc">7 DIAS ÚTEIS</p></div>
-                </label>`;
-        });
+        // Calcular frete: frete.js (GET /api/frete/{cep})
 
         // Carrossel de avaliações
         const reviewsTrack = document.getElementById('reviews-track');
@@ -983,7 +964,9 @@ async function renderResumoCheckout() {
     }
 
     document.getElementById('checkout-subtotal').textContent = formatarPreco(subtotal);
-    document.getElementById('checkout-total').textContent = formatarPreco(subtotal);
+    window.subtotalCheckout = subtotal;
+    if (typeof atualizarTotalCheckout === 'function') atualizarTotalCheckout(); // soma o frete (frete.js)
+    else document.getElementById('checkout-total').textContent = formatarPreco(subtotal);
     document.getElementById('checkout-items-count').textContent = 'ITENS NO CARRINHO: ' + quantidadeTotal;
 }
 
@@ -1011,6 +994,9 @@ async function finalizarPedido() {
             clienteCodigo: cliente.codigo,
             formaPagamento,
             itens: itens.map(i => ({ produtoCodigo: i.codigo, quantidade: i.quantidade })),
+            // Frete: o backend recalcula o valor a partir do CEP e do tipo de entrega
+            cepEntrega: document.getElementById('checkout-cep')?.value || null,
+            tipoEntrega: (document.querySelector('input[name="entrega"]:checked')?.value || 'pac').toUpperCase(),
         });
         // A API responde 200 também em falhas de negócio ("Cliente não encontrado!", "produto não encontrado!").
         if (typeof resposta !== 'string' || !resposta.toLowerCase().includes('sucesso')) {

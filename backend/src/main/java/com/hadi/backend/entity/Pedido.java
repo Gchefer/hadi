@@ -22,6 +22,9 @@ public class Pedido {
     private List<ItemPedido> itens = new ArrayList<>();
 
     private BigDecimal valorTotal;
+    private BigDecimal valorFrete;
+    private String tipoEntrega;
+    private String cepEntrega;
 
     private String formaPagamento;
 
@@ -87,5 +90,29 @@ public class Pedido {
 
     public void setDataPedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
+    }
+
+    public BigDecimal getValorFrete() {
+        return valorFrete;
+    }
+
+    public void setValorFrete(BigDecimal valorFrete) {
+        this.valorFrete = valorFrete;
+    }
+
+    public String getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public String getCepEntrega() {
+        return cepEntrega;
+    }
+
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
     }
 }

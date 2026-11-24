@@ -77,3 +77,9 @@
 .card-rating { font-size: 0.75rem; font-weight: 700; margin-top: 6px; }
 .card-rating i { color: #c8a200; }
 .card-rating span { color: #666; font-weight: 400; }
+
+/* Frete (frete.js) */
+.frete-endereco { font-size: 0.75rem; font-weight: 700; margin: 10px 0; }
+.frete-resultado .radio-card { margin-top: 8px; }
+.cart-shipping-result { margin-top: 10px; }
+.cart-shipping-result .radio-card .card-content { padding: 10px 12px; }

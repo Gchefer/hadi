@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - HADI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261124b">
+    <link rel="stylesheet" href="busca.css?v=20261124b">
     <!-- Ícones do FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -188,19 +189,19 @@
                             <div class="form-grid-2">
                                 <div class="input-group full-width">
                                     <label for="checkout-email">E-MAIL</label>
-                                    <input type="email" id="checkout-email" value="GUSTAVO*******@ICLOUD.COM" required>
+                                    <input type="email" id="checkout-email" placeholder="seu@email.com" required>
                                 </div>
                                 <div class="input-group full-width">
                                     <label for="checkout-nome">NOME COMPLETO</label>
-                                    <input type="text" id="checkout-nome" value="Gustavo Chefer" required>
+                                    <input type="text" id="checkout-nome" required>
                                 </div>
                                 <div class="input-group">
                                     <label for="checkout-cpf">CPF</label>
-                                    <input type="text" id="checkout-cpf" value="*** *** *** 25" required>
+                                    <input type="text" id="checkout-cpf" placeholder="000.000.000-00" required>
                                 </div>
                                 <div class="input-group">
                                     <label for="checkout-tel">TELEFONE</label>
-                                    <input type="tel" id="checkout-tel" value="11 91234-5678" required>
+                                    <input type="tel" id="checkout-tel" placeholder="(11) 91234-5678" required>
                                 </div>
                             </div>
                         </div>
@@ -208,17 +209,17 @@
                         <div class="form-section">
                             <div class="section-title-flex">
                                 <h3>ENDEREÇO DE ENTREGA</h3>
-                                <a href="#" class="btn-underline">EDITAR</a>
+                                <a href="minha-conta.html" class="btn-underline">EDITAR NA MINHA CONTA</a>
                             </div>
                             <div class="form-grid-2">
                                 <div class="input-group full-width">
                                     <label for="checkout-cep">CEP</label>
-                                    <input type="text" id="checkout-cep" value="00000-000" pattern="\d{5}-?\d{3}" title="Formato: 00000-000" required>
+                                    <input type="text" id="checkout-cep" placeholder="00000-000" pattern="\d{5}-?\d{3}" title="Formato: 00000-000" required>
                                     <a href="#" class="help-text">NÃO SEI O MEU CEP</a>
                                 </div>
                                 <div class="input-group full-width">
                                     <label for="checkout-endereco">ENDEREÇO</label>
-                                    <input type="text" id="checkout-endereco" value="RUA J*** ******, 12" required>
+                                    <input type="text" id="checkout-endereco" placeholder="Rua, número - complemento - cidade/UF" required>
                                 </div>
                             </div>
                             <div class="checkbox-group mt-20">
@@ -305,20 +306,12 @@
                     <h2 class="success-title">PEDIDO EFETUADO COM SUCESSO!</h2>
                     
                     <div class="order-details-card mt-20 text-left">
-                        <div class="order-product">
-                            <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" style="width: 80px; mix-blend-mode: multiply;">
-                            <div>
-                                <h4>ARC'TERYX</h4>
-                                <p>JAQUETA BETA AR GORE-TEX</p>
-                                <p>TAMANHO G</p>
-                            </div>
-                        </div>
+                        <!-- Preenchido via script.js -> finalizarPedido() -->
                         <ul class="order-summary-list mt-20">
-                            <li><span>VALOR TOTAL</span> <span>R$ 3.499,90</span></li>
-                            <li><span>FRETE</span> <span>R$ 00,00</span></li>
-                            <li><span>FORMA DE PAGAMENTO</span> <span>CARTÃO DE CRÉDITO</span></li>
-                            <li><span>ENDEREÇO</span> <span>RUA J*** ******, 12</span></li>
-                            <li><span>PREVISÃO DE ENTREGA</span> <span>4 DIAS ÚTEIS</span></li>
+                            <li><span>PEDIDO</span> <span id="confirm-codigo">-</span></li>
+                            <li><span>VALOR TOTAL</span> <span id="confirm-total">R$ 00,00</span></li>
+                            <li><span>FORMA DE PAGAMENTO</span> <span id="confirm-pagamento">-</span></li>
+                            <li><span>PREVISÃO DE ENTREGA</span> <span id="confirm-prazo">4 DIAS ÚTEIS</span></li>
                         </ul>
                     </div>
                     <p class="mt-20 help-text">VOCÊ RECEBERÁ TAMBÉM ATUALIZAÇÕES DO PEDIDO VIA E-MAIL.</p>
@@ -334,26 +327,22 @@
             <!-- COLUNA DIREITA: Resumo da Compra (Visível nos passos 1 e 2) -->
             <aside class="checkout-summary" id="checkout-sidebar">
                 <h3>RESUMO DA COMPRA</h3>
-                
-                <div class="summary-product">
-                    <img src="img/jacket-blue.png" alt="Jaqueta" class="summary-img">
-                    <div class="summary-prod-info">
-                        <p class="summary-prod-name">JAQUETA BETA AR GORE-TEX</p>
-                        <p class="summary-prod-price">R$ 3.499,90</p>
-                    </div>
-                </div>
+
+                <!-- Preenchido via script.js -> renderResumoCheckout() com os itens reais do carrinho -->
+                <div id="summary-products"></div>
 
                 <ul class="order-summary-list">
-                    <li><span>SUBTOTAL</span> <span>R$ 3.499,90</span></li>
+                    <li><span>SUBTOTAL</span> <span id="checkout-subtotal">R$ 00,00</span></li>
                     <li><span>FRETE</span> <span>R$ 00,00</span></li>
                     <li><span>DESCONTO</span> <span>R$ 00,00</span></li>
-                    <li class="total-row"><span>VALOR A PAGAR</span> <span>R$ 3.499,90</span></li>
+                    <li class="total-row"><span>VALOR A PAGAR</span> <span id="checkout-total">R$ 00,00</span></li>
                 </ul>
 
-                <p class="items-count mt-10">ITENS NO CARRINHO: 1</p>
+                <p class="items-count mt-10" id="checkout-items-count">ITENS NO CARRINHO: 0</p>
+                <p class="form-error" id="checkout-finalizar-error" role="alert"></p>
                 <a href="#" class="btn-underline mt-10 d-block" id="btn-back-to-cart">VOLTAR AO CARRINHO</a>
 
-                <button id="btn-finalizar" class="btn-full mt-20" style="display: none;" onclick="nextStep(3)">FINALIZAR COMPRA</button>
+                <button id="btn-finalizar" class="btn-full mt-20" style="display: none;" onclick="finalizarPedido()">FINALIZAR COMPRA</button>
             </aside>
         </div>
     </main>
@@ -412,12 +401,25 @@
     </footer>
 
     <div id="modal-search" class="modal-overlay">
-        <div class="modal-search-content">
-            <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-            <div class="search-bar">
+        <div class="search-panel" role="dialog" aria-label="Buscar">
+            <div class="search-panel-head">
                 <h2>BUSCAR</h2>
-                <input type="text" placeholder="Digite o que procura...">
+                <button class="close-modal" aria-label="Fechar busca"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <form id="search-form" class="search-field" role="search">
+                <input type="text" id="search-input" placeholder="EX.: JAQUETA" autocomplete="off">
+                <button type="submit" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div id="search-start">
+                <h3 class="search-subtitle">COMPRE POR ATIVIDADE &gt;</h3>
+                <div class="search-activities">
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trekking.jpg')"><h3>TREKKING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-trail-running.jpg')"><h3>TRAIL RUNNING</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-ski.jpg')"><h3>SKI E NEVE</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                    <a href="catalogo.html" class="activity-tile" style="background-image:url('img/activity-casual.jpg')"><h3>CASUAL</h3><span class="btn-underline">COMPRE AGORA</span></a>
+                </div>
+            </div>
+            <div id="search-live" hidden></div>
         </div>
     </div>
 
@@ -426,24 +428,10 @@
         <div class="sidebar-cart">
             <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
             <h2>CARRINHO</h2>
-            <div class="cart-items">
+            <div class="cart-items" id="cart-items">
                 <!-- Exemplo de item no carrinho -->
-                <div class="cart-item">
-                    <img src="img/jacket-blue.png" alt="Jaqueta Arc'teryx" onerror="this.replaceWith(Object.assign(document.createElement('i'), {className:'fa-solid fa-image'}))">
-                    <div class="item-details">
-                        <h4>ARC'TERYX</h4>
-                        <p>JAQUETA BETA AR GORE-TEX &middot; TAMANHO G</p>
-                        <p>R$ 3.499,90</p>
-                        <div class="cart-item-footer">
-                            <div class="qty-stepper">
-                                <button type="button" class="qty-minus" aria-label="Diminuir">-</button>
-                                <span class="qty-value">01</span>
-                                <button type="button" class="qty-plus" aria-label="Aumentar">+</button>
-                            </div>
-                            <button type="button" class="cart-item-remove" aria-label="Remover"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Preenchido via script.js -> renderCarrinho() -->
+                <p class="help-text" id="cart-empty-msg" style="display:none;">SEU CARRINHO ESTÁ VAZIO.</p>
             </div>
 
             <div class="cart-shipping">
@@ -460,6 +448,7 @@
             </div>
 
             <div class="cart-footer">
+                <p class="cart-total" id="cart-total" style="font-weight:700; margin-bottom:10px;"></p>
                 <button class="btn-full" onclick="window.location.href='checkout.html'">FINALIZAR COMPRA</button>
                 <a href="catalogo.html" class="btn-underline">CONTINUAR COMPRANDO</a>
             </div>
@@ -479,8 +468,9 @@
 
             <!-- Formulário Login -->
             <form id="form-login" class="auth-form active">
-                <input type="email" placeholder="E-MAIL" required>
-                <input type="password" placeholder="SENHA" required>
+                <input type="email" id="login-email" placeholder="E-MAIL" required>
+                <input type="password" id="login-pass" placeholder="SENHA" required>
+                <p class="form-error" id="login-error" role="alert"></p>
                 <a href="#" class="forgot-pwd" id="link-forgot">ESQUECEU A SENHA?</a>
                 <button type="submit" class="btn-full">ENTRAR</button>
             </form>
@@ -514,7 +504,7 @@
     <!-- 4. MENU DE UTILIZADOR (Logado) -->
     <div id="modal-user-menu" class="user-dropdown">
         <ul>
-            <li><strong>Chefer</strong></li>
+            <li><strong id="user-dropdown-name">Chefer</strong></li>
             <li><a href="minha-conta.html?tab=dados">DADOS PESSOAIS</a></li>
             <li><a href="minha-conta.html?tab=pedidos">MEUS PEDIDOS</a></li>
             <li><a href="minha-conta.html?tab=config">CONFIGURAR</a></li>
@@ -523,6 +513,8 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="api.js?v=20261124b"></script>
+    <script src="script.js?v=20261124b"></script>
+    <script src="busca.js?v=20261124b"></script>
 </body>
 </html>

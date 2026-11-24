@@ -37,6 +37,14 @@ public class Produto {
     /** Soft-delete: produtos inativos não aparecem em listagens/buscas. */
     private boolean ativo = true;
 
+    /** Atributos usados pelos filtros do catálogo (valores separados por vírgula). */
+    private String departamento;   // ex.: Roupas, Acessórios, Footwear
+    private String subcategoria;   // ex.: Jaquetas, Calças, Óculos
+    private String generos;        // ex.: Homens,Mulheres,Unissex
+    private String tamanhos;       // ex.: P,M,G,GG
+    private String tecnologias;    // ex.: Gore-Tex,Thermal
+    private String atividades;     // ex.: Trekking,Ski e Neve
+
     public Produto() {
     }
 
@@ -118,5 +126,53 @@ public class Produto {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getSubcategoria() {
+        return subcategoria;
+    }
+
+    public void setSubcategoria(String subcategoria) {
+        this.subcategoria = subcategoria;
+    }
+
+    public String getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(String generos) {
+        this.generos = generos;
+    }
+
+    public String getTamanhos() {
+        return tamanhos;
+    }
+
+    public void setTamanhos(String tamanhos) {
+        this.tamanhos = tamanhos;
+    }
+
+    public String getTecnologias() {
+        return tecnologias;
+    }
+
+    public void setTecnologias(String tecnologias) {
+        this.tecnologias = tecnologias;
+    }
+
+    public String getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(String atividades) {
+        this.atividades = atividades;
     }
 }

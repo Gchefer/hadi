@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compre por Atividade - HADI</title>
-    <link rel="stylesheet" href="style.css?v=20261124b">
-    <link rel="stylesheet" href="busca.css?v=20261124b">
+    <link rel="stylesheet" href="style.css?v=20261124c">
+    <link rel="stylesheet" href="busca.css?v=20261124c">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -171,27 +171,23 @@
 
 
     <main class="container catalog-page">
-        <!-- Breadcrumbs e Título -->
         <div class="catalog-header">
-            <div class="breadcrumbs">
-                <a href="index.html">HOME</a> &gt; <a href="catalogo.html">COMPRE POR ATIVIDADE</a> &gt; <span>TREKKING HOMENS ROUPAS</span>
+            <div>
+                <div class="breadcrumbs" style="margin-bottom:8px"><a href="index.html">HOME</a> &gt; <a href="catalogo.html">CATÁLOGO</a></div>
+                <p class="results-count" id="results-count" aria-live="polite"></p>
             </div>
             <div class="catalog-actions">
-                <button id="btn-mobile-filter" class="btn-underline">FILTRAR</button>
+                <button id="btn-mobile-filter" class="btn-underline">FILTRAR <span id="filter-badge"></span></button>
                 <button id="btn-clear-all-filters" class="btn-underline">LIMPAR TODOS OS FILTROS</button>
                 <div class="sort-by">
                     <label for="sort">ORDENAR POR</label>
-                    <select id="sort">
-                        <option>MAIS RECENTES</option>
-                        <option>MENOR PREÇO</option>
-                        <option>MAIOR PREÇO</option>
-                    </select>
+                    <select id="sort"><option>MAIS RECENTES</option><option>MENOR PREÇO</option><option>MAIOR PREÇO</option></select>
                 </div>
             </div>
         </div>
+        <div class="active-filters" id="results-chip"></div>
 
         <div class="catalog-layout">
-            <!-- Barra Lateral de Filtros -->
             <aside class="sidebar-filters" id="sidebar-filters">
                 <div class="filter-sidebar-header">
                     <h3><i class="fa-solid fa-sliders"></i> FILTRAR</h3>
@@ -212,8 +208,8 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>CATEGORIAS</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <div class="category-item expanded">
-                            <label class="checkbox-label"><input type="checkbox" class="category-toggle" checked> ROUPAS</label>
+                        <div class="category-item">
+                            <label class="checkbox-label"><input type="checkbox" class="category-toggle"> ROUPAS</label>
                             <ul class="subcategory-list">
                                 <li><label class="checkbox-label"><input type="checkbox"> JAQUETAS</label></li>
                                 <li><label class="checkbox-label"><input type="checkbox"> CAMISETAS</label></li>
@@ -243,7 +239,7 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>GÊNERO</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox" checked> HOMENS</label>
+                        <label class="checkbox-label"><input type="checkbox"> HOMENS</label>
                         <label class="checkbox-label"><input type="checkbox"> MULHERES</label>
                         <label class="checkbox-label"><input type="checkbox"> UNISSEX</label>
                     </div>
@@ -282,7 +278,7 @@
                 <div class="filter-group">
                     <div class="filter-title"><h4>ATIVIDADE</h4><i class="fa-solid fa-chevron-down"></i></div>
                     <div class="filter-body">
-                        <label class="checkbox-label"><input type="checkbox" checked> TREKKING</label>
+                        <label class="checkbox-label"><input type="checkbox"> TREKKING</label>
                         <label class="checkbox-label"><input type="checkbox"> TRAIL RUNNING</label>
                         <label class="checkbox-label"><input type="checkbox"> SKI E NEVE</label>
                         <label class="checkbox-label"><input type="checkbox"> CASUAL</label>
@@ -290,25 +286,21 @@
                 </div>
 
                 <div class="filter-actions">
-                    <button class="btn-full">APLICAR FILTROS</button>
-                    <button class="btn-outline">LIMPAR FILTROS</button>
+                    <button type="button" class="btn-full" id="btn-apply-filters">APLICAR FILTROS</button>
+                    <button type="button" class="btn-outline">LIMPAR FILTROS</button>
                 </div>
             </aside>
 
-            <!-- Grelha de Produtos (preenchida via API em script.js -> carregarCatalogo()) -->
             <section class="products-area">
-                <p id="catalog-status" class="help-text" style="display:none;"></p>
-                <div class="grid-3-cols" id="catalog-grid">
+                <div class="grid-3-cols" id="results-grid"></div>
+                <div class="search-empty" id="results-empty" hidden style="padding:60px 0">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <p>NENHUM PRODUTO ENCONTRADO COM ESSES FILTROS.</p>
+                    <div class="search-suggestions" style="justify-content:center">
+                        <button type="button" class="chip" id="empty-clear">LIMPAR FILTROS</button>
+                    </div>
                 </div>
-
-                <!-- Paginação -->
-                <div class="pagination">
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn">4</button>
-                    <button class="page-btn">&gt;</button>
-                </div>
+                <div class="pagination" id="results-pagination"></div>
             </section>
         </div>
     </main>
@@ -469,8 +461,8 @@
         </ul>
     </div>
 
-    <script src="api.js?v=20261124b"></script>
-    <script src="script.js?v=20261124b"></script>
-    <script src="busca.js?v=20261124b"></script>
+    <script src="api.js?v=20261124c"></script>
+    <script src="script.js?v=20261124c"></script>
+    <script src="busca.js?v=20261124c"></script>
 </body>
 </html>

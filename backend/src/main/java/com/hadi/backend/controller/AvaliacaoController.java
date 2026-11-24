@@ -7,6 +7,7 @@ import com.hadi.backend.entity.Produto;
 import com.hadi.backend.repository.AvaliacaoRepository;
 import com.hadi.backend.repository.ClienteRepository;
 import com.hadi.backend.repository.ProdutoRepository;
+import com.hadi.backend.service.AdminAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ import java.util.Map;
  * API de Avaliação de produto:
  *  GET    /api/produto/{codigo}/avaliacoes  -> avaliações do produto + resumo (média, total, distribuição)
  *  POST   /api/avaliacao                    -> cria uma avaliação (cliente logado)
- *  DELETE /api/avaliacao/{codigo}           -> remove (painel admin, header X-Admin-Key)
+ *  DELETE /api/avaliacao/{codigo}           -> remove (painel admin, header X-Admin-Token)
  */
 @RestController
 @RequestMapping("/api")
@@ -38,8 +39,8 @@ public class AvaliacaoController {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    @Value("${hadi.admin.key:hadi-admin}")
-    private String adminKey;
+    @Autowired
+    private AdminAuthService adminAuth;
 
     @GetMapping("/produto/{codigo}/avaliacoes")
     public Map<String, Object> listarDoProduto(@PathVariable Long codigo) {
@@ -103,11 +104,9 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/avaliacao/{codigo}")
-    public String excluir(@RequestHeader(value = "X-Admin-Key", required = false) String chave,
+    public String excluir(@RequestHeader(value = "X-Admin-Token", required = false) String chave,
                           @PathVariable Long codigo) {
-        if (chave == null || !chave.equals(adminKey)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Chave de administrador inválida.");
-        }
+        adminAuth.exigirAdmin(chave);
         if (!avaliacaoRepository.existsById(codigo)) {
             return "avaliação não encontrada!";
         }

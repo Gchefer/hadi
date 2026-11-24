@@ -4,6 +4,7 @@ import com.hadi.backend.dto.ProdutoDTO;
 import com.hadi.backend.entity.Produto;
 import com.hadi.backend.repository.AvaliacaoRepository;
 import com.hadi.backend.repository.ProdutoRepository;
+import com.hadi.backend.service.AdminAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -60,17 +61,15 @@ public class ProdutoController {
         }).collect(Collectors.toList());
     }
 
-    /** Chave do painel admin (header X-Admin-Key). Configurável em hadi.admin.key. */
-    @Value("${hadi.admin.key:hadi-admin}")
-    private String adminKey;
+    /** Login do painel admin (header X-Admin-Token, obtido em POST /api/admin/login). */
+    @Autowired
+    private AdminAuthService adminAuth;
 
     @Value("${hadi.uploads.dir:uploads}")
     private String uploadsDir;
 
-    private void exigirAdmin(String chave) {
-        if (chave == null || !chave.equals(adminKey)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Chave de administrador inválida.");
-        }
+    private void exigirAdmin(String token) {
+        adminAuth.exigirAdmin(token);
     }
 
     private void validar(ProdutoDTO dto) {
@@ -91,7 +90,7 @@ public class ProdutoController {
     }
 
     @PostMapping("/produto")
-    public String cadastrar(@RequestHeader(value = "X-Admin-Key", required = false) String chave,
+    public String cadastrar(@RequestHeader(value = "X-Admin-Token", required = false) String chave,
                             @RequestBody ProdutoDTO dto) {
         exigirAdmin(chave);
         validar(dto);
@@ -103,7 +102,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/produto")
-    public String alterar(@RequestHeader(value = "X-Admin-Key", required = false) String chave,
+    public String alterar(@RequestHeader(value = "X-Admin-Token", required = false) String chave,
                           @RequestBody ProdutoDTO dto) {
         exigirAdmin(chave);
         validar(dto);
@@ -121,7 +120,7 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/produto/{codigo}")
-    public String excluir(@RequestHeader(value = "X-Admin-Key", required = false) String chave,
+    public String excluir(@RequestHeader(value = "X-Admin-Token", required = false) String chave,
                           @PathVariable Long codigo) {
         exigirAdmin(chave);
         Optional<Produto> opt = produtoRepository.findById(codigo);
@@ -137,7 +136,7 @@ public class ProdutoController {
 
     /** Upload de foto do produto (painel admin). Retorna o caminho relativo, ex: uploads/abc123.png */
     @PostMapping("/produto/imagem")
-    public String enviarImagem(@RequestHeader(value = "X-Admin-Key", required = false) String chave,
+    public String enviarImagem(@RequestHeader(value = "X-Admin-Token", required = false) String chave,
                                @RequestParam("arquivo") MultipartFile arquivo) throws IOException {
         exigirAdmin(chave);
         String original = arquivo.getOriginalFilename() == null ? "" : arquivo.getOriginalFilename().toLowerCase();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Admin - HADI</title>
-    <link rel="stylesheet" href="style.css?v=20261124c">
+    <link rel="stylesheet" href="style.css?v=20261124d">
     <style>
         .adm { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .adm h1 { font-size: 1.6rem; letter-spacing: 1px; margin-bottom: 6px; }
@@ -25,18 +25,35 @@
         .adm td img { width: 48px; height: 48px; object-fit: contain; background: var(--bg-cards); }
         .adm-msg { font-size: .8rem; font-weight: 700; margin-top: 10px; min-height: 1em; }
         .adm-msg.err { color: var(--text-red); }
+        .adm-login { max-width: 380px; margin: 60px auto; }
+        .adm-login form > div { margin-bottom: 14px; }
+        .adm-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+        [hidden] { display: none !important; }
         @media (max-width: 600px) { .adm-grid { grid-template-columns: 1fr; } .adm table { display: block; overflow-x: auto; } }
     </style>
 </head>
 <body>
-<main class="adm">
-    <h1>PAINEL ADMIN &mdash; PRODUTOS</h1>
+<main class="adm adm-login" id="tela-login" hidden>
+    <h1>LOGIN ADMIN</h1>
     <p class="sub"><a href="index.html" class="btn-underline">&larr; VOLTAR À LOJA</a></p>
-
     <section class="adm-card">
-        <label for="adm-key">CHAVE DE ADMINISTRADOR (padrão: hadi-admin)</label>
-        <input type="password" id="adm-key" autocomplete="off">
+        <form id="form-login" novalidate>
+            <div><label for="login-usuario">USUÁRIO</label><input type="text" id="login-usuario" autocomplete="username" required></div>
+            <div><label for="login-senha">SENHA</label><input type="password" id="login-senha" autocomplete="current-password" required></div>
+            <button type="submit" id="btn-entrar">ENTRAR</button>
+            <p class="adm-msg" id="login-msg" role="alert"></p>
+        </form>
     </section>
+</main>
+
+<main class="adm" id="tela-painel" hidden>
+    <div class="adm-topo">
+        <div>
+            <h1>PAINEL ADMIN &mdash; PRODUTOS</h1>
+            <p class="sub"><a href="index.html" class="btn-underline">&larr; VOLTAR À LOJA</a></p>
+        </div>
+        <button type="button" class="sec" id="btn-sair">SAIR</button>
+    </div>
 
     <section class="adm-card">
         <h2 id="form-titulo" style="font-size:1rem; margin-bottom:14px;">CADASTRAR NOVO PRODUTO</h2>
@@ -70,15 +87,61 @@
     </section>
 </main>
 
-<script src="api.js?v=20261124c"></script>
+<script src="api.js?v=20261124e"></script>
 <script>
     const $ = (id) => document.getElementById(id);
     const msg = $('adm-msg');
     let produtos = [];
 
-    const chave = () => $('adm-key').value.trim();
-    $('adm-key').value = sessionStorage.getItem('hadi_admin_key') || '';
-    $('adm-key').addEventListener('input', () => sessionStorage.setItem('hadi_admin_key', chave()));
+    // --- Sessão do admin (token guardado só nesta aba) ---
+    const CHAVE_TOKEN = 'hadi_admin_token';
+    const lerToken = () => { try { return sessionStorage.getItem(CHAVE_TOKEN) || ''; } catch { return ''; } };
+    const salvarToken = (t) => { try { t ? sessionStorage.setItem(CHAVE_TOKEN, t) : sessionStorage.removeItem(CHAVE_TOKEN); } catch {} };
+    const chave = () => lerToken();
+
+    function mostrarLogin(aviso) {
+        salvarToken('');
+        $('tela-painel').hidden = true;
+        $('tela-login').hidden = false;
+        $('login-msg').textContent = aviso || '';
+        $('login-msg').className = 'adm-msg' + (aviso ? ' err' : '');
+        $('login-senha').value = '';
+        $('login-usuario').focus();
+    }
+
+    function mostrarPainel() {
+        $('tela-login').hidden = true;
+        $('tela-painel').hidden = false;
+        carregar();
+    }
+
+    // Token expirado/inválido (backend reiniciou, 8h passaram): volta para o login.
+    function tratarErro(e) {
+        if (e.status === 401 || e.status === 403) { mostrarLogin(e.message); return true; }
+        return false;
+    }
+
+    $('form-login').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!$('form-login').checkValidity()) { $('form-login').reportValidity(); return; }
+        $('btn-entrar').disabled = true;
+        $('login-msg').textContent = '';
+        try {
+            const { token } = await api.loginAdmin($('login-usuario').value.trim(), $('login-senha').value);
+            salvarToken(token);
+            mostrarPainel();
+        } catch (err) {
+            $('login-msg').textContent = err.status ? err.message : 'Backend fora do ar (' + API_BASE_URL + ').';
+            $('login-msg').className = 'adm-msg err';
+        } finally {
+            $('btn-entrar').disabled = false;
+        }
+    });
+
+    $('btn-sair').addEventListener('click', async () => {
+        try { await api.logoutAdmin(chave()); } catch {}
+        mostrarLogin();
+    });
 
     function mostrar(texto, erro) { msg.textContent = texto; msg.className = 'adm-msg' + (erro ? ' err' : ''); }
 
@@ -139,7 +202,7 @@
             await api.excluirProduto(p.codigo, chave());
             mostrar('Produto removido.');
             carregar();
-        } catch (e) { mostrar(e.message, true); }
+        } catch (e) { if (!tratarErro(e)) mostrar(e.message, true); }
     }
 
     $('form-produto').addEventListener('submit', async (e) => {
@@ -167,11 +230,16 @@
             limpar();
             carregar();
         } catch (err) {
-            mostrar(err.message || 'Erro ao salvar o produto.', true);
+            if (!tratarErro(err)) mostrar(err.message || 'Erro ao salvar o produto.', true);
         }
     });
 
-    carregar();
+    // Ao abrir: se já há token nesta aba e ele ainda vale, entra direto no painel.
+    (async () => {
+        if (!chave()) { mostrarLogin(); return; }
+        try { await api.verificarSessaoAdmin(chave()); mostrarPainel(); }
+        catch (e) { mostrarLogin(e.status ? 'Sessão expirada. Faça login novamente.' : ''); }
+    })();
 </script>
 </body>
 </html>

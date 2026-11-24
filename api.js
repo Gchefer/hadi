@@ -40,11 +40,16 @@ const api = {
     consultarCep: (cep) => apiRequest(`/cep/${String(cep).replace(/\D/g, '')}`),
     calcularFrete: (cep, subtotal) => apiRequest(`/frete/${String(cep).replace(/\D/g, '')}` + (subtotal != null ? `?subtotal=${Number(subtotal).toFixed(2)}` : '')),
 
-    // --- PRODUTO (painel admin: exige a chave X-Admin-Key) ---
-    cadastrarProduto: (dados, chave) => apiRequest('/produto', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': chave }, body: JSON.stringify(dados) }),
-    alterarProduto: (dados, chave) => apiRequest('/produto', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Admin-Key': chave }, body: JSON.stringify(dados) }),
-    excluirProduto: (codigo, chave) => apiRequest(`/produto/${codigo}`, { method: 'DELETE', headers: { 'X-Admin-Key': chave } }),
-    enviarImagemProduto: (arquivo, chave) => { const fd = new FormData(); fd.append('arquivo', arquivo); return apiRequest('/produto/imagem', { method: 'POST', headers: { 'X-Admin-Key': chave }, body: fd }); },
+    // --- ADMIN (login do painel; o token vai no header X-Admin-Token) ---
+    loginAdmin: (usuario, senha) => apiRequest('/admin/login', { method: 'POST', body: JSON.stringify({ usuario, senha }) }),
+    logoutAdmin: (token) => apiRequest('/admin/logout', { method: 'POST', headers: { 'X-Admin-Token': token } }),
+    verificarSessaoAdmin: (token) => apiRequest('/admin/sessao', { headers: { 'X-Admin-Token': token } }),
+
+    // --- PRODUTO (painel admin: exige o token de admin) ---
+    cadastrarProduto: (dados, token) => apiRequest('/produto', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token }, body: JSON.stringify(dados) }),
+    alterarProduto: (dados, token) => apiRequest('/produto', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token }, body: JSON.stringify(dados) }),
+    excluirProduto: (codigo, token) => apiRequest(`/produto/${codigo}`, { method: 'DELETE', headers: { 'X-Admin-Token': token } }),
+    enviarImagemProduto: (arquivo, token) => { const fd = new FormData(); fd.append('arquivo', arquivo); return apiRequest('/produto/imagem', { method: 'POST', headers: { 'X-Admin-Token': token }, body: fd }); },
 
     // --- CLIENTE ---
     cadastrarCliente: (dados) => apiRequest('/cliente', { method: 'POST', body: JSON.stringify(dados) }),

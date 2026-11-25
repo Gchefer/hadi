@@ -110,25 +110,9 @@ A sessão do cliente logado e o carrinho de compras são guardados no
 `localStorage` do navegador (`api.js` (raiz)), já que o escopo do backend
 fornecido não inclui autenticação por token/sessão.
 
-## Observações sobre o backend fornecido
+## Observações
 
-A documentação em PDF aponta duas inconsistências já existentes no backend
-original (mantidas de propósito, pois fazem parte do contrato documentado):
-
-- O cadastro de **Pedido** retorna a mensagem `"Cliente gravado com sucesso!"`
-  (erro de copiar/colar do código-fonte original).
 - O envio de e-mail em `resetarSenha`/`alterarSenha` não está implementado
-  (`TODO ENVIAR EMAIL`); a senha é apenas redefinida para `Senha1234` no banco.
-
-## Testes realizados
-
-- Fluxo completo validado ponta a ponta com Playwright: catálogo e vitrine
-  carregando produtos reais, login, cadastro, recuperação de senha, página de
-  produto por código, carrinho, checkout com criação de pedido e "Meus
-  Pedidos" em Minha Conta — todos batendo contra um servidor que replica
-  exatamente o contrato dos PDFs (mesmos paths, verbos e formatos de retorno).
-- O build Maven do backend (`mvn package`) não pôde ser executado no ambiente
-  de geração deste código por falta de acesso à internet para baixar as
-  dependências do Spring Boot; o código foi revisado manualmente e segue os
-  endpoints documentados. **Recomenda-se rodar `mvn spring-boot:run`
-  localmente antes da apresentação** para confirmar a build.
+  (`TODO ENVIAR EMAIL`). A senha é apenas redefinida para `Senha1234` no banco.
+- Referência completa dos endpoints: [`../docs/API.md`](../docs/API.md).
+- Para subir backend e front juntos: `python rodar.py` na raiz (ver [`../readme.md`](../readme.md)).
